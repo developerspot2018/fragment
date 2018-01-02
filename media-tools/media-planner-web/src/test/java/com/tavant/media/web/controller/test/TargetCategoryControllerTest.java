@@ -1,8 +1,8 @@
 package com.tavant.media.web.controller.test;
 
+import static com.tavant.media.security.test.SecurityPostProcessors.user;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -18,14 +18,11 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.web.context.WebApplicationContext;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import com.google.gson.Gson;
-import com.tavant.media.core.beans.AuthenticationResponse;
 import com.tavant.media.core.entity.Account;
 import com.tavant.media.core.entity.User;
 
@@ -42,9 +39,8 @@ public class TargetCategoryControllerTest extends AbstractTestNGSpringContextTes
 	private volatile WebApplicationContext webApplicationContext;
 
 	private volatile MockMvc mockMvc;
-	private Gson gson = null;
+
 	User user = null;
-	private String token="bearer ";
 	
 	@Autowired
 	private volatile Filter springSecurityFilterChain;
@@ -54,26 +50,12 @@ public class TargetCategoryControllerTest extends AbstractTestNGSpringContextTes
 	public void beforeTesting() {
 		this.mockMvc = webAppContextSetup(webApplicationContext).addFilter(
 				springSecurityFilterChain, "/*").build();
-		gson = new Gson();
 		user = new User();
-		user.setUserId("admin@sony.com");
+		user.setUserId("admin@star.com");
 		user.setPassword("welcome123");
 		Account account = new Account();
-		account.setAccId("SONYINDIA");
+		account.setAccId("STARINDIA");
 		user.setAccount(account);
-		try {
-			MvcResult mvcResult =	this.mockMvc.perform(
-						post("/authentication/login")
-								.param("client_id", user.getUserId())
-								.param("client_secret", user.getPassword())
-								.param("grant_type", "client_credentials")).andReturn();
-				String result  = mvcResult.getResponse().getContentAsString();
-			AuthenticationResponse response = gson.fromJson(result, AuthenticationResponse.class);
-			token =token.concat(response.getAccess_token());
-			
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
 		logger.debug("TargetCategory Object has been created and functions are ready for operation !!!");
 	}
 
@@ -86,7 +68,7 @@ public class TargetCategoryControllerTest extends AbstractTestNGSpringContextTes
 	public void testTargetCategoryDataById() {
 		logger.info("TargetCategory Data testTargetCategoryDataById Method Execution Start !!!");
 		try {
-			mockMvc.perform(get("/targetcategory/1").header("Authorization", token))
+			mockMvc.perform(get("/targetcategory/1").with(user(user).setRoles("ADMIN")))
 					.andExpect(status().isOk())
 					.andExpect(
 							content().contentType(
@@ -105,7 +87,7 @@ public class TargetCategoryControllerTest extends AbstractTestNGSpringContextTes
 	public void testALLTargetCategoryData() {
 		logger.info("Attribute Data testALLTargetCategoryData Method Execution Start !!!");
 		try {
-			mockMvc.perform(get("/targetcategory").header("Authorization", token))
+			mockMvc.perform(get("/targetcategory").with(user(user).setRoles("ADMIN")))
 					.andExpect(status().isOk())
 					.andExpect(
 							content().contentType(

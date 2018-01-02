@@ -32,12 +32,12 @@
 	        <property name="dataSource" ref="dataSource"/>
 	        <property name="jpaVendorAdapter" ref="jpaVendorAdapter"/>
 	        <!-- spring based scanning for entity classes-->
-	        <property name="packagesToScan" value="com.tavant.media.core.entity, com.tavant.media.target.entity, com.tavant.media.core.audit.entity, com.tavant.media.core.rules.entity"/>
+	        <property name="packagesToScan" value="com.tavant.media.core.entity, com.tavant.media.target.entity"/>
 	        <property name="jpaProperties">
 		        <props>
 		            <prop key="hibernate.format_sql">true</prop>
 		            <prop key="hibernate.hbm2ddl.auto">${hibernate.hbm}</prop>
-		            <!-- <prop key="hibernate.enable_lazy_load_no_trans">true</prop> -->
+		            <prop key="hibernate.enable_lazy_load_no_trans">true</prop>
 		        </props>
 		    </property>
 		</bean>
@@ -63,8 +63,8 @@
 	    
 	    <aop:aspectj-autoproxy >
 			<aop:include name="loggingAspect"/>
-			<aop:include name="auditAction"/>
+		<!-- 	<aop:include name="auditAction"/> -->
 		</aop:aspectj-autoproxy>
-		 
+		<!--  <bean id="auditAction" class="com.tavant.media.core.audit.AuditAction"/> -->
 		<bean id="loggingAspect" class="com.tavant.media.core.logger.LoggingAspect"></bean>
 </beans>		

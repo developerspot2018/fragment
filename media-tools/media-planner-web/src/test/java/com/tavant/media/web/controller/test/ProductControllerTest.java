@@ -1,11 +1,12 @@
 package com.tavant.media.web.controller.test;
 
+import static com.tavant.media.security.test.SecurityPostProcessors.user;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -24,20 +25,17 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.web.context.WebApplicationContext;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import com.google.gson.Gson;
-import com.tavant.media.core.beans.AuthenticationResponse;
 import com.tavant.media.core.entity.Account;
 import com.tavant.media.core.entity.Attribute;
 import com.tavant.media.core.entity.Creative;
 import com.tavant.media.core.entity.Product;
 import com.tavant.media.core.entity.SalesTarget;
-import com.tavant.media.core.entity.TargetCategoryValue;
 import com.tavant.media.core.entity.User;
 
 @ContextConfiguration(locations = { "file:src/main/webapp/WEB-INF/media-planner-controller.xml", "classpath:media-planner-security.xml" })
@@ -53,18 +51,13 @@ public class ProductControllerTest extends AbstractTestNGSpringContextTests{
 
 	private volatile MockMvc mockMvc;
 
+	private static final String HOST_URI = "http://localhost:8080/products";
+
 	private Gson gson = null;
 
 	private Product product = null;
-	private Product productResponse = null;
-	private SalesTarget salesTarget = null;
-	private SalesTarget salesTargetResponse = null;
-	private Attribute attribute = null;
-	private Attribute attributeResponse = null;
-	private Creative creative = null;
-	private Creative creativeResponse = null;
+
 	User user = null;
-	private String token="bearer ";
 	
 	@Autowired
 	private volatile Filter springSecurityFilterChain;
@@ -75,137 +68,38 @@ public class ProductControllerTest extends AbstractTestNGSpringContextTests{
 				springSecurityFilterChain, "/*").build();
 		gson = new Gson();
 		user = new User();
-		user.setUserId("admin@sony.com");
+		user.setUserId("admin@star.com");
 		user.setPassword("welcome123");
 		Account account = new Account();
-		account.setAccId("SONYINDIA");
+		account.setAccId("STARINDIA");
 		user.setAccount(account);
 		product = new Product();
-		product.setName("Tavant Media Product");
+		product.setName("Media");
 		product.setDisplayName("displayName");
 		product.setDescription("description");
 		product.setType("type");
 		product.setClasss("classs");
 		product.setCustom1("custom1");
 		product.setCustom2("custom2");
-		
-		attribute = new Attribute();
-		attribute.setName("Product Media");
-		attribute.setType("Product");
-		attribute.setValue("Product Media ");
-		attribute.setDescription("Product Media Attribute for Sony ");
-
-		creative = new Creative();
-		creative.setName("Product Media Planner");
-		creative.setType("CPM");
-		creative.setWidth1(100);
-		creative.setWidth2(200);
-		creative.setHeight1(100);
-		creative.setHeight2(200);
-		creative.setDescription("Product Media Planner Campaign");
-		creative.setCustom1("Product custom1");
-		creative.setCustom2("Product custom2");
-
-		salesTarget = new SalesTarget();
-		salesTarget.setName("Product salesTarget");
-		salesTarget.setUrl("http://Product.com");
-		salesTarget.setDescription("Product salesTarget description");
-		salesTarget.setCustom1("Product salesTarget custom1");
-		salesTarget.setCustom2("Product salesTarget custom2");
-		
-		TargetCategoryValue categoryValue = new TargetCategoryValue();
-		categoryValue.setId(1);
-		List<TargetCategoryValue> targets = new ArrayList<TargetCategoryValue>();
-		targets.add(categoryValue);
-		product.setTargets(targets);
-
-		try {
-			MvcResult mvcResult =	this.mockMvc.perform(
-						post("/authentication/login")
-								.param("client_id", user.getUserId())
-								.param("client_secret", user.getPassword())
-								.param("grant_type", "client_credentials")).andReturn();
-				String result  = mvcResult.getResponse().getContentAsString();
-			AuthenticationResponse response = gson.fromJson(result, AuthenticationResponse.class);
-			token =token.concat(response.getAccess_token());
-			
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		try {
-			String json = gson.toJson(attribute, Attribute.class);
-
-			MvcResult mvcResult = mockMvc
-					.perform(
-							post("/attributes")
-									.header("Authorization", token)
-									.content(json)
-									.contentType(
-											MediaType.APPLICATION_JSON_VALUE))
-					.andExpect(status().isCreated()).andDo(print()).andReturn();
-			String result = mvcResult.getResponse().getContentAsString();
-			attributeResponse = gson.fromJson(result, Attribute.class);
-			attribute.setId(attributeResponse.getId());
-			List<Attribute> attributeList = new ArrayList<Attribute>();
-			attributeList.add(attribute);
-			product.setAttributes(attributeList);
-
-		} catch (Exception e) {
-			logger.error("Server Not responding properly !!!");
-			e.printStackTrace();
-		}
-
-		try {
-
-			String json = gson.toJson(salesTarget, SalesTarget.class);
-
-			MvcResult mvcResult = mockMvc
-					.perform(
-							post("/salestargets")
-									.header("Authorization", token)
-									.content(json)
-									.contentType(
-											MediaType.APPLICATION_JSON_VALUE))
-					.andExpect(status().isCreated()).andDo(print()).andReturn();
-			String result = mvcResult.getResponse().getContentAsString();
-			salesTargetResponse = gson.fromJson(result, SalesTarget.class);
-			salesTarget.setId(salesTargetResponse.getId());
-			List<SalesTarget> salesTargets = new ArrayList<SalesTarget>();
-			salesTargets.add(salesTarget);
-			product.setSalesTargetList(salesTargets);
-
-		} catch (Exception e) {
-			logger.error("Server Not responding properly !!!");
-			e.printStackTrace();
-		}
-
-		try {
-			attribute.setId(attributeResponse.getId());
-			List<Attribute> attributeList = new ArrayList<Attribute>();
-			attributeList.add(attribute);
-			creative.setAttributes(attributeList);
-
-			String json = gson.toJson(creative, Creative.class);
-
-			MvcResult mvcResult = mockMvc
-					.perform(
-							post("/creatives")
-									.header("Authorization", token)
-									.content(json)
-									.contentType(
-											MediaType.APPLICATION_JSON_VALUE))
-					.andExpect(status().isCreated()).andDo(print()).andReturn();
-			String result = mvcResult.getResponse().getContentAsString();
-			creativeResponse = gson.fromJson(result, Creative.class);
-			creative.setId(creativeResponse.getId());
-			product.setCreative(creative);
-
-		} catch (Exception e) {
-			logger.error("Server Not responding properly !!!");
-			e.printStackTrace();
-		}
-
+		Attribute attribute = new Attribute();
+		attribute.setId(1);
+		List<Attribute> attributeList = new ArrayList<Attribute>();
+		attributeList.add(attribute);
+		product.setAttributes(attributeList);
+		Creative creative = new Creative();
+		creative.setId(1);
+		product.setCreative(creative);
+		SalesTarget salesTarget  = new SalesTarget();
+		salesTarget.setId(1);
+		List<SalesTarget> salesTargets = new ArrayList<SalesTarget>();
+		salesTargets.add(salesTarget);
+		product.setSalesTargetList(salesTargets);
 		logger.debug("Product Object has been created and functions are ready for operation !!!");
+	}
+
+	@AfterClass
+	public void afterTesting() {
+		logger.debug("Product Testing has been completed !!!");
 	}
 
 	@Test(enabled = true, priority = 0)
@@ -214,12 +108,10 @@ public class ProductControllerTest extends AbstractTestNGSpringContextTests{
 		try {
 
 			String json = gson.toJson(product, Product.class);
-			MvcResult mvcResult =	mockMvc.perform(
-					post("/products").header("Authorization", token).content(json).contentType(
+			mockMvc.perform(
+					post("/products").with(user(user).setRoles("ADMIN")).content(json).contentType(
 							MediaType.APPLICATION_JSON_VALUE))
-					.andExpect(status().isCreated()).andDo(print()).andReturn();
-			  String result = mvcResult.getResponse().getContentAsString();
-			  productResponse = gson.fromJson(result, Product.class);
+					.andExpect(status().isCreated()).andDo(print());
 
 		} catch (Exception e) {
 			logger.error("Server Not responding properly !!!");
@@ -233,9 +125,8 @@ public class ProductControllerTest extends AbstractTestNGSpringContextTests{
 	public void testGetProductDataById() {
 		logger.info("Product Data testGetProductDataById Method Execution Start !!!");
 		try {
-			mockMvc.perform(get("/products/"+productResponse.getId()).header("Authorization", token))
+			mockMvc.perform(get("/products/1").with(user(user).setRoles("ADMIN")))
 					.andExpect(status().isOk())
-					.andDo(print())
 					.andExpect(
 							content().contentType(
 									MediaType.APPLICATION_JSON_VALUE))
@@ -267,31 +158,30 @@ public class ProductControllerTest extends AbstractTestNGSpringContextTests{
 	public void testGetProductAllData() {
 		logger.info("Product Data testGetProductAllData Method Execution Start !!!");
 		try {
-			mockMvc.perform(get("/products?pagesize=1").header("Authorization", token))
+			mockMvc.perform(get("/products").with(user(user).setRoles("ADMIN")))
 					.andExpect(status().isOk())
-					.andDo(print())
 					.andExpect(
 							content().contentType(
 									MediaType.APPLICATION_JSON_VALUE))
-					.andExpect(jsonPath("$.content", hasSize(1)))
+					.andExpect(jsonPath("$", hasSize(1)))
 					.andExpect(
-							jsonPath("$.content[0].name").value(product.getName()))
+							jsonPath("$[0].name").value(product.getName()))
 					.andExpect(
-							jsonPath("$.content[0].displayName").value(
+							jsonPath("$[0].displayName").value(
 									product.getDisplayName()))
 					.andExpect(
-							jsonPath("$.content[0].description").value(
+							jsonPath("$[0].description").value(
 									product.getDescription()))
 					.andExpect(
-							jsonPath("$.content[0].type").value(product.getType()))
+							jsonPath("$[0].type").value(product.getType()))
 					.andExpect(
-							jsonPath("$.content[0].classs").value(
+							jsonPath("$[0].classs").value(
 									product.getClasss()))
 					.andExpect(
-							jsonPath("$.content[0].custom1").value(
+							jsonPath("$[0].custom1").value(
 									product.getCustom1()))
 					.andExpect(
-							jsonPath("$.content[0].custom2").value(
+							jsonPath("$[0].custom2").value(
 									product.getCustom2()));
 
 		} catch (Exception e) {
@@ -301,19 +191,19 @@ public class ProductControllerTest extends AbstractTestNGSpringContextTests{
 		logger.info("Product Data testGetProductAllData Method Execution End !!!");
 	}
 
-	@Test(enabled = true, priority = 3)
+	@Test(enabled = true, priority = 4)
 	public void testPutProductData() {
 		logger.info("Product Data testPutProductData Method Execution Start !!!");
 		try {
-			product.setId(productResponse.getId());
+			product.setId(1);
 			product.setName("New Media");
 			product.setDescription("New description");
 			String json = gson.toJson(product, Product.class);
 
 			mockMvc.perform(
-					put("/products").header("Authorization", token).content(json).contentType(
+					put("/products").with(user(user).setRoles("ADMIN")).content(json).contentType(
 							MediaType.APPLICATION_JSON_VALUE))
-					.andExpect(status().isOk()).andDo(print());
+					.andExpect(status().isOk());
 
 		} catch (Exception e) {
 			logger.error("Server Not responding properly !!!");
@@ -321,12 +211,12 @@ public class ProductControllerTest extends AbstractTestNGSpringContextTests{
 		}
 		logger.info("Product Data testPutProductData Method Execution End !!!");
 	}
-	@Test(enabled = true, priority = 7)
+	@Test(enabled = true, priority = 6)
 	public void testDeleteProductDataById() {
 		logger.info("Product Data testDeleteProductDataById Method Execution Start !!!");
 		try {
-			mockMvc.perform(delete("/products/"+productResponse.getId()).header("Authorization", token))
-					.andExpect(status().isNoContent()).andDo(print());
+			mockMvc.perform(delete("/products/1").with(user(user).setRoles("ADMIN")))
+					.andExpect(status().isAccepted());
 
 		} catch (Exception e) {
 			logger.error("Server Not responding properly !!!");
@@ -336,35 +226,34 @@ public class ProductControllerTest extends AbstractTestNGSpringContextTests{
 	}
 
 	
-	@Test(enabled = true, priority = 4)
+	@Test(enabled = true, priority = 3)
 	public void testSearchProduct() {
 		logger.info("Product Data testSearchProduct Method Execution Start !!!");
 		try {
-			mockMvc.perform(get("/products?pagesize=1&name="+product.getName()+"&type="+product.getType()+"&classs="+product.getClasss()).header("Authorization", token))
+			mockMvc.perform(get("/products?name="+product.getName()+"&type="+product.getType()+"&classs="+product.getClasss()).with(user(user).setRoles("ADMIN")))
 					.andExpect(status().isOk())
-					.andDo(print())
 					.andExpect(
 						content().contentType(
 							MediaType.APPLICATION_JSON_VALUE))
-							.andExpect(jsonPath("$.content", hasSize(1)))
+							.andExpect(jsonPath("$", hasSize(1)))
 							.andExpect(
-									jsonPath("$.content[0].name").value(product.getName()))
+									jsonPath("$[0].name").value(product.getName()))
 							.andExpect(
-									jsonPath("$.content[0].displayName").value(
+									jsonPath("$[0].displayName").value(
 											product.getDisplayName()))
 							.andExpect(
-									jsonPath("$.content[0].description").value(
+									jsonPath("$[0].description").value(
 											product.getDescription()))
 							.andExpect(
-									jsonPath("$.content[0].type").value(product.getType()))
+									jsonPath("$[0].type").value(product.getType()))
 							.andExpect(
-									jsonPath("$.content[0].classs").value(
+									jsonPath("$[0].classs").value(
 											product.getClasss()))
 							.andExpect(
-									jsonPath("$.content[0].custom1").value(
+									jsonPath("$[0].custom1").value(
 											product.getCustom1()))
 							.andExpect(
-									jsonPath("$.content[0].custom2").value(
+									jsonPath("$[0].custom2").value(
 											product.getCustom2()));
 		} catch (Exception e) {
 			logger.error("Server Not responding properly !!!");
@@ -378,16 +267,16 @@ public class ProductControllerTest extends AbstractTestNGSpringContextTests{
 		logger.info("Product Data testPutProductData Method Execution Start !!!");
 		try {
 			Attribute attribute =  new Attribute();
-			attribute.setId(attributeResponse.getId());
+			attribute.setId(1);
 			List<Attribute> attributes = new ArrayList<Attribute>();
 			attributes.add(attribute);
-			product.setId(productResponse.getId());
+			product.setId(1);
 			product.setAttributes(attributes);
 		
 			String json = gson.toJson(product, Product.class);
 
 			mockMvc.perform(
-					patch("/products").header("Authorization", token).content(json).contentType(
+					patch("/products").with(user(user).setRoles("ADMIN")).content(json).contentType(
 							MediaType.APPLICATION_JSON_VALUE))
 					.andExpect(status().isOk())
 					.andDo(print());
@@ -397,73 +286,5 @@ public class ProductControllerTest extends AbstractTestNGSpringContextTests{
 			e.printStackTrace();
 		}
 		logger.info("Product Data testPutProductData Method Execution End !!!");
-	}
-	@Test(enabled = true, priority = 6)
-	public void testProductsFetchActivities() {
-		logger.info("Product Data testProductsFetchActivities Method Execution Start !!!");
-		try {
-			mockMvc.perform(get("/products/"+productResponse.getId()+"/activity").header("Authorization", token))
-					.andExpect(status().isOk())
-					.andDo(print())
-					.andExpect(
-						content().contentType(
-							MediaType.APPLICATION_JSON_VALUE))
-							.andExpect(jsonPath("$", hasSize(3)))
-							.andExpect(
-									jsonPath("$[0].field")
-											.value("name"))
-							.andExpect(
-									jsonPath("$[0].value")
-											.value("New Media"));
-		} catch (Exception e) {
-			logger.error("Server Not responding properly !!!");
-			e.printStackTrace();
-		}
-		logger.info("Product Data testProductsFetchActivities Method Execution End !!!");
-	}
-	@AfterClass
-	public void afterTesting() {
-		try {
-			mockMvc.perform(
-					delete("/salestargets/" + salesTargetResponse.getId())
-							.header("Authorization", token))
-					.andExpect(status().isNoContent()).andDo(print());
-
-		} catch (Exception e) {
-			logger.error("Server Not responding properly !!!");
-			e.printStackTrace();
-		}
-		try {
-			mockMvc.perform(
-					delete("/creatives/" + creativeResponse.getId()).header(
-							"Authorization", token)).andExpect(
-					status().isNoContent());
-
-		} catch (Exception e) {
-			logger.error("Server Not responding properly !!!");
-			e.printStackTrace();
-		}
-
-		try {
-			mockMvc.perform(
-					delete("/attributes/" + attributeResponse.getId()).header(
-							"Authorization", token)).andExpect(
-					status().isNoContent());
-
-		} catch (Exception e) {
-			logger.error("Server Not responding properly !!!");
-			e.printStackTrace();
-		}
-		try {
-			mockMvc.perform(
-					get("/authentication/logout")
-							.header("Authorization", token).header("Content-Type", MediaType.APPLICATION_JSON_VALUE))
-					.andExpect(status().isOk());
-		} catch (Exception e) {
-			logger.error("Server Not responding properly !!!");
-			e.printStackTrace();
-		}
-		
-		logger.debug("Product Testing has been completed !!!");
 	}
 }

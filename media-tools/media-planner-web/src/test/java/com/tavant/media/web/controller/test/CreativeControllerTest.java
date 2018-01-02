@@ -1,5 +1,6 @@
 package com.tavant.media.web.controller.test;
 
+import static com.tavant.media.security.test.SecurityPostProcessors.user;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -24,22 +25,18 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.web.context.WebApplicationContext;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import com.google.gson.Gson;
-import com.tavant.media.core.beans.AuthenticationResponse;
 import com.tavant.media.core.entity.Account;
 import com.tavant.media.core.entity.Attribute;
 import com.tavant.media.core.entity.Creative;
 import com.tavant.media.core.entity.User;
 
-@ContextConfiguration(locations = {
-		"file:src/main/webapp/WEB-INF/media-planner-controller.xml",
-		"classpath:media-planner-security.xml" })
+@ContextConfiguration(locations = { "file:src/main/webapp/WEB-INF/media-planner-controller.xml", "classpath:media-planner-security.xml" })
 @WebAppConfiguration
 @Test(suiteName = "Creative_Test")
 public class CreativeControllerTest extends AbstractTestNGSpringContextTests {
@@ -52,16 +49,14 @@ public class CreativeControllerTest extends AbstractTestNGSpringContextTests {
 
 	private volatile MockMvc mockMvc;
 
+	private static final String HOST_URI = "http://localhost:8080/creatives";
+	
 	private Gson gson = null;
-
+	
 	private Creative creative = null;
-	private Creative creativeResponse = null;
-	private Attribute attribute = null;
-	private Attribute attributeResponse = null;
-
+	
 	User user = null;
-	private String token = "bearer ";
-
+	
 	@Autowired
 	private volatile Filter springSecurityFilterChain;
 
@@ -71,17 +66,11 @@ public class CreativeControllerTest extends AbstractTestNGSpringContextTests {
 				springSecurityFilterChain, "/*").build();
 		gson = new Gson();
 		user = new User();
-		user.setUserId("admin@sony.com");
+		user.setUserId("admin@star.com");
 		user.setPassword("welcome123");
 		Account account = new Account();
-		account.setAccId("SONYINDIA");
+		account.setAccId("STARINDIA");
 		user.setAccount(account);
-		attribute = new Attribute();
-		attribute.setName("Creative Media");
-		attribute.setType("Product");
-		attribute.setValue("Creative Media Sony");
-		attribute.setDescription("Creative Media Attribute for Sony");
-
 		creative = new Creative();
 		creative.setName("Media Planner");
 		creative.setType("CPM");
@@ -92,41 +81,19 @@ public class CreativeControllerTest extends AbstractTestNGSpringContextTests {
 		creative.setDescription("Media Planner Campaign");
 		creative.setCustom1("custom1");
 		creative.setCustom2("custom2");
-		try {
-			MvcResult mvcResult = this.mockMvc.perform(
-					post("/authentication/login")
-							.param("client_id", user.getUserId())
-							.param("client_secret", user.getPassword())
-							.param("grant_type", "client_credentials"))
-					.andReturn();
-			String result = mvcResult.getResponse().getContentAsString();
-			AuthenticationResponse response = gson.fromJson(result,
-					AuthenticationResponse.class);
-			token = token.concat(response.getAccess_token());
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		try {
-			String json = gson.toJson(attribute, Attribute.class);
-
-			MvcResult mvcResult = mockMvc
-					.perform(
-							post("/attributes")
-									.header("Authorization", token)
-									.content(json)
-									.contentType(
-											MediaType.APPLICATION_JSON_VALUE))
-					.andExpect(status().isCreated()).andDo(print()).andReturn();
-			String result = mvcResult.getResponse().getContentAsString();
-			attributeResponse = gson.fromJson(result, Attribute.class);
-
-		} catch (Exception e) {
-			logger.error("Server Not responding properly !!!");
-			e.printStackTrace();
-		}
-
+		Attribute attribute = new Attribute();
+		attribute.setId(1);
+		List<Attribute> attributeList = new ArrayList<Attribute>();
+		attributeList.add(attribute);
+		creative.setAttributes(attributeList);
+		
 		logger.debug("Creative Object has been created and functions are ready for operation !!!");
+	}
+
+	@AfterClass
+	public void afterTesting() {
+
+		logger.debug("Creative Testing has been completed !!!");
 	}
 
 	@Test(enabled = true, priority = 0)
@@ -134,25 +101,12 @@ public class CreativeControllerTest extends AbstractTestNGSpringContextTests {
 
 		logger.info("Creative Data testPostCreativeData Method Execution Start !!!");
 		try {
-			Attribute attribute = new Attribute();
-			attribute.setId(attributeResponse.getId());
-			List<Attribute> attributeList = new ArrayList<Attribute>();
-			attributeList.add(attribute);
-			creative.setAttributes(attributeList);
-
 			String json = gson.toJson(creative, Creative.class);
 
-			MvcResult mvcResult = mockMvc
-					.perform(
-							post("/creatives")
-									.header("Authorization", token)
-									.content(json)
-									.contentType(
-											MediaType.APPLICATION_JSON_VALUE))
-					.andExpect(status().isCreated()).andDo(print()).andReturn();
-			String result = mvcResult.getResponse().getContentAsString();
-			creativeResponse = gson.fromJson(result, Creative.class);
-
+			mockMvc.perform(
+					post("/creatives").with(user(user).setRoles("ADMIN")).content(json).contentType(
+							MediaType.APPLICATION_JSON_VALUE))
+					.andExpect(status().isCreated()).andDo(print());
 		} catch (Exception e) {
 			logger.error("Server Not responding properly !!!");
 			e.printStackTrace();
@@ -166,11 +120,8 @@ public class CreativeControllerTest extends AbstractTestNGSpringContextTests {
 		logger.info("Creative Data testGetCreativeDataById Method Execution Start !!!");
 		try {
 
-			mockMvc.perform(
-					get("/creatives/" + creativeResponse.getId()).header(
-							"Authorization", token))
+			mockMvc.perform(get("/creatives/1").with(user(user).setRoles("ADMIN")))
 					.andExpect(status().isOk())
-					.andDo(print())
 					.andExpect(
 							content().contentType(
 									MediaType.APPLICATION_JSON_VALUE))
@@ -201,40 +152,32 @@ public class CreativeControllerTest extends AbstractTestNGSpringContextTests {
 	public void testGetAllCreativeData() {
 		logger.info("Creative Data testGetAllCreativeData Method Execution Start !!!");
 		try {
-			mockMvc.perform(
-					get("/creatives?pagesize=1").header("Authorization", token))
+			mockMvc.perform(get("/creatives").with(user(user).setRoles("ADMIN")))
 					.andExpect(status().isOk())
-					.andDo(print())
 					.andExpect(
 							content().contentType(
 									MediaType.APPLICATION_JSON_VALUE))
-					.andExpect(jsonPath("$.content", hasSize(1)))
+					.andExpect(jsonPath("$", hasSize(1)))
+					.andExpect(jsonPath("$[0].name").value(creative.getName()))
+					.andExpect(jsonPath("$[0].type").value(creative.getType()))
 					.andExpect(
-							jsonPath("$.content[0].name").value(
-									creative.getName()))
+							jsonPath("$[0].width1").value(creative.getWidth1()))
 					.andExpect(
-							jsonPath("$.content[0].type").value(
-									creative.getType()))
+							jsonPath("$[0].width2").value(creative.getWidth2()))
 					.andExpect(
-							jsonPath("$.content[0].width1").value(
-									creative.getWidth1()))
-					.andExpect(
-							jsonPath("$.content[0].width2").value(
-									creative.getWidth2()))
-					.andExpect(
-							jsonPath("$.content[0].height1").value(
+							jsonPath("$[0].height1").value(
 									creative.getHeight1()))
 					.andExpect(
-							jsonPath("$.content[0].height2").value(
+							jsonPath("$[0].height2").value(
 									creative.getHeight2()))
 					.andExpect(
-							jsonPath("$.content[0].description").value(
+							jsonPath("$[0].description").value(
 									creative.getDescription()))
 					.andExpect(
-							jsonPath("$.content[0].custom1").value(
+							jsonPath("$[0].custom1").value(
 									creative.getCustom1()))
 					.andExpect(
-							jsonPath("$.content[0].custom2").value(
+							jsonPath("$[0].custom2").value(
 									creative.getCustom2()));
 
 		} catch (Exception e) {
@@ -249,17 +192,15 @@ public class CreativeControllerTest extends AbstractTestNGSpringContextTests {
 
 		logger.info("Creative Data testPutCreativeData Method Execution Start !!!");
 		try {
-			creative.setId(creativeResponse.getId());
+			creative.setId(1);
 			creative.setName("Media Planner");
 			creative.setType("CPM");
 			String json = gson.toJson(creative, Creative.class);
 
 			mockMvc.perform(
-					put("/creatives").header("Authorization", token)
-							.content(json)
-							.contentType(MediaType.APPLICATION_JSON_VALUE))
-					.andExpect(status().isOk()).andDo(print())
-					.andExpect(jsonPath("$.name").value(creative.getName()));
+					put("/creatives").with(user(user).setRoles("ADMIN")).content(json).contentType(
+							MediaType.APPLICATION_JSON_VALUE)).andExpect(
+					status().isOk());
 
 		} catch (Exception e) {
 			logger.error("Server Not responding properly !!!");
@@ -269,14 +210,12 @@ public class CreativeControllerTest extends AbstractTestNGSpringContextTests {
 
 	}
 
-	@Test(enabled = true, priority = 7)
+	@Test(enabled = true, priority = 6)
 	public void testDeleteCreativeDataById() {
 		logger.info("Creative Data testDeleteCreativeDataById Method Execution Start !!!");
 		try {
-			mockMvc.perform(
-					delete("/creatives/" + creativeResponse.getId()).header(
-							"Authorization", token)).andExpect(
-					status().isNoContent());
+			mockMvc.perform(delete("/creatives/1").with(user(user).setRoles("ADMIN"))).andExpect(
+					status().isAccepted());
 
 		} catch (Exception e) {
 			logger.error("Server Not responding properly !!!");
@@ -290,42 +229,33 @@ public class CreativeControllerTest extends AbstractTestNGSpringContextTests {
 		logger.info("Creative Data testSearchCreativeByNameAndType Method Execution Start !!!");
 		try {
 			mockMvc.perform(
-					get(
-							"/creatives?pagesize=1&name=" + creative.getName()
-									+ "&type=" + creative.getType()).header(
-							"Authorization", token))
+					get("/creatives?name=" + creative.getName() + "&type="
+							+ creative.getType()).with(user(user).setRoles("ADMIN")))
 					.andExpect(status().isOk())
-					.andDo(print())
 					.andExpect(
 							content().contentType(
 									MediaType.APPLICATION_JSON_VALUE))
-					.andExpect(jsonPath("$.content", hasSize(1)))
+					.andExpect(jsonPath("$", hasSize(1)))
+					.andExpect(jsonPath("$[0].name").value(creative.getName()))
+					.andExpect(jsonPath("$[0].type").value(creative.getType()))
 					.andExpect(
-							jsonPath("$.content[0].name").value(
-									creative.getName()))
+							jsonPath("$[0].width1").value(creative.getWidth1()))
 					.andExpect(
-							jsonPath("$.content[0].type").value(
-									creative.getType()))
+							jsonPath("$[0].width2").value(creative.getWidth2()))
 					.andExpect(
-							jsonPath("$.content[0].width1").value(
-									creative.getWidth1()))
-					.andExpect(
-							jsonPath("$.content[0].width2").value(
-									creative.getWidth2()))
-					.andExpect(
-							jsonPath("$.content[0].height1").value(
+							jsonPath("$[0].height1").value(
 									creative.getHeight1()))
 					.andExpect(
-							jsonPath("$.content[0].height2").value(
+							jsonPath("$[0].height2").value(
 									creative.getHeight2()))
 					.andExpect(
-							jsonPath("$.content[0].description").value(
+							jsonPath("$[0].description").value(
 									creative.getDescription()))
 					.andExpect(
-							jsonPath("$.content[0].custom1").value(
+							jsonPath("$[0].custom1").value(
 									creative.getCustom1()))
 					.andExpect(
-							jsonPath("$.content[0].custom2").value(
+							jsonPath("$[0].custom2").value(
 									creative.getCustom2()));
 
 		} catch (Exception e) {
@@ -334,78 +264,30 @@ public class CreativeControllerTest extends AbstractTestNGSpringContextTests {
 		}
 		logger.info("Creative Data testSearchCreativeByNameAndType Method Execution End !!!");
 	}
-
 	@Test(enabled = true, priority = 5)
 	public void testPATCHCreativeData() throws Exception {
 
 		logger.info("Creative Data testPATCHCreativeData Method Execution Start !!!");
 		try {
 			creative = new Creative();
-			creative.setId(creativeResponse.getId());
+			creative.setId(1);
 			Attribute attribute = new Attribute();
-			attribute.setId(attributeResponse.getId());
+			attribute.setId(2);
 			List<Attribute> attributeList = new ArrayList<Attribute>();
 			attributeList.add(attribute);
 			creative.setAttributes(attributeList);
 			String json = gson.toJson(creative, Creative.class);
 
 			mockMvc.perform(
-					patch("/creatives").header("Authorization", token)
-							.content(json)
-							.contentType(MediaType.APPLICATION_JSON_VALUE))
-					.andExpect(status().isOk()).andDo(print());
+					patch("/creatives").with(user(user).setRoles("ADMIN")).content(json).contentType(
+							MediaType.APPLICATION_JSON_VALUE))
+							.andExpect(status().isOk())
+							.andDo(print());
 		} catch (Exception e) {
 			logger.error("Server Not responding properly !!!");
 			e.printStackTrace();
 		}
 
 		logger.info("Creative Data testPATCHCreativeData Method Execution End !!!");
-	}
-
-	@Test(enabled = true, priority = 6)
-	public void testCreativesFetchActivities() {
-		logger.info("Creative Data testCreativesFetchActivities Method Execution Start !!!");
-		try {
-			mockMvc.perform(
-					get("/creatives/" + creativeResponse.getId() + "/activity")
-							.header("Authorization", token))
-					.andExpect(status().isOk())
-					.andDo(print())
-					.andExpect(
-							content().contentType(
-									MediaType.APPLICATION_JSON_VALUE))
-					.andExpect(jsonPath("$", hasSize(2)))
-					.andExpect(jsonPath("$[0].field").value("action"))
-					.andExpect(jsonPath("$[0].value").value("update"));
-		} catch (Exception e) {
-			logger.error("Server Not responding properly !!!");
-			e.printStackTrace();
-		}
-		logger.info("Creative Data testCreativesFetchActivities Method Execution End !!!");
-	}
-
-	@AfterClass
-	public void afterTesting() {
-		try {
-			mockMvc.perform(
-					delete("/attributes/" + attributeResponse.getId()).header(
-							"Authorization", token)).andExpect(
-					status().isNoContent());
-
-		} catch (Exception e) {
-			logger.error("Server Not responding properly !!!");
-			e.printStackTrace();
-		}
-		try {
-			mockMvc.perform(
-					get("/authentication/logout")
-							.header("Authorization", token).header("Content-Type", MediaType.APPLICATION_JSON_VALUE))
-					.andExpect(status().isOk());
-		} catch (Exception e) {
-			logger.error("Server Not responding properly !!!");
-			e.printStackTrace();
-		}
-		
-		logger.debug("Creative Testing has been completed !!!");
 	}
 }

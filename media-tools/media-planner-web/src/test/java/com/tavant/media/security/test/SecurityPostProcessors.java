@@ -1,4 +1,4 @@
-/*package com.tavant.media.security.test;
+package com.tavant.media.security.test;
 
 import static org.testng.Assert.assertNotNull;
 
@@ -32,13 +32,13 @@ public final class SecurityPostProcessors {
 	public static CsrfRequestProcessor csrf(){
 		return new CsrfRequestProcessor();
 	}
-	*//**
+	/**
 	 * Creates Spring security context for a user with a username.
 	 * Authorities or roles need to be specified
 	 * 
 	 * @param principal
 	 * @return
-	 *//*
+	 */
 	public static UserRequestPostProcessor user(Object principal){
 		return new UserRequestPostProcessor(principal);
 	}
@@ -56,9 +56,9 @@ public final class SecurityPostProcessors {
 		}
 	}
 	
-	 *//**
+	 /**
 	  *  Support class for {@link RequestPostProcessor}'s that establish a Spring Security context
-	  *//*
+	  */
 	private static abstract class SecurityContextRequestProcessorSupport{
 		private SecurityContextRepository securityContextRepository = new HttpSessionSecurityContextRepository();
 		
@@ -94,22 +94,22 @@ public final class SecurityPostProcessors {
 			this.principal = principal;
 		}
 		
-		*//**
+		/**
 		 * Sets the prefix to be attached with each role, if role already doesn't
 		 * start  with a prefix
 		 * 
 		 * @param rolePrefix
-		 *//*
+		 */
 		public  UserRequestPostProcessor setRolePrefix(String rolePrefix) {
 			this.rolePrefix = rolePrefix;
 			return this;
 		}
-		*//**
+		/**
 		 * specifies the roles of the user to be authenticated
 		 * 
 		 * @param roles the roles to be set
 		 * @return
-		 *//*
+		 */
 		public UserRequestPostProcessor setRoles(String...roles) {
 			this.authorities = new ArrayList<GrantedAuthority>(roles.length);
 			for(String role : roles){
@@ -120,12 +120,12 @@ public final class SecurityPostProcessors {
 			}
 			return this;
 		}
-		*//**
+		/**
 		 * Sets the user's granted authority
 		 * 		
 		 * @param authorities
 		 * @return
-		 *//*
+		 */
 		public UserRequestPostProcessor setAuthorities(GrantedAuthority...authorities) {
 			this.authorities = Arrays.asList(authorities);
 			return this;
@@ -140,7 +140,7 @@ public final class SecurityPostProcessors {
 		}
 	}
 	
-	public static final class  UserDetailsRequestPostProcessor 
+	/*public static final class  UserDetailsRequestPostProcessor 
 				extends SecurityContextRequestProcessorSupport implements RequestPostProcessor{
 
 		private String username;
@@ -174,7 +174,6 @@ public final class SecurityPostProcessors {
 			return applicationContext.getBean(this.userDetailsServiceBeanId, UserDetailsService.class);
 		}
 		
-	}
+	}*/
 	
 }
-*/
