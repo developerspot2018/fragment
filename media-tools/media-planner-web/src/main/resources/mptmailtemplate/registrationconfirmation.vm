@@ -1,0 +1,9 @@
+<html>
+<body>
+<h4>Hi, ${user.firstName}/${user.clientId},</h4>
+<div>Please <a href="${link}">click here</a> to verify your account</div>
+<div>Or you can can copy and paste the link in your browsers address bar</div>
+<p>${link}<p>
+For more details please contact <a href="mailto:${user.additionalInfo}">${user.additionalInfo}</a>
+</body>
+</html>

@@ -1,0 +1,158 @@
+<section>
+	<div class="row campaigns" style="margin-left: 10px;">
+		<div class="content-area search-campaign" style="padding-top: 0px;">
+			<div class="row">
+				<div class="campaign-filters">
+					<div class="col-lg-2">
+						<left-nav></left-nav>
+					</div>
+					<div class="col-lg-10">
+						<br>
+						<div ng-controller="createUpdateCompainsLineItemCtrl as tab"
+							class="campaigns proposal-line-item">
+							<div class="cpm-brcm">
+								<ui-breadcrumbs displayname-property="data.displayName"
+									abstract-proxy-property="data.proxy"
+									template-url="plugins/proposal/partials/uiBreadcrumbs.html"></ui-breadcrumbs>
+							</div>
+							<div class="summary-section add-line-items basic-detail-section">
+								<header>
+									<a class="breadcrumb-text">
+										{{property.addCampaignsHeading}} </a>
+								</header>
+								<div class="line-item-fields">
+									<aside class="pull-left cpm-basic-details hi">
+										<input type="hidden" name="placeHolder"
+											data-ng-model="newLineItem.placeHolder" id="placeHolder"
+											readonly="readonly" ng-disabled="true" />
+										<section style="width: 100%;" class="form-group">
+											<label>{{property.addLineItemProduct}}</label> <span
+												style="width: 61%;">{{newLineItem.product}}</span>
+										</section>
+
+										<section style="width: 100%;">
+											<label>{{property.placementName}}</label> <span
+												style="width: 61%; ">{{newLineItem.placeHolder}}</span>
+										</section>
+										<section style="width: 100%;">
+											<label>{{property.addLineItemNote}}</label> <span
+												style=" width: 61%;">{{newLineItem.custom4}}</span>
+										</section>
+									</aside>
+									<aside class="pull-right cpm-basic-details">
+										<section style="width: 100%;" >
+											<label>{{property.addLineItemSalesTarget}}</label>
+											<span class="view" style="min-height: :35px; width: 61%;">{{newLineItem.salesTargetList}}</span>
+										</section>
+										<section style="width: 100%;" class="form-group">
+											<label>{{property.addLineItemStartDate}}</label> <span
+												style="width: 61%;">{{newLineItem.startDate}}</span>
+										</section>
+										<section style="width: 100%;">
+											<label>{{property.addLineItemEndDate}}</label> <span
+												style="width: 61%;">{{newLineItem.endtDate}}</span>
+										</section>
+									</aside>
+								</div>
+							</div>
+
+							<div class="summary-section add-line-items basic-detail-section">
+								<header>
+									<a class="breadcrumb-text">
+										{{property.addCampaignsTargetingHeading}} </a>
+								</header>
+								<div class="campaigns-list">
+									<div class="campaigns ng-scope">
+
+										<section style="padding-left: 40px; width: 98%;">
+											<div class="row" style="width: 90%;">
+												<div class="col-sm-12 col-md-12 col-lg-12 pp-target-table">
+													<table
+														class="table table-striped font-12 table-bordered table-hover table-condensed">
+														<thead>
+															<tr>
+																<th class="target-header ng-binding">Target
+																	Type&nbsp;</th>
+																<th class="element-header ng-binding">Elements&nbsp;</th>
+															</tr>
+														</thead>
+														<tbody>
+															<tr ng-repeat="targetListElement in targetListElements">
+																<td title="">{{targetListElement.name.name}}</td>
+																<td title="">{{targetListElement.value.value}}</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</section>
+									</div>
+								</div>
+							</div>
+
+
+							<div class="summary-section add-line-items basic-detail-section">
+								<header>
+									<a class="breadcrumb-text">Rate Card </a>
+								</header>
+								<div class="line-item-fields">
+									<aside class="pull-left" style="margin-right: 0px;">
+										<section style="width: 100%;">
+											<label>{{property.addLineItemRateCardPrice}}</label> <span
+												style="width: 61%;">{{newLineItem.basePrice}}</span>
+										</section>
+									</aside>
+
+								</div>
+							</div>
+							<div class="summary-section add-line-items basic-detail-section">
+								<header>
+									<a class="breadcrumb-text"> Campaigns Details </a>
+								</header>
+								<div class="line-item-fields">
+									<aside class="pull-left">
+										<section class="form-group" style="width: 100%;">
+											<label>{{property.addLineItemOfferedPrice}}</label> <span
+												style="width: 61%;">{{newLineItem.price}}</span>
+										</section>
+										<section style="width: 100%;">
+											<label>{{property.addLineItemSpecType}}</label> <span
+												style="width: 61%;">{{newLineItem.specTypeOption}}</span>
+										</section>
+										<section style="width: 100%;">
+											<label>{{property.addLineItemAvails}}</label> <span
+												style="width: 61%;">{{newLineItem.custom2}}</span>
+										</section>
+										<section style="width: 100%;">
+											<label>{{property.addLineItemInvestment}}</label> <span
+												style="width: 61%;">{{newLineItem.investment}}</span>
+										</section>
+									</aside>
+									<aside class="pull-right cpm-offered-section">
+										<section style="width: 100%;" class="form-group">
+											<label class="cpm-offered-lbl">{{property.addLineItemOfferedImpressions}}</label>
+											<span style="width: 61%;">{{newLineItem.offeredQuantity}}</span>
+										</section>
+										<section style="width: 100%;">
+											<label class="cpm-offered-lbl">{{property.addLineItemPriceType}}</label>
+											<span style="width: 61%;">{{newLineItem.paymentModel}}</span>
+										</section>
+										<section style="width: 100%;">
+											<label class="cpm-offered-lbl">{{property.addLineItemPriority}}</label>
+											<span style="width: 61%;">{{newLineItem.deliveryPriority}}</span>
+										</section>
+										<section style="width: 100%;"
+											ng-if="newLineItem.deliveryStatus!= undefined">
+											<label class="cpm-offered-lbl">{{property.addLineItemStaus}}</label>
+											<span style="width: 61%;">{{newLineItem.deliveryStatus}}</span>
+										</section>
+									</aside>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>

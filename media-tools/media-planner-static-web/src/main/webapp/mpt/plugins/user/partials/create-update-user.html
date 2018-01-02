@@ -1,0 +1,96 @@
+<div class="mpt-create-user hi">
+	<div ng-include="'plugins/admin/partials/admin-nav.html'"></div>
+    <div class="col-lg-10 col-md-10 col-sm-10 create-user-outer">
+         <div class="row create-user-header">
+            <h4 class="text-left ng-binding">User</h4>
+         </div>
+         <div class="cpwd-wrapper">
+         	<form name="createUserForm" novalidate>
+                  <div class="pwd-content make-center">
+                     <div class="pwd-header">User</div>
+                     <div class="username row">
+                     	<div class="col-lg-3 col-md-3 col-sm-3">
+                     		<label class="pull-left" style="padding-top:4px;">{{property.firstName}}<span class="mandatory">*</span></label>
+                     	</div>
+                     	<div class="col-lg-9 col-md-9 col-sm-9">
+                     		<input type="text" class="user-input form-control pull-left" name="firstName" data-ng-model="firstName" id="firstName" required maxlength="50"/>
+                           <span class="clearfix"></span>
+                     		<div class="help-block" ng-if="createUserForm.firstName.$error.required && checkErrors">
+								  {{propertyMessage.firstNameReqMsg}}
+							</div>
+                     	</div>
+                     </div>
+                      <div class="username row">
+                     	<div class="col-lg-3 col-md-3 col-sm-3">
+                     		<label class="pull-left" style="padding-top:4px;">{{property.lastName}}<span class="mandatory">*</span></label>
+                     	</div>
+                     	<div class="col-lg-9 col-md-9 col-sm-9">
+                     		<input type="text" class="user-input form-control pull-left" name="lastName" data-ng-model="lastName" id="lastName" required maxlength="50"/>
+                     		<span class="clearfix"></span>
+                           <div class="help-block" ng-if="createUserForm.lastName.$error.required && checkErrors">
+								  {{propertyMessage.lastNameReqMsg}}
+							</div>
+                     	</div>
+                     </div>
+                     <div class="username row">
+                     	<div class="col-lg-3 col-md-3 col-sm-3">
+                     		<label class="pull-left" style="padding-top:4px;">{{property.userEmail}}<span class="mandatory">*</span></label>
+                     	</div>
+                     	<div class="col-lg-9 col-md-9 col-sm-9">
+                     		<input type="email" class="user-input form-control pull-left" name="userEmail" ng-pattern="emailPattern" data-ng-model="userEmail" id="userEmail" required maxlength="50"/>
+                     		<span class="clearfix"></span>
+                           <span class="help-block" ng-if="createUserForm.userEmail.$error.required && checkErrors">
+								  {{propertyMessage.emailIdReqMsg}}
+							</span>
+							<span class="help-block" ng-if="createUserForm.userEmail.$error.email || createUserForm.userEmail.$error.pattern && checkErrors">
+								  {{propertyMessage.invalidEmailIdMsg}}
+							</span>
+                     	</div>
+                     </div>
+                     
+                     <div class="username row">
+                     	<div class="col-lg-3 col-md-3 col-sm-3">
+                     		<label class="pull-left" style="padding-top:4px;">{{property.userRole}}<span class="mandatory">*</span></label>
+                     	</div>
+                     	<div class="col-lg-9 col-md-9 col-sm-9">
+                     		<div multi-select  input-model="usersRoleList"
+								tick-property="ticked" output-properties="role ticked"
+								max-labels="1" button-label="role" item-label="role"
+								output-model="selectedRolesList" tick-property="ticked"
+								id="usersRoleList" class="cpm-target-elem" disable-property=false>
+							</div>
+                     <span class="clearfix"></span>
+							<span class="help-block" ng-if="isRolesListCheckErrors">{{propertyMessage.roleReqMsg}}</span>
+                     	</div>
+                     </div>
+                     
+                     <div class="username row">
+                     	<div class="col-lg-3 col-md-3 col-sm-3">
+                     		<label class="pull-left" style="padding-top:4px;">{{property.optionalEmail}}</label>
+                     	</div>
+                     	<span class="col-lg-9 col-md-9 col-sm-9">
+                     		<input type="email" class="user-input form-control pull-left" name="optionalEmail" ng-pattern="emailPattern" data-ng-model="optionalEmail" id="optionalEmail" maxlength="50"/>
+                     	</span>
+                        <span class="clearfix"></span>
+                     	<span class="help-block" ng-if="createUserForm.optionalEmail.$error.email || createUserForm.optionalEmail.$error.pattern && checkErrors">
+								  {{propertyMessage.invalidEmailIdMsg}}
+						</span>
+                     </div>
+                     
+                     <div class="change-btn row">
+                     	<button type="button" ng-click="createUpdateUser()" class="btn pull-right pp-create-btn add-creative-button ng-binding">
+								&nbsp;{{property.saveUserButton}}
+							</button>
+				            <button type="button" ng-click="cancelUser()" class="btn pull-right pp-create-btn add-creative-button ng-binding">
+				                <span class="glyphicon glyphicon-remove"></span>
+				                {{property.cancelButton}}
+				            </button>
+                     	<!-- <a class="btn pull-right pp-create-btn add-creative-button ng-binding" href="#/proposal/create-proposal">
+							  	&nbsp;Change Password
+						</a>-->
+					</div>
+               </div>
+               </form>
+         </div>
+    </div>	
+</div>

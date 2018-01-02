@@ -1,0 +1,148 @@
+<section>
+	<div class="row proposal" style="margin-left: 10px;">
+		<div class="content-area search-campaign" style="padding-top: 0px;">
+			<div class="row">
+				<div class="row campaign-filters">
+					<div class="col-lg-2 col-md-2 col-sm-3 pp-filter-panel">
+						<left-navigation></left-navigation>
+					</div>
+					<div class="col-lg-10 col-md-10 col-sm-9 pp-dashboard-panel"
+						style="padding-right: 40px; padding-left: 0px;">
+						<br>
+						<div class="proposal" style="float: left;">
+							<div class="mpt-breadcrum brcm-wrapper">
+								<ui-breadcrumbs displayname-property="data.displayName"
+									abstract-proxy-property="data.proxy"
+									template-url="plugins/proposal/partials/uiBreadcrumbs.html"></ui-breadcrumbs>
+							</div>
+								<div class="summary-section add-line-items basic-detail-section pp-view-detail-litm"
+									style="float: left;">
+									<header>
+										<a class="breadcrumb-text"> {{property.basicDetails}} </a>
+									</header>
+									<div class="line-item-fields" style="margin-bottom: 10px;">
+										<aside class="pull-left basic-details">
+											<input type="hidden" name="placeHolder"
+												data-ng-model="newLineItem.placeHolder" id="placeHolder"
+												readonly="readonly" ng-disabled="true" />
+											<section class="form-group ">
+												<label>{{property.addLineItemProduct}}</label> <span class="view">{{newLineItem.product}}</span>
+											</section>
+											<section>
+												<label>{{property.placementName}}</label>
+												<span class="view" style="height: auto;">{{newLineItem.placeHolder}}</span>
+											</section>
+											<section>
+												<label>{{property.addLineItemNote}}</label>
+												<span class="view">{{newLineItem.custom4}}</span>
+											</section>
+										</aside>
+										<aside class="pull-right basic-details">
+											<section>
+												<label>{{property.addLineItemSalesTarget}}</label>
+												<span class="view" style="height: auto;"><div style="width: 100%" ng-repeat="name in salesTargetList"><span style="border: medium none;height: 30px;width: auto;padding-right: 0px;" >{{name}}</span><span style="border: medium none;height: 30px;width: auto;padding: 0px;" ng-show=" ! $last ">, </span></div> </span>
+											</section>
+											<section class="form-group ">
+												<label>{{property.addLineItemStartDate}}</label> <span class="view">{{newLineItem.startDate}}</span>
+											</section>
+											<section>
+												<label>{{property.addLineItemEndDate}}</label> <span class="view">{{newLineItem.endDate}}</span>
+											</section>
+										</aside>
+									</div>
+								</div>
+
+								<div class="summary-section add-line-items basic-detail-section pp-view-detail-litm"
+									style="float: left;">
+									<header>
+										<a class="breadcrumb-text">
+											{{property.targetingBoxHeading}}</a>
+									</header>
+									<div class="campaigns-list">
+										<div class="campaigns ng-scope">
+											<!-- TARGET SECTION-->
+											<section style="padding-left: 40px; width: 98%;">
+												<div class="col-sm-12 col-md-12 col-lg-12">
+													<table style="margin-bottom: 0px;"
+														class="table table-striped font-12 table-bordered table-hover table-condensed">
+														<thead>
+															<tr>
+																<th class="target-header">{{property.addLineItemTargetTypeTh}}&nbsp;</th>
+																<th class="element-header">{{property.addLineItemElementsTh}}&nbsp;</th>
+															</tr>
+														</thead>
+														<tbody>
+															<tr ng-repeat="targetListElement in targetListElements">
+											                 <td title="">{{targetListElement.categoryName}}</td>
+											                 <td title="">
+											                 <div ng-repeat="elementList in targetListElement.targetElements">
+											                  <span class="targetingData">{{elementList.targetElementsValue}}</span>
+											                  <span class="targetingDataSeprate" ng-show=" ! $last ">, </span>
+											                 </div></td>
+										                   </tr>
+														</tbody>
+													</table>
+												</div>
+											</section>
+										</div>
+									</div>
+								</div>
+
+								<div class="summary-section add-line-items basic-detail-section pp-view-detail-litm"
+									style="float: left;">
+									<header>
+										<a class="breadcrumb-text">{{property.rateCardBoxHeading}}
+										</a>
+									</header>
+									<div class="line-item-fields" style="margin-bottom: 10px;">
+										<aside class="pull-left" style="margin-right: 0px;">
+											<section>
+												<label>{{property.addLineItemRateCardPrice}}</label> <span class="view">{{newLineItem.basePrice}}</span>
+											</section>
+										</aside>
+									</div>
+								</div>
+								<div class="summary-section add-line-items basic-detail-section pp-view-detail-litm"
+									style="float: left;">
+									<header>
+										<a class="breadcrumb-text">{{property.lineItemDetailsBoxHeading}}</a>
+									</header>
+									<div class="line-item-fields line-item-info"
+										style="margin-bottom: 10px;">
+										<aside class="pull-left">
+											<section class="form-group">
+												<label>{{property.addLineItemOfferedPrice}}</label> <span class="view">{{newLineItem.price}}</span>
+											</section>
+											<section>
+												<label>{{property.addLineItemSpecType}}</label> <span class="view">{{newLineItem.specTypeOption}}</span>
+											</section>
+											<section>
+												<label>{{property.addLineItemAvails}}</label><span class="view">{{newLineItem.custom2}}</span>
+											</section>
+											<section>
+												<label>{{property.addLineItemInvestment}}</label>
+												<span class="view">{{newLineItem.investment}}</span>
+											</section>
+										</aside>
+										<aside class="pull-right">
+											<section class="form-group">
+												<label class="pull-left offered-txt pp-litm-label">{{property.addLineItemOfferedImpressions}}</label><span class="view"> {{newLineItem.offeredQuantity}}</span>
+											</section>
+											<section>
+												<label class="pull-left pp-litm-label">{{property.addLineItemPriceType}}</label>
+												<span class="view">{{newLineItem.paymentModel}}</span>
+											</section>
+											<section>
+												<label class="pull-left pp-litm-label">{{property.addLineItemPriority}}</label>
+												<span class="view">{{newLineItem.deliveryPriority}}</span>
+											</section>
+										</aside>
+									</div>
+								</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>

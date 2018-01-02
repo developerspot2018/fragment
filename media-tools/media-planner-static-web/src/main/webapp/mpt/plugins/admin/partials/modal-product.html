@@ -1,0 +1,208 @@
+<div class="admin-div admin">
+  <div ng-include="'plugins/admin/partials/admin-nav.html'"></div>
+  <div class="col-lg-10 col-md-10 main-container manageCreative">
+  	<div class="mpt-breadcrum brcm-wrapper">
+			<ui-breadcrumbs displayname-property="data.displayName" abstract-proxy-property="data.proxy" template-url="plugins/proposal/partials/uiBreadcrumbs.html">
+		    </ui-breadcrumbs>
+	</div>
+    <div class="col-lg-12 admin-prd-listing">
+      
+         <div id="admin-prd-wrapper">
+               <div >
+                  <div class="contentWindow">
+                     <form action="" method="" class="ad-product-form" name="createUpdateProduct" novalidate>
+                        <div class="row">
+                           <div class="col-sm-12 co-md-12 col-lg-12 ad-product-wrapper noPad">
+                                
+                             <div class="product-form-wrapper">
+                                    <div class="row pad15">
+                                    
+                                    <div class="col-sm-6 col-md-6 col-lg-6 form-group">
+                                      <label class="admin-target-lbl pull-left">Name<span class="mandatory">*</span></label>
+                                      
+                                      <input type="text" name="productName" ng-model="productName" id="productName" required/>
+                                      <br><span class="help-block text-center" ng-if="createUpdateProduct.productName.$error.required && checkErrors">
+											                      Product name required
+									                    </span>
+                                    </div>
+                                    <div class="col-sm-6 col-md-6 col-lg-6 form-group">
+                                      <label class="admin-target-lbl pull-left">Type<span class="mandatory">*</span></label>
+                                      <select class="ad-product-select"
+											ng-model="type" name="type"  required>
+											<option ng-repeat="typesVal in typesOptions"
+												value="{{typesVal.text}}">
+												{{typesVal.text}}</option>
+										</select>
+										<br><span class="help-block text-center" ng-if="createUpdateProduct.type.$error.required && checkErrors">
+											Product type required
+									  </span>
+                                    </div>
+                                </div>
+                                
+                                <div class="row pad15">
+                                    
+                                    <div class="col-sm-6 col-md-6 col-lg-6 form-group">
+                                      <label class="admin-target-lbl pull-left">Class<span class="mandatory">*</span></label>
+                                      <select class="ad-product-select"
+											ng-model="classs" name="classs" required>
+											<option
+												ng-repeat="classesVal in classeOptions"
+												value="{{classesVal.text}}">
+												{{classesVal.text}}</option>
+										</select>
+										<br><span class="help-block text-center" ng-if="createUpdateProduct.classs.$error.required && checkErrors">
+											Product class required
+									  </span>
+                                    </div>
+                                     
+                                    <div class="col-sm-6 col-md-6 col-lg-6 form-group">
+                                    <label class="admin-target-lbl pull-left">Creative<span class="mandatory">*</span></label>
+                                    <select ng-model="creative"
+											name="creative" class="ad-product-select" required>
+											<option
+												ng-repeat="creativeVal in creativesList"
+												value="{{creativeVal.id}}">{{creativeVal.name}}</option>
+										</select>
+										<br><span class="help-block text-center" ng-if="createUpdateProduct.creative.$error.required && checkErrors">
+											Product creative required
+									  </span>
+                 </div>
+              </div>                
+		              <div class="row pad15">
+		                  <div class="col-sm-6 col-md-6 col-lg-6 form-group">
+		                    <label class="admin-target-lbl pull-left">Base Rate<span class="mandatory">*</span></label>
+		                    <input type="text" name="basePrice" ng-model="basePrice" id="basePrice" class="" required numbers-only/>
+		                   <br><span class="help-block text-center" ng-if="createUpdateProduct.basePrice.$error.required && checkErrors">
+													Base price required
+											  </span>
+		                  </div>
+		                  <div class="col-sm-6 col-md-6 col-lg-6">
+		                     <label class="admin-target-lbl pull-left">Description</label>
+		                        <textarea name="description" ng-model="description" id="description"  class="form-control"/>
+		                  </div>
+		                </div>
+                                <div class="row pad15">
+                                    <div class="col-sm-6 col-md-6 col-lg-6 form-group">
+                                     <label class="admin-target-lbl pull-left">Segment<span class="mandatory">*</span></label>
+                                     <div class="product-sales-select" multi-select input-model="salesTargets" name="salesTargets"
+                      										tick-property="ticked" output-properties="name ticked"
+                      										max-labels="1" button-label="name" item-label="name"
+                      										output-model="selectedSalesTarget" tick-property="ticked"
+                      										id="advertiserError" disable-property=false>
+                      							</div>
+									<br><span class="help-block text-center"
+									ng-if="isSalesTargetListCheckErrors">Sales targets required</span>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-sm-6">&nbsp;</div>
+                                </div>
+                             </div>   
+                               
+                                
+                                <div class="row pad15">
+                                       <div class="target-section col-lg-12 col-md-12 noPad" style="border:1px solid #D1D2D2;margin:0px 04px;">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 pp-target-header noPad"><span class="tg-product-header">Product Target</span></div>
+                                        <div class="pp-target-form" style="padding:8px;margin-top:15px">
+                                          <div class="col-lg-6 col-md-6 col-sm-6 pad15 mar10">
+                                            <div class="col-sm-12 col-md-12 col-lg-12 admin-tgt-val">
+                                              <label class="pull-left admin-target-lbl">Target Type</label>
+                                              <select class="pull-left ad-product-select" ng-model="targetTypeOption" style="width:54%;" ng-change="getElements()" 
+                                              		ng-options="targetTypeOption  as targetTypeOption.name for targetTypeOption in targetTypeOptions | orderBy:'name':false">
+							        		</select>  
+                                            </div>
+                                        </div>
+                                  <div class="col-lg-6 col-md-6 col-sm-6 pad15 mar10">
+                                    
+                                    <div class="col-sm-12 col-md-12 col-lg-12 admin-tgt-val">
+                                    
+	                                    <div class="pp-list-item-zip" ng-hide="targetTypeOption.name=== 'Zip Code'">
+	                                    	<label class="pull-left admin-target-lbl">Element</label>
+	                                    	<div multi-select input-model="elemntLst"
+												tick-property="ticked" output-properties="value ticked"
+												max-labels="1" button-label="value" item-label="value"
+												output-model="selectedElements" tick-property="ticked"
+												id="targetedElements" disable-property=false>
+											</div>
+	                                    	<button ng-click="addTargetElement()"  class="pp-filter-btn btn pull-right add-creative-button" 
+	                                    	ng-disabled="targetTypeOption.name == undefined || elemntLst == undefined">
+												<span class="line-add-btn glyphicon glyphicon-plus-sign"></span>&nbsp;Add
+											</button>   
+	                                    	
+											<!-- <select class="pull-left ad-segment" ng-model="element" 
+												ng-options="elementArrayValue as elementArrayValue.value for elementArrayValue in elementArray"></select>
+											<button ng-click="addElement()"  class="pp-filter-btn btn pull-right add-creative-button"
+												ng-disabled="targetTypeOption.name == undefined || element.value == undefined">
+												<span class="line-add-btn glyphicon glyphicon-plus-sign"></span>&nbsp;Add
+											</button>  --> 
+											                                  
+		                               </div>
+		                               <div class="pp-list-item-zip"
+											ng-show="targetTypeOption.name=== 'Zip Code'">
+											<label style="width: 20%;">ZipCode</label>
+											<input type="text" style="width: 60%;" ng-model="zipcode" />
+											<button ng-click="addTargetElement()"
+												class="pp-filter-btn btn pull-right add-creative-button"
+												ng-disabled="targetTypeOption.name == undefined || zipcode == undefined">
+												<span class="line-add-btn glyphicon glyphicon-plus-sign"></span>&nbsp;Add
+											</button>
+										</div>
+                                      <!-- <select class="pull-left form-control ad-segment" multiple="multiple">
+                                           <option>Element-1</option>
+                                           <option>Element-2</option>
+                                           <option>Element-3</option>
+                                           <option>Element-4</option>
+                                     </select>-->
+                                    </div>
+                                </div>
+                               <!-- TABLE START -->
+                                     <div class="row ad-product-target">
+                                      <table class="pp-tbl-dscnt pad15">
+                                         <tr> 
+                                          <th class="pp-th-dscnt" style="width:25%;"><span>Target Type</span></th>
+                                            <th class="pp-th-dscnt"><span>Element</span></th>
+                                            <th class="pp-th-dscnt" style="width:25%;"><span>Action</span></th>
+                                        </tr>
+                                        <tr class="pp-dscnt-row" ng-repeat="targetListElement in targetListElements">
+                                            <!-- <td class="pp-td-dscnt">{{elementDisplayName}}</td>
+                                            <td class="pp-td-dscnt">{{elementName}}</td>-->
+                                            <td title="">{{targetListElement.categoryName}}</td>
+											<td><span ng-repeat="elementList in targetListElement.targetElements">{{elementList.targetElementsValue}}<span ng-show=" ! $last ">, </span></span></td>
+                                            <td class="pp-td-dscnt"><span class="glyphicon glyphicon-trash"
+												style="vertical-align: middle; cursor: pointer"
+												ng-click="deleteTargetListitem(targetListElement)"></span></td>
+                                            
+                                         </tr>
+                                      </table>
+                                  </div>
+                               <!-- TABLE END -->
+                                </div>
+
+
+                               
+                                
+                              </div>
+                                
+                               
+                               
+                    
+                    
+                      </div>
+                    <div class="col-sm-1 co-md-1 col-lg-1">&nbsp;</div>
+                    
+          <div class="button-container">
+  					<button type="button" ng-click="saveProductInformation()" class="btn pull-right pp-create-btn add-creative-button prod-btn-align ng-binding">
+  						<span class="glyphicon glyphicon-plus-sign"></span>
+  						&nbsp;Save
+  					</button>
+		        <button type="button" ng-click="cancelProduct()" class="btn pull-right pp-cancel-btn cancel-button ng-binding prod-btn-align">
+		                <span class="glyphicon glyphicon-remove"></span>
+		                Cancel
+		        </button>
+				</div>
+      </form> 
+    </div>  
+   <div class="col-lg-6 col-md-6">&nbsp;</div>
+  </div>
+      
+  </div>
+</div>
+</div>

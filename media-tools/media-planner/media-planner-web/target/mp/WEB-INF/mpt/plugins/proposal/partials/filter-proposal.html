@@ -1,0 +1,41 @@
+	<aside class="proposal-filter">
+	<header>
+		Apply Filters
+	</header>
+	<section>
+		<div class="other-filters">
+			<label>By Ad Unit</label>
+			<!-- <select ng-model="adUnitFilterOption" ng-init="adUnitFilterOption = adUnitFilterOptions[0]"
+					ng-options="adUnitFilterOption as adUnitFilterOption.label for adUnitFilterOption in adUnitFilterOptions"> -->
+			<select ng-model="adUnitFilterOption" ng-options="adUnitFilterOption as adUnitFilterOption.label for adUnitFilterOption in adUnitFilterOptions">
+					<option value='' >-- select --</option>
+			</select>
+			<label>By Content Targeting</label>
+			<!-- <select ng-model="contentTargetingFilterOption" ng-init="contentTargetingFilterOption = contentTargetingFilterOptions[0]"
+					ng-options="contentTargetingFilterOption as contentTargetingFilterOption.label for contentTargetingFilterOption in contentTargetingFilterOptions"> -->
+			<select ng-model="contentTargetingFilterOption"	ng-options="contentTargetingFilterOption as contentTargetingFilterOption.label for contentTargetingFilterOption in contentTargetingFilterOptions">
+					<option value='' >-- select --</option>
+			</select>
+			<label>By Sales Category</label>
+			<!-- <select ng-model="salesCategoryFilterOption" ng-init="salesCategoryFilterOption = salesCategoryFilterOptions[0]"
+					ng-options="salesCategoryFilterOption as salesCategoryFilterOption.label for salesCategoryFilterOption in salesCategoryFilterOptions"> -->
+			<select ng-model="salesCategoryFilterOption" ng-options="salesCategoryFilterOption as salesCategoryFilterOption.label for salesCategoryFilterOption in salesCategoryFilterOptions">		
+				<option value='' >-- select --</option>
+			</select>
+			<label>By Status</label>
+			<!-- <select ng-model="statusFilterOption" ng-init="statusFilterOption = statusFilterOptions[0]"
+					ng-options="statusFilterOption as statusFilterOption.label for statusFilterOption in statusFilterOptions"> -->
+			<select ng-model="statusFilterOption" ng-options="statusFilterOption as statusFilterOption.label for statusFilterOption in statusFilterOptions">
+					<option value='' >-- select --</option>
+			</select>
+			<label>By Start Date</label>
+			<input type="text" id="datepicker1" placeholder="mm/dd/yy">
+			<label>By End Date</label>
+			<input type="text" id="datepicker2" placeholder="mm/dd/yy">
+		</div>
+		<div class="button-group">
+			<input type="submit" ng-click="applyFilter()" class="button apply" value="Apply"/>
+			<input type="reset" class="button reset" value="Reset"/>
+		</div>
+	</section>
+</aside>

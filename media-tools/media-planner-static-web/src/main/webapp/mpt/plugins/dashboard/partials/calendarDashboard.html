@@ -1,0 +1,115 @@
+<div class="Dashboard">
+	<div ng-include="'plugins/dashboard/partials/dashboard-left-nav.html'"></div>
+	<div class="col-lg-10 dashboard-calendar">
+		<div class="content-area search-campaign">
+			<div class="col-md-12">
+				<div class="col-md-3"></div>
+				<div class="col-md-6">
+					<div class="row">
+						<div class="col-md-12">
+							<h2 class="text-center">
+								<button style="margin: 0; background-color: white;"
+									title="Previous Date" class="btn" mwl-date-modifier
+									date="calendarDay" decrement="calendarView">
+									<span class="glyphicon glyphicon-triangle-left"></span>
+								</button>
+								{{ calendarTitle }}
+								<button style="margin: 0; background-color: white;"
+									title="Next Date" class="btn" mwl-date-modifier
+									date="calendarDay" increment="calendarView">
+									<span class="glyphicon glyphicon-triangle-right"></span>
+								</button>
+
+
+							</h2>
+						</div>
+						<br>
+						<mwl-calendar events="events" view="calendarView"
+							view-title="calendarTitle" current-day="calendarDay"
+							on-event-click="eventClicked(calendarEvent)"
+							on-timespan-click="dayClicked(calendarDate)" auto-open="true"
+							day-view-start="06:00" day-view-end="22:00" day-view-split="30">
+						</mwl-calendar>
+					</div>
+					<br /> <br />
+				</div>
+				<div class="col-md-3"></div>
+			</div>
+
+
+			<div class=" row table-responsive db-calendar-tbl" style="margin: 0;">
+				<table
+					class="table table-striped font-12 table-bordered table-hover table-condensed mpt-table">
+					<thead>
+						<tr>
+							<th class="width-16p" ng-click="sort_by('proposalName');">{{property.proposalName}}&nbsp;
+							<span class="sorter">
+										<i class="glyphicon glyphicon-triangle-top"></i>
+										<i class="glyphicon glyphicon-triangle-bottom"></i>	
+										</span>
+							</th>
+							<th class="width-14p" ng-click="sort_by('advertiserName');">{{property.advertiserName}}&nbsp;
+							<span class="sorter">
+										<i class="glyphicon glyphicon-triangle-top"></i>
+										<i class="glyphicon glyphicon-triangle-bottom"></i>	
+										</span>
+							</th>
+							<th class="width-14p" ng-click="sort_by('salesCategory');">{{property.salesCategory}}&nbsp;
+							<span class="sorter">
+										<i class="glyphicon glyphicon-triangle-top"></i>
+										<i class="glyphicon glyphicon-triangle-bottom"></i>	
+										</span>
+							</th>
+							<th class="width-14p">{{property.requestedOn}}</th>
+							<th class="width-14p">{{property.dueOn}}</th>
+							<th class="width-14p" ng-click="sort_by('budget');">{{property.budget}}&nbsp;
+							<span class="sorter">
+										<i class="glyphicon glyphicon-triangle-top"></i>
+										<i class="glyphicon glyphicon-triangle-bottom"></i>	
+										</span>
+							</th>
+							</th>
+							<th class="width-14p" ng-click="sort_by('accountManager');">{{property.accountManager}}&nbsp;
+							<span class="sorter">
+										<i class="glyphicon glyphicon-triangle-top"></i>
+										<i class="glyphicon glyphicon-triangle-bottom"></i>	
+										</span>
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr
+							ng-repeat="p in filteredItems = (proposals | filter: filterProposal) | filter:{name:filterProposal} | orderBy:predicate :reverse | startProposalFrom:(currentPage-1)*entryLimit | limitTo:entryLimit"
+							animate-on-change='p.proposalName + p.advertiserName + p.user.firstName + p.dueOn + p.status'
+							ng-animate=" 'animate'">
+							<td title="{{p.proposalName}}">
+								<div class="addEllipsis"><a href="{{p.linkPath}}">{{p.proposalName}}</a></div>
+							</td>
+							<td title="{{p.advertiserName}}">{{p.advertiserName}}</td>
+							<td title="{{p.user.firstName}}">{{p.salesCategory}}</td>
+							<td title="{{p.showRequestedOn}}">{{p.showRequestedOn}}</td>
+							<td title="{{p.showDueOn}}">{{p.showDueOn}}</td>
+							<td title="{{p.budget}}">{{p.budget}}</td>
+							<td title="{{p.accountManager}}">{{p.accountManager}}</td>
+
+						</tr>
+					</tbody>
+					<tr ng-hide="proposals.length > -1">
+						<td style="vertical-align: middle;" colspan="5"><i
+							class="fa fa-cog fa-3x fa-spin"></i>&nbsp;Loading</td>
+					</tr>
+				</table>
+			</div>
+			<div class="row"
+				style="background-color: #e6e6e6; padding: 4px; margin: 0;">
+				<div pagination="" page="currentPage" max-size="5"
+					on-select-page="setPage(page)" boundary-links="true"
+					total-items="filteredItems.length" items-per-page="entryLimit"
+					class="pagination pagination-sm pull-right"
+					style="margin-top: 1px; margin-bottom: 0px;"
+					previous-text="&laquo;" next-text="&raquo;"></div>
+
+			</div>
+		</div>
+	</div>
+</div>

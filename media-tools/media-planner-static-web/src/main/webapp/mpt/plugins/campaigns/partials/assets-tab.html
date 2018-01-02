@@ -1,0 +1,165 @@
+<html> 
+		<div class="basic-detail-section main-container summary-section">
+			<header>
+                <a class="breadcrumb-text" ng-if="!chooseFromExisting">{{property.asset}}</a>
+                <a class="breadcrumb-text" ng-if="chooseFromExisting">{{property.chooseExistingAssets}}</a>
+				<div class="btn-group" ng-show="!isAssetExist" style="float:right;padding-top: 3px;">
+					<button ng-click='showExistingGrid()' type="button" class="btn pull-left dropdown-toggle pp-create-btn add-creative-button ng-binding" style="margin-top: 0px; margin-right: 16px">
+					<span style="padding:0 10px 0 0;" class='glyphicon glyphicon-plus'>
+					</span>{{property.chooseExistingAssets}}</button>
+				</div>
+				
+				<div class="btn-group" ng-show="!isAssetExist" style="float:right;padding-top: 3px;">
+					<button ng-click='open("lg","plugins/campaigns/partials/emtImageHtmlModalContent.html","");' type="button" class="btn pp-create-btn pull-left dropdown-toggle add-creative-button ng-binding" style="margin-top: 0px; margin-right: 16px"><span style="padding:0 10px 0 0;" class='glyphicon glyphicon-plus'>
+					</span>{{property.newAsset}}</button>
+				</div>
+            </header>
+			<div class="row table-responsive"style="margin-left: 0px; margin-right: 0px; width: 100%" ng-if="!chooseFromExisting">
+			
+				<table class="table table-striped font-12 table-bordered table-hover table-condensed mpt-table">
+					<thead>
+						<tr>
+							<th>Name&nbsp;</th>
+							<th>Type</th>
+							<th>Height</th>
+							<th>Width</th>
+							<th>Action</th>
+						</tr>
+					</thead>
+					<tbody>
+					<tr>
+							<td title="{{creativeLst.name}}">
+								<span editable-text="attribute.name" e-maxlength="50" e-name="name" e-form="rowform" e-required ng-if="creativeLst.assetType =='HTML'">
+								<a href="javascript:void(0);" ng-click='open("lg","plugins/campaigns/partials/emtHtmlModalContent.html",creativeLst.id);' style="cursor: pointer;">{{creativeLst.name}}</a>
+								</span>
+								<span editable-text="attribute.name" e-maxlength="50" e-name="name" e-form="rowform" e-required ng-if="creativeLst.assetType == 'image'">
+								<a href="javascript:void(0);" ng-click='open("lg","plugins/campaigns/partials/emtImageModalContent.html",creativeLst.id);' style="cursor: pointer;">{{creativeLst.name}}</a>
+								</span>
+								<span editable-text="attribute.name" e-maxlength="50" e-name="name" e-form="rowform" e-required ng-if="creativeLst.assetType == 'video'">
+								<a href="javascript:void(0);" ng-click='open("lg","plugins/campaigns/partials/emtVideoModalContent.html",creativeLst.id);' style="cursor: pointer;">{{creativeLst.name}}</a>
+								</span>
+							</td>
+							<td title="{{creativeLst.type}}">
+							<span editable-text="attribute.value"  e-maxlength="50" e-name="value" e-form="rowform" e-required>
+								{{creativeLst.type}}
+							</span>
+							</td>
+							<td title="">
+								<span ng-if="creativeLst.type=='HTML'">{{creativeLst.htmlHeight}} </span>
+								<span ng-if="creativeLst.type!='HTML'">{{creativeLst.imageHeight}} </span>
+							</td>
+							<td title="">
+								<span ng-if="creativeLst.type=='HTML'">{{creativeLst.htmlWidth}} </span>
+								<span ng-if="creativeLst.type!='HTML'">{{creativeLst.imageWidth}} </span>
+							</td>
+							<td title=""  style=  "text-align: center;">
+								<span class="glyphicon glyphicon-trash" ng-click='deleteAssetLineItem(creativeLst.id)'  style="vertical-align: middle;cursor:pointer" ng-if="(creativeLst != undefined && creativeLst !=null && creativeLst!='')" >
+							 	</span>
+							</td>
+							 
+						</tr>
+					</tbody>
+					<tr ng-show="!creativeLst">
+						<td style="vertical-align: middle;" colspan="5"><i
+							class="fa fa-ban fa-3x"></i>&nbsp;{{propertyMessage.noDataFoundMsg}}</td>
+					</tr>
+					<tr ng-hide="creativeLst!='undefined'">
+						<td style="vertical-align: middle;" colspan="5"><i
+							class="fa fa-cog fa-3x fa-spin"></i>&nbsp;{{propertyMessage.loadingDataMsg}}</td>
+					</tr>
+				</table>
+
+			</div>
+			<div class="row table-responsive"
+				style="margin-left: 0px; margin-right: 0px; width: 100%"  ng-if="chooseFromExisting">
+						<div class="row-asset lineItem-header">
+										<div class="col-lg-1 col-sm-12 col-md-2 filter-div">
+											<span>Filter</span>
+										</div>
+										<div class="col-lg-3 col-sm-12 col-md-2">
+											<div class="input-group input-group">
+												<input baseprice="text" class="form-control"
+													placeholder="Filter ads list ..." ng-model="filterLineItems"
+													ng-change="resetLimit();"> <span
+													class="input-group-addon"> <span
+													class="glyphicon glyphicon-search"></span>
+												</span>
+											</div>
+										</div>
+										<div class="col-lg-6 col-sm-12 col-md-8"></div>
+										<div class="col-lg-2 col-sm-12 col-md-6"></div>
+							</div>
+				<table
+					class="table table-striped font-12 table-bordered table-hover table-condensed mpt-table">
+					<thead>
+						<tr>
+							<th>Name&nbsp;<a>
+							<span class="sorter">
+													<i class="glyphicon glyphicon-triangle-top"></i>
+													<i class="glyphicon glyphicon-triangle-bottom"></i>	
+													</span>
+							</a></th>
+							<th>Type</th>
+							<th>Height</th>
+							<th>Width</th>
+						</tr>
+					</thead>
+					<tbody>
+					<tr
+							ng-repeat="lineItem in lineItems = (existingAssetList | filter: filterLineItems) | filter:{name:filterLineItems}"
+							ng-animate=" 'animate'">
+					<!-- <tr ng-repeat="lineItem in lineItems = (existingAssetList | filter: filterLineItems) | filter:{name:filterLineItems} | orderBy:predicate :reverse | startLineItemFrom:(currentPage-1)*entryLimit | limitTo:entryLimit"
+						animate-on-change='lineItem.name + lineItem.type'
+						ng-animate=" 'animate'">-->
+							<td title="{{lineItem.name}}"><span
+								e-name="name"
+								e-form="lineform" e-required>
+								<span editable-text="attribute.name" e-maxlength="50" e-name="name" e-form="rowform" e-required ng-if="lineItem.assetType=='HTML'">
+								<a href="javascript:void(0);" ng-click='open("lg","plugins/campaigns/partials/emtHtmlModalContent.html",lineItem.id);' style="cursor: pointer;">{{lineItem.name}}</a>
+								</span>
+								<span editable-text="attribute.name" e-maxlength="50" e-name="name" e-form="rowform" e-required ng-if="lineItem.assetType=='image'">
+								<a href="javascript:void(0);" ng-click='open("lg","plugins/campaigns/partials/emtImageModalContent.html",lineItem.id);' style="cursor: pointer;">{{lineItem.name}}</a>
+								</span>
+								<span editable-text="attribute.name" e-maxlength="50" e-name="name" e-form="rowform" e-required ng-if="lineItem.assetType=='video'">
+								<a href="javascript:void(0);" ng-click='open("lg","plugins/campaigns/partials/emtVideoModalContent.html",lineItem.id);' style="cursor: pointer;">{{lineItem.name}}</a>
+								</span>
+								</span></td>
+							<td title="{{lineItem.type}}"><span
+								e-name="type"
+								e-form="lineform" e-required>{{lineItem.type}}</span></td>
+							<td title="{{lineItem.imageHeight}}">
+								<span ng-if="lineItem.type=='HTML'">{{lineItem.htmlHeight}}</span>
+								<span ng-if="lineItem.type!='HTML'">{{lineItem.imageHeight}}</span>
+							</td>
+							<td title="{{lineItem.imageWidth}}">
+								<span ng-if="lineItem.type=='HTML'">{{lineItem.htmlHeight}} </span>
+								<span ng-if="lineItem.type!='HTML'">{{lineItem.imageWidth}} </span>
+							</td>
+						</tr>
+						 
+					</tbody>
+					<tr ng-show="lineItems.length==0">
+						<td style="vertical-align: middle;" colspan="5"><i
+							class="fa fa-ban fa-3x"></i>&nbsp;{{propertyMessage.NoDataFoundMsg}}</td>
+					</tr>
+					<tr ng-hide="lineItems.length > -1">
+						<td style="vertical-align: middle;" colspan="5"><i
+							class="fa fa-cog fa-3x fa-spin"></i>&nbsp;{{propertyMessage.loadingDataMsg}}</td>
+					</tr>
+				</table>
+				
+				</div>
+			 
+			 <div class="row lineItem-footer"
+					style="margin-left: 0px; margin-right: 0px; width: 100%; background-color: #e6e6e6;" ng-if="chooseFromExisting">
+					<div pagination="" page="currentPage" max-size="5"
+						on-select-page="setPage(page)" boundary-links="true"
+						total-items="filteredItems.length" items-per-page="entryLimit"
+						class="pagination pagination-sm pull-right"
+						style="margin-top: 1px; margin-bottom: 0px;"
+						previous-text="&laquo;" next-text="&raquo;"></div>
+	
+				</div>
+		</div>
+		 <div ng-include="'plugins/admin/partials/modal.html'"></div>
+ </html>

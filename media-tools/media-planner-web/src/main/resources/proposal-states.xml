@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<States>
+	<State>
+		<fail>Pending</fail>
+		<current>Default</current>
+		<success>Pending</success>
+	</State>
+	<State>
+		<fail>Pending</fail>
+		<current>Pending</current>
+		<success>Proposed</success>
+	</State>
+	<State>
+		<fail>Rejected</fail>
+		<current>Proposed</current>
+		<success>Review</success>
+	</State>
+	<State>
+		<fail>Pending</fail>
+		<current>Review</current>
+		<success>Sold</success>
+	</State>
+	<State>
+		<fail>Signed</fail>
+		<current>Sold</current>
+		<success>Signed</success>
+	</State>
+	<State>
+		<fail>Signed</fail>
+		<current>Signed</current>
+		<success>Signed</success>
+	</State>
+	<State>
+		<fail>Pending</fail>
+		<current>Rejected</current>
+		<success>Pending</success>
+	</State>
+</States>

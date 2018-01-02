@@ -1,0 +1,89 @@
+<div class="left-naviation-menu">
+<accordion> 
+	<accordion-group heading="Orders" ng-click="getExactPath('Orders')" is-open=isOpen('Order') is-disabled="false"> 
+		<a class="" href="#/orders" ng-click="setOrderStatus('Signed')" style="text-decoration: none;">
+			<div class="panel-body-content hvr-underline-from-center" ng-class="{subMenuActive:subSelectedTab == 'all' && isOpen('Order')}">
+				<span class="glyphicon" style="margin-right: 13px; background-color: transparent;"></span>All Orders 
+			</div>
+	   </a> 
+		<a class="" href="#/orders" ng-click="setOrderStatus('MyOrders')" style="text-decoration: none;">
+			<div class="panel-body-content hvr-underline-from-center" ng-class="{subMenuActive:subSelectedTab == 'my' && isOpen('Order')}">
+				<span class="glyphicon" style="margin-right: 13px; background-color: transparent;"></span>My Orders
+			</div>
+	   </a> 
+	   <a class="" href="#/orders" ng-click="setOrderStatus('Active')" style="text-decoration: none;">
+			<div class="panel-body-content hvr-underline-from-center" ng-class="{subMenuActive:subSelectedTab == 'active' && isOpen('Order')}">
+				<span class="glyphicon" style="margin-right: 13px; background-color: transparent;"></span>Active
+			</div>
+	   </a> 
+	  <a class="" href="#/orders" ng-click="setOrderStatus('Ready')" style="text-decoration: none;">
+			<div class="panel-body-content hvr-underline-from-center" ng-class="{subMenuActive:subSelectedTab == 'ready' && isOpen('Order')}">
+				<span class="glyphicon" style="margin-right: 13px; background-color: transparent;"></span>Ready
+			</div>
+	   </a> 
+	    <a class="" href="#/orders" ng-click="setOrderStatus('Delivering')" style="text-decoration: none;">
+			<div class="panel-body-content hvr-underline-from-center" ng-class="{subMenuActive:subSelectedTab == 'delivering' && isOpen('Order')}">
+				<span class="glyphicon" style="margin-right: 13px; background-color: transparent;"></span>Delivering
+			</div>
+	   </a>
+	    <a class="" href="#/orders" ng-click="setOrderStatus('Completed')" style="text-decoration: none;">
+			<div class="panel-body-content hvr-underline-from-center" ng-class="{subMenuActive:subSelectedTab == 'completed' && isOpen('Order')}">
+				<span class="glyphicon" style="margin-right: 13px; background-color: transparent;"></span>Completed
+			</div>
+	   </a>
+</accordion-group> 
+	
+<accordion-group heading="Campaigns" ng-click="getExactPath('Campaigns')" is-open=isOpen('Campaigns') > 
+		<a href="#/campaigns" ng-click="setCampainsStatus('Signed')" style="text-decoration: none;">
+			<div class="panel-body-content hvr-underline-from-center" ng-class="{subMenuActive:subSelectedTab =='all' && isOpen('Campaigns')}">
+				<span class="glyphicon" style="margin-right: 13px; background-color: transparent;"></span>All Campaigns
+			</div>
+	   </a> 
+		<a href="#/campaigns" ng-click="setCampainsStatus('MyOrders')" style="text-decoration: none;">
+			<div class="panel-body-content hvr-underline-from-center" ng-class="{subMenuActive:subSelectedTab =='my' && isOpen('Campaigns')}">
+				<span class="glyphicon" style="margin-right: 13px; background-color: transparent;"></span>My Campaigns
+			</div>
+	   </a> 
+	   <a href="#/campaigns" ng-click="setCampainsStatus('Active')" style="text-decoration: none;">
+			<div class="panel-body-content hvr-underline-from-center" ng-class="{subMenuActive:subSelectedTab =='active' && isOpen('Campaigns')}">
+				<span class="glyphicon" style="margin-right: 13px; background-color: transparent;"></span>Active
+			</div>
+	   </a> 
+	  <a href="#/campaigns" ng-click="setCampainsStatus('Ready')" style="text-decoration: none;">
+			<div class="panel-body-content hvr-underline-from-center" ng-class="{subMenuActive:subSelectedTab =='ready' && isOpen('Campaigns')}">
+				<span class="glyphicon" style="margin-right: 13px; background-color: transparent;"></span>Ready
+			</div>
+	   </a> 
+	    <a href="#/campaigns" ng-click="setCampainsStatus('Delivering')" style="text-decoration: none;">
+			<div class="panel-body-content hvr-underline-from-center" ng-class="{subMenuActive:subSelectedTab =='delivering' && isOpen('Campaigns')}">
+				<span class="glyphicon" style="margin-right: 13px; background-color: transparent;"></span>Delivering
+			</div>
+	   </a>
+	    <a href="#/campaigns" ng-click="setCampainsStatus('Completed')" style="text-decoration: none;">
+			<div class="panel-body-content hvr-underline-from-center" ng-class="{subMenuActive:subSelectedTab =='completed' && isOpen('Campaigns')}">
+				<span class="glyphicon" style="margin-right: 13px; background-color: transparent;"></span>Completed
+			</div>
+	   </a> 
+</accordion-group> 
+<accordion-group heading="Ads" is-open=isOpen('Assets') ng-click="getExactPath('Assets')">
+	 <a href="#/campaigns/asset-template-list" style="text-decoration: none;">
+		<div class="panel-body-content hvr-underline-from-center" ng-class="{subMenuActive:subSelectedTab =='assets' && isOpen('Assets')}">
+			<span class="glyphicon"
+				style="margin-right: 13px; background-color: transparent;"></span>All Ads
+		</div>
+	</a>
+	 <a href="#/campaigns/asset-template-list" style="text-decoration: none;" ng-click='open("lg","plugins/campaigns/partials/emtImageHtmlModalContent.html","");' >
+			<div class="panel-body-content hvr-underline-from-center">
+				<span class="glyphicon"
+					style="margin-right: 13px; background-color: transparent;"></span>New
+			</div>
+		</a>
+		<!-- <a href="#/campaigns/asset-template-list" style="text-decoration: none;" ng-click='open("lg","plugins/campaigns/partials/emtHtmlModalContent.html","");'>
+			<div class="panel-body-content">
+				<span class="glyphicon"
+					style="margin-right: 13px; background-color: transparent;"></span>New - Html
+			</div>
+		</a> -->
+</accordion-group> 
+</accordion>
+</div>

@@ -1,0 +1,23 @@
+<form name="statusHtmlForm">
+<div class="proposal modal-header">
+            <h4 class="modal-title">
+				<button type="button" class="close" data-dismiss="modal" ng-click='close();' aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<span class='addImage'>Confirmation</span>				
+			</h4>
+        </div>
+        <div class="modal-body">
+            <p>Please select the field to be recalculated</p>
+			<div class='row'>
+				<div class='col-md-8'>
+					<div ng-repeat="price_option in price_options">
+            			<label>
+                			<input type="radio" ng-model="$parent.selected_price_option" ng-value="price_option" name="calculateValue" />{{price_option.description}}</label>
+                	</div>
+					
+				</div>
+			</div>
+        </div>
+        <div class="modal-footer" style='text-align: right;'>
+            <button class="btn btn-primary" ng-click="calculatedValue(selected_price_option);close()">Ok</button>
+ 	 </div>
+</form>

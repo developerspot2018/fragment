@@ -1,0 +1,7 @@
+<ol class="breadcrumb">
+  <li ng-repeat="crumb in breadcrumbs" 
+      ng-class="{ active: $last }">
+      <a class="text-elipsis breadcrum-mid-text" ui-sref="{{ crumb.route }}" ng-if="!$last">{{ crumb.displayName }}&nbsp;</a>
+      <span class="text-elipsis breadcrum-last-text" ng-show="$last">{{ crumb.displayName }}</span>
+  </li>
+</ol>

@@ -1,0 +1,169 @@
+<!-- RATE CARD SECTION -->
+<section>
+	
+	<div class="row proposal" style="margin-left: 10px;">
+	<div class="content-area" style="padding-top: 0px;">
+		<div class="row rc-content-wrapper">
+			<div class="row rc-left-nav">
+				<div class="col-lg-2 col-md-2 col-sm-3 pp-filter-panel">
+				 	<left-navigation></left-navigation>
+				 </div>
+				<div class="col-lg-10 col-md-10 col-sm-10 pp-rc-form" style="padding-right: 40px;border:0px solid #D1D2D2;min-height:300px;">
+            <div class="mpt-breadcrum brcm-wrapper">
+              <ui-breadcrumbs displayname-property="data.displayName" abstract-proxy-property="data.proxy" template-url="plugins/proposal/partials/uiBreadcrumbs.html">
+              </ui-breadcrumbs>
+            </div>
+						<!-- <ratecard-form></ratecard-form>-->
+						<div class="col-sm-11 col-md-11 col-lg-11 rc-form-section">
+                           <div class="row rc-fields">
+                              <div class="col-sm-3 col-md-3 col-lg-3"><label>Rule Name</label></div>
+                              <div class="col-sm-6 col-md-6 col-lg-6">
+                                 <input type="text" name="rule_name" id="rc_rule_name" class="form-control rc-rule-name"/>
+                              </div>
+                           </div>
+                           <div class="row rc-fields">
+                              <div class="col-sm-3 col-md-3 col-lg-3"><label>{{property.addLineItemProduct}}</label></div>
+                              <div class="col-sm-6 col-md-6 col-lg-6">
+                              <select ng-model="rate.product" ng-change="getSalestargets()" required name="productName" class="form-control pp-litm-select">
+            										<option ng-repeat="productVal in productList | orderBy:'name':false" value="{{productVal.id}}">{{productVal.name}}</option>
+            									</select>
+                              </div>
+                           </div>
+                           <div class="row rc-fields">
+                              <div class="col-sm-3 col-md-3 col-lg-3"><label>{{property.addLineItemSalesTarget}}</label></div>
+                              <div class="col-sm-6 col-md-6 col-lg-6">
+                              <div multi-select input-model="salesTargetList" tick-property="ticked" output-properties="name ticked" max-labels="1" button-label="name" item-label="name"output-model="selectedSalesTarget" tick-property="ticked" id="advertiserError" disable-property=false>
+							             </div>
+                        </div>
+                           </div>
+                           <div class="row rc-fields">
+                              <div class="col-sm-3 col-md-3 col-lg-3"><label>{{property.addLineItemRateCardPrice}}</label></div>
+                              <div class="col-sm-6 col-md-6 col-lg-6">
+                                   <input class="form-control" placeholder="Please enter a number" type="text" min="0" name="budget" data-ng-model="rates.budget" 
+                                   id="budget" required valid-decimal-number />
+                              </div>
+                           </div>
+                           <div class="row rc-fields">
+                              <div class="col-sm-3 col-md-3 col-lg-3"><label>Notes</label></div>
+                              <div class="col-sm-6 col-md-6 col-lg-6">
+                                   <textarea class="form-control rc-rule-comments"></textarea>
+                              </div>
+                           </div>
+                           <div class="row pp-snl-header">
+                             <div class="col-sm-10 col-md-10 col-lg10"><span>{{property.seasonalDiscount}}</span></div>
+                           </div>
+                           <div class="row pp-snl-dscnt noPad">
+                           	   <div class="col-sm-12 col-md-12 col-lg-12 noPad">
+                                <!-- RC Seasonal Discount -->
+                                 <table class="pp-tbl-dscnt">
+	                                 <tr> 
+	                                 	<th class="pp-th-dscnt col-rc-budget"><span>{{property.budget}}</span></th>
+	                                    <th class="pp-th-dscnt col-rc-startDate"><span>{{property.createStartDate}}</span></th>
+	                                    <th class="pp-th-dscnt col-rc-endDate"><span>{{property.createEndDate}}</span></th>
+	                                    <th class="pp-th-dscnt col-rc-discount">{{property.discount}} (%)</th>
+                                    </tr>
+                                    <tr ng-repeat="sd in seasonalDiscountList" class="pp-dscnt-row">
+                                    	<td class="pp-td-dscnt"><input type="text" ng-model="sd.budget"></td>
+                                    	<td>
+                                        	<input type="text" datetime-picker="MM/dd/yyyy HH:mm" ng-model="sd.startDate" is-open="sd.startDateOpen" ng-click="openStartCalendar($event, $index)" max-Date="sd.endDate" />
+                                        </td>
+                                        <td>
+                                        	<input type="text" datetime-picker="MM/dd/yyyy HH:mm" ng-model="sd.endDate" is-open="sd.endDateOpen" ng-click="openEndCalendar($event, $index)" min-Date="sd.startDate"/>
+                                        </td>
+                                        <td class="pp-td-dscnt"><input type="text" ng-model="sd.discount">
+                                        &nbsp;
+                                        <span class="glyphicon glyphicon-trash" ng-click="removeDiscount($index)" style="vertical-align: middle; cursor: pointer">
+                                        </span>
+                                        </td>
+                                    </tr>
+                                    <tr class="pp-dscnt-row">
+                                        <td class="pp-td-dscnt">
+                                           <input type="text" class="form-control" style="width:70%;" name="seasonal-dscnt" value="" />
+                                        </td>
+                                        <td class="pp-td-dscnt">
+                                          <span>
+                                              <input type="text" placeholder="mm/dd/yy" data-ng-model="endDateFilter" id="endDateFilter" style="width:50% !important;height:26px;margin-right:10px;" name="endDateFilter" class="ng-pristine ng-valid form-control hasDatepicker ng-touched">
+                                              <i class="fa fa-calendar"></i>
+                                          </span>
+                                        </td>
+                                        <td class="pp-td-dscnt">
+                                             <span> 
+                                                 <input type="text" placeholder="mm/dd/yy" data-ng-model="endDateFilter" id="endDateFilter" style="width:50% !important;height:26px;margin-right:10px;" name="endDateFilter" class="ng-pristine ng-valid form-control hasDatepicker ng-touched">
+                                                <i class="fa fa-calendar"></i>
+                                            </span>
+                                        </td>
+                                        <td class="pp-td-dscnt"><input type="text" class="form-control" style="width:40%;" name="seasonal-dscnt" value="" /></td>
+                                     </tr> 
+                                     <tr class="pp-dscnt-row">
+                                        <td class="pp-td-dscnt">
+                                            <span ng-click="addDiscount()" class="pull-left glyphicon glyphicon-plus" style="margin-left:10px;vertical-align: middle; cursor: pointer;font-size:12px;color:#000;">
+                                            </span>
+                                        </td>
+                                        <td class="pp-td-dscnt">&nbsp;</td>
+                                        <td class="pp-td-dscnt">&nbsp;</td>
+                                        <td class="pp-td-dscnt">&nbsp;</td>
+                                     </tr> 
+                                 </table>
+                           	   </div>
+                           </div>
+                           <div class="row pp-snl-header">
+                             <div class="col-sm-10 col-md-10 col-lg10"><span>{{property.premiumDiscount}}</span></div>
+                        </div>
+
+                        <div class="row pp-snl-dscnt noPad">
+                           	   <div class="col-sm-12 col-md-12 col-lg-12 noPad">
+                                <!-- RC Premium Discount -->
+                                <table class="pp-tbl-dscnt">
+	                                 <tr> 
+	                                 	<th class="pp-th-dscnt col-rc-budget"><span>{{property.budget}}</span></th>
+	                                    <th class="pp-th-dscnt col-rc-target"><span>{{property.addLineItemTargetTypeTh}}</span></th>
+	                                    <th class="pp-th-dscnt col-rc-element"><span>{{property.addLineItemElementsTh}}</span></th>
+	                                    <th class="pp-th-dscnt">{{property.discount}} (%)</th>
+                                    </tr>
+                                    <tr class="pp-dscnt-row">
+                                    	<td class="pp-td-dscnt col-rc-budget"><input type="text" ng-model="pd.budget" class="form-control" style="width:70%;">&nbsp;</td>
+                                    	<td class="">
+                                        	 <select ng-model="targetTypeOption" ng-change="getElements()" class="ad-product-select" style="width:70%;height:32px;" 
+                                              		ng-options="targetTypeOption  as targetTypeOption.name for targetTypeOption in targetTypeOptions | orderBy:'name':false">
+							        		                </select>
+                                        </td>
+                                        <td class="td-rc-multiElement">
+                                          	<div multi-select input-model="elemntLst" tick-property="" output-properties="value ticked" max-labels="1" button-label="value" item-label="value" output-model="selectedElements" tick-property="ticked" id="targetedElements" disable-property=false>
+  											                   </div>
+                                        </td>
+                                        <td class="pp-td-dscnt">
+                                          <input type="text" ng-model="sd.discount" class="form-control" style="width:40%;">&nbsp;
+                                          <span class="glyphicon glyphicon-trash" ng-click="removeDiscount($index)" style="vertical-align: middle; cursor: pointer;"></span>
+                                        </td>
+                                    </tr>
+                                     <tr class="pp-dscnt-row">
+                                        <td class="pp-td-dscnt">
+                                            <span ng-click="addDiscount()" class="pull-left glyphicon glyphicon-plus" style="margin-left:10px;vertical-align: middle; cursor: pointer;font-size:12px;color:#000;">
+                                         </td>
+                                        <td class="pp-td-dscnt">&nbsp;</td>
+                                        <td class="pp-td-dscnt">&nbsp;</td>
+                                        <td class="pp-td-dscnt">&nbsp;</td>
+                                     </tr>
+                                 </table>
+                           	   </div>
+                           </div>
+                           <div class="button-container">
+                  							<button class="btn pull-right pp-create-btn add-creative-button ng-binding" style="height: 32px; margin-right: 2.5%; margin-top: 0;" ng-click="createProposal()" type="button">
+                  								<span class="glyphicon glyphicon-plus-sign"></span>
+                  								   &nbsp;{{property.saveButton}}
+                  							</button>
+            				            <button class="btn pull-right add-creative-button pp-cancel-btn cancel-button ng-binding" style="height: 32px; margin-right: 0.5%; margin-top: 0;" ng-click="cancelProposal()" type="button">
+            				                <span class="glyphicon glyphicon-remove">
+                                    </span>
+            				                {{property.cancelButton}}
+            				            </button>
+						              </div>
+                     </div>
+                     <div class="col-sm-3 col-md-3 col-lg-3">&nbsp;</div>
+                   </div>
+				</div>
+			</div>
+		</div>
+		</div>
+	</div>
+</section>

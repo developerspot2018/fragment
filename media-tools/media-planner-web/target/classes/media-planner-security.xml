@@ -1,0 +1,261 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:oauth="http://www.springframework.org/schema/security/oauth2"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:sec="http://www.springframework.org/schema/security" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/security/oauth2
+	 http://www.springframework.org/schema/security/spring-security-oauth2-1.0.xsd
+	 http://www.springframework.org/schema/security
+     http://www.springframework.org/schema/security/spring-security-4.0.xsd
+     http://www.springframework.org/schema/mvc
+     http://www.springframework.org/schema/mvc/spring-mvc.xsd
+     http://www.springframework.org/schema/context
+     http://www.springframework.org/schema/context/spring-context.xsd
+     http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans.xsd
+     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+
+	<oauth:authorization-server
+		client-details-service-ref="clientDetailsService" token-services-ref="tokenService"
+		user-approval-handler-ref="approvalHandler" token-endpoint-url="${auth.token}"
+		authorization-endpoint-url="${auth.authorize}">
+		<oauth:authorization-code />
+		<oauth:implicit />
+		<oauth:refresh-token />
+		<oauth:client-credentials />
+		<oauth:password authentication-manager-ref="authenticationManager" />
+	</oauth:authorization-server>
+
+	<oauth:resource-server id="resourceFilter"
+		token-services-ref="tokenService" resource-id="mp-tool" />
+
+	<sec:http pattern="${auth.token}" create-session="stateless"
+		authentication-manager-ref="oauthAuthenticationManager"
+		use-expressions="true">
+		<sec:intercept-url pattern="${auth.token}" access="permitAll" />
+		<sec:http-basic entry-point-ref="clientAuthenticationEntryPoint" />
+		<sec:custom-filter ref="tokenEndpointFilter" before="BASIC_AUTH_FILTER" />
+		<sec:custom-filter ref="oAuth2ClientContextFilter"
+			after="EXCEPTION_TRANSLATION_FILTER	" />
+		<sec:csrf disabled="true" />
+	</sec:http>
+
+	<sec:http pattern="/**" create-session="never"
+		authentication-manager-ref="oauthAuthenticationManager"
+		use-expressions="true">
+		<sec:access-denied-handler ref="accessDeniedHandler" />
+		<sec:custom-filter ref="csrfTokenFilter" after="CHANNEL_FILTER" />
+		<sec:custom-filter ref="resourceFilter" before="PRE_AUTH_FILTER" />
+		<sec:custom-filter ref="logOutFilter" position="LOGOUT_FILTER" />
+		<sec:intercept-url pattern="/authentication/logout"
+			access="permitAll" />
+		<sec:intercept-url pattern="/auth/password" access="permitAll"/>
+		<sec:intercept-url pattern="/auth/active/**" access="permitAll"/>
+		<sec:intercept-url pattern="/**" access="authenticated" />
+		<sec:http-basic entry-point-ref="oauthAuthenticationEntryPoint" />
+		<sec:csrf disabled="true" />
+	</sec:http>
+
+	<sec:authentication-manager id="oauthAuthenticationManager">
+		<sec:authentication-provider
+			user-service-ref="clientUserDetails">
+			<sec:password-encoder ref="myEncoder" />
+		</sec:authentication-provider>
+	</sec:authentication-manager>
+
+	<sec:authentication-manager id="authenticationManager">
+		<sec:authentication-provider
+			user-service-ref="userDetailsService">
+			<sec:password-encoder ref="myEncoder" />
+		</sec:authentication-provider>
+	</sec:authentication-manager>
+
+
+	<sec:global-method-security
+		pre-post-annotations="enabled" proxy-target-class="false">
+		<sec:expression-handler ref="expressionHandler" />
+	</sec:global-method-security>
+
+	<bean id="myEncoder"
+		class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"
+		c:_0="6" />
+
+	<bean id="tokenEndpointFilter"
+		class="org.springframework.security.oauth2.provider.client.ClientCredentialsTokenEndpointFilter"
+		p:authenticationManager-ref="oauthAuthenticationManager" c:path="${auth.token}"
+		p:allowOnlyPost="false" />
+
+	<bean id="oAuth2ClientContextFilter"
+		class="org.springframework.security.oauth2.client.filter.OAuth2ClientContextFilter">
+	</bean>
+
+	<bean id="clientUserDetails"
+		class="org.springframework.security.oauth2.provider.client.ClientDetailsUserDetailsService"
+		c:_0-ref="clientDetailsService" />
+
+	<bean id="userDetailsService"
+		class="com.tavant.media.core.service.impl.CustomUserDetailsService"
+		c:_0-ref="userService" />
+
+	<bean id="tokenDao"
+		class="org.springframework.security.oauth2.provider.token.store.JdbcTokenStore">
+		<constructor-arg ref="dataSource" />
+	</bean>
+
+	<bean id="tokenService"
+		class="org.springframework.security.oauth2.provider.token.DefaultTokenServices"
+		p:tokenStore-ref="tokenDao" p:supportRefreshToken="true"
+		p:clientDetailsService-ref="clientDetailsService" p:tokenEnhancer-ref="tokenConvertor" />
+
+	<bean id="tokenConvertor"
+		class="org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter" />
+
+	<bean id="requestFactory"
+		class="org.springframework.security.oauth2.provider.request.DefaultOAuth2RequestFactory"
+		c:_0-ref="clientDetailsService" />
+
+	<!-- A user approval handler that remembers approval decisions by consulting 
+		existing tokens -->
+	<bean id="approvalHandler"
+		class="org.springframework.security.oauth2.provider.approval.TokenStoreUserApprovalHandler"
+		p:requestFactory-ref="requestFactory" p:tokenStore-ref="tokenDao" />
+
+	<bean id="clientAuthenticationEntryPoint"
+		class="org.springframework.security.oauth2.provider.error.OAuth2AuthenticationEntryPoint">
+		<property name="realmName" value="Authorization/client" />
+		<property name="typeName" value="Basic" />
+	</bean>
+
+	<bean id="oauthAuthenticationEntryPoint"
+		class="org.springframework.security.oauth2.provider.error.OAuth2AuthenticationEntryPoint">
+		<property name="realmName" value="Authorization" />
+	</bean>
+
+	<bean id="logoutSuccess" class="com.tavant.media.core.secessentials.LogoutSuccessHandle" />
+
+	<bean id="accessDeniedHandler"
+		class="org.springframework.security.oauth2.provider.error.OAuth2AccessDeniedHandler" />
+
+	<bean id="logOutFilter"
+		class="org.springframework.security.web.authentication.logout.LogoutFilter"
+		p:filterProcessesUrl="${auth.logout}" c:_0-ref="logoutSuccess">
+		<constructor-arg index="1">
+			<list>
+				<bean class="com.tavant.media.core.secessentials.CustomLogoutHandler"
+					p:tokenStore-ref="tokenDao" />
+			</list>
+		</constructor-arg>
+	</bean>
+
+
+	<bean id="csrfTokenRepository"
+		class="org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository"
+		p:headerName="X-XSRF-TOKEN" />
+
+	<bean id="csrfTokenFilter" class="com.tavant.media.core.secessentials.CsrfTokenFilter" />
+
+	<bean id="expressionHandler"
+		class="org.springframework.security.oauth2.provider.expression.OAuth2MethodSecurityExpressionHandler">
+		<property name="permissionEvaluator">
+			<bean class="com.tavant.media.core.permission.CustomPermissionEvaluator">
+				<constructor-arg index="0">
+					<map key-type="java.lang.String"
+						value-type="com.tavant.media.core.permission.CustomPermission">
+						<entry key="attribute-permission" value-ref="attributePermission" />
+						<entry key="creative-permission" value-ref="creativePermission" />
+						<entry key="line-item-permission" value-ref="lineItemPermission" />
+						<entry key="product-permission" value-ref="productPermission" />
+						<entry key="proposal-permission" value-ref="proposalPermission" />
+						<entry key="sales-target-permission" value-ref="salesTargetPermission" />
+						<entry key="asset-permission" value-ref="assetPermission" />
+						<entry key="seasonalDiscount-permission" value-ref="seasonalDiscountPermission" />
+						<entry key="targettingPremium-permission" value-ref="targettingPremiumPermission" />
+						<entry key="client-premission" value-ref="clientPermission"/>
+						<entry key="ratecard-permission" value-ref="rateCardPermission"/>
+					</map>
+				</constructor-arg>
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="attributePermission" class="com.tavant.media.core.permission.AttributePermission"
+		c:_0-ref="attributeDao" c:_1-ref="clientDao" />
+
+	<bean id="creativePermission" class="com.tavant.media.core.permission.CreativePermission"
+		c:_0-ref="creativeDao" c:_1-ref="attributeDao" c:_2-ref="clientDao" />
+
+	<bean id="lineItemPermission" class="com.tavant.media.core.permission.LineItemPermission"
+		c:_0-ref="lineItemDao" c:_1-ref="clientDao" />
+
+	<bean id="productPermission" class="com.tavant.media.core.permission.ProductPermission"
+		c:_0-ref="productDao" c:_1-ref="clientDao" />
+
+	<bean id="proposalPermission" class="com.tavant.media.core.permission.ProposalPermission"
+		c:_0-ref="proposalDao" c:_1-ref="clientDao" />
+
+	<bean id="salesTargetPermission" class="com.tavant.media.core.permission.SalesTargetPermission"
+		c:_0-ref="salesTargetDao" c:_1-ref="clientDao" />
+
+	<bean id="assetPermission" class="com.tavant.media.core.permission.AssetPermission"
+		c:_0-ref="assetDao" c:_1-ref="clientDao" />
+
+	<bean id="seasonalDiscountPermission"
+		class="com.tavant.media.core.permission.SeasonalDiscountPermission"
+		c:_0-ref="seasonalDiscountDao" c:_1-ref="clientDao" />
+
+	<bean id="targettingPremiumPermission"
+		class="com.tavant.media.core.permission.TargettingPremiumPermission"
+		c:_0-ref="targettingPremiumDao" c:_1-ref="clientDao" />
+	
+	<bean id="clientPermission" class="com.tavant.media.core.permission.ClientPermission"
+	    c:_0-ref="clientDao"/>
+	<bean id="rateCardPermission"
+		class="com.tavant.media.core.permission.RateCardPermission"
+		c:_0-ref="rateCardDao" c:_1-ref="clientDao" />
+		
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="${mail.host}" />
+		<property name="port" value="${mail.socket.port}" />
+<!-- 		<property name="username" value="${mail.username}" />
+		<property name="password" value="${mail.password}" /> -->
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.smtp.auth">false</prop>
+  				<!-- <prop key="mail.smtp.socketFactory.class">javax.net.ssl.SSLSocketFactory</prop>
+				<prop key="mail.smtp.socketFactory.port">${mail.socket.port}</prop> -->
+				<prop key="mail.smtp.starttls.enable">false</prop>
+				<prop key="mail.debug">true</prop>
+				<!-- <prop key="mail.smtp.ssl.enable">true</prop> -->
+			</props>
+		</property>
+	</bean>
+
+	<bean id="velocityEngine"
+		class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
+		<property name="velocityProperties">
+			<value>
+				resource.loader=class
+				class.resource.loader.class=org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+			</value>
+		</property>
+	</bean>
+	
+	<!-- <bean id="oauthTXManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <tx:advice id="oauthTXAdvice" transaction-manager="oauthTXManager">
+        <tx:attributes>
+            <tx:method name="*" isolation="SERIALIZABLE"/>
+        </tx:attributes>
+    </tx:advice>
+
+    <aop:config>
+        <aop:pointcut id="oauthTokenServiceOperations"
+                      expression="execution(* org.springframework.security.oauth2.provider.token.DefaultTokenServices.*(..))"/>
+        <aop:advisor advice-ref="oauthTXAdvice" pointcut-ref="oauthTokenServiceOperations"/>
+    </aop:config> -->
+</beans>

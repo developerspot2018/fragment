@@ -1,0 +1,71 @@
+.summary-section{position: relative;margin-bottom: 10px;margin:2% auto;}
+.summary-section header{font-weight: bold;font-size: 14px;display: block;margin-bottom: 20px;text-decoration: none;}
+.summary-section header span{border-bottom: 1px solid black;}
+.summary-section .head{position: relative;margin-top: 20px;margin-bottom: 20px;border-top: 1px solid rgba(0, 0, 0, 0.1);box-shadow: 0 -1px 0 rgba(255, 255, 255, 0.11);}
+.summary-section .head span{position: absolute;	top: -11px;	left: 20px;	background: #fff;}
+.summary-section section{display: inline-block;width: 46%;padding: 5px 0 0 40px;}
+.summary-section section span{width: 270px;}
+.summary-section  label{display: inline-block;width: 200px;padding-left: 3px;font-weight: bold;vertical-align: top;}
+.summary-section  textarea{width: 276px;height: 60px;resize: none;}
+.summary-section section input[type="text"]{width: 270px;margin-right: 4px;padding: 4px;}
+.summary-section section input[type="text"].goalPercent{width:30px;}
+.summary-section section select{padding: 4px;margin-left: 0;width: 271px;}
+.width-100px{width: 100px !important;}
+.width-128px{width: 128px !important;}
+.goalServing{ width:110px; margin-left:5px!important;}
+.adContent{ width:86%!important; display:block; margin-top:15px;}
+.adContent label{ margin-bottom:7px;}
+.adContent textarea{ width:100%!important; height:150px;}
+.validateContent{ width:50px;height:30px;background:#709bb2 url('../images/validate.gif') center no-repeat;border-radius: 2px;-moz-border-radius: 2px;-webkit-border-radius: 2px;border:none;cursor:pointer;float:right;clear:both;}
+input[type="number"]{padding: 4px;}
+.summary-section section h6{font-size: 14px;margin: 0;}
+.summary-section section p{	/* color: #ccc; */	margin-bottom: 0;}
+.summary-section .search-by{position: absolute;	right: 0;top: 16px;}
+.summary-section .search-by  select{width: 100px;padding: 1.2px 0;}
+.align-center{text-align: center;margin-top: 40px;}
+.align-center span{	margin-right: 20px;}
+.button{padding: 6px 14px;border: 0;color: #fff;cursor: pointer;border-radius: 2px;}
+.button.apply{background-color: #424242;}
+.border{border:1px solid #e7e7e7;}
+.proposal-listing-div-hover:hover{background:#ffdd9d;}
+.button.reset{background-color: #424242;}
+.search-campaign{padding: 15px 20px 20px 20px;}
+
+@media screen and (min-width: 1280px) {
+.campaign-filters .col-lg-2{width:20% !important;}
+.campaign-filters .col-lg-10{width:78% !important;}
+}
+@media screen and (min-width: 1500px) {
+.campaign-filters .col-lg-2{width:16% !important;}
+.campaign-filters .col-lg-10{width:82% !important;}
+}
+.content-area aside{background-color: #f9fafc;left: 20px;padding:0 0 10px 0;font-size: 13px;border-radius: 2px;-moz-box-shadow:    0 0 1px 1px #ccc;-webkit-box-shadow: 0 0 1px 1px #ccc;box-shadow:0 0 1px 1px #ccc;margin-bottom:4%;}
+.content-area aside header{background-color: #e6e6e6;font-size: 17px;font-weight: bold;padding: 10px 8px;}
+.content-area aside .saved-filters,.content-area aside .other-filters{font-weight: bold;padding: 8px;font-family: Verdana,Arial,sans-serif;}
+.content-area aside .saved-filters{background-color: #fff;-moz-box-shadow:    0 1px 1px 1px #ccc;-webkit-box-shadow: 0 1px 1px 1px #ccc;box-shadow:0 1px 1px 1px #ccc;}
+.content-area aside .other-filters > select{margin-bottom: 10px;}
+.content-area aside select,.content-area aside input[type="text"]{font-size: 11px;width: 100%;padding: 6px 10px;}
+.content-area aside input[type="text"]{width: 91%;display: block;}
+.content-area aside .button-group{margin: 3% 0 8px 3%;}
+.campaigns-list .reservations{display:inline-block;margin-left:10px;}
+.campaigns-list > header > label{font-weight: bold;}
+.campaigns-list > header > select{padding: 2px 5px;width: 100px;}
+.campaigns-list > header  .search{position: absolute;right: 15px;top: 0px;}
+.campaigns-list > header  .search input[type="text"]{width: 20px;}
+.campaigns-list > header  .search input[type="text"]{}
+.campaigns-list .campaigns{margin-top: 20px;background: #fff url("");border-radius: 4px;-moz-box-shadow: 0 0 1px 1px #ccc;-webkit-box-shadow: 0 0 1px 1px #ccc;box-shadow: 0 0 1px 1px #ccc;}
+.campaigns-list .campaigns > header{position: relative;padding: 5px 10px;background: #f1f1f1;border-top-left-radius: 4px;border-top-right-radius: 4px;font-weight: bold;}
+.campaigns-list .campaigns  div:not(.dropdown-list),.campaigns-list .campaigns  span{display: inline-block;}
+.campaigns-list .campaigns  .ui-icon{position: relative;top: 3px;}
+.campaigns-list .campaigns .column-30{width: 33%;font-weight: normal;}
+.campaigns-list .campaigns .column-30 > a{text-decoration: none;color: black;font-weight:bold;}
+.campaigns-list .campaigns > section{padding: 5px 10px;}
+.campaigns-list .campaigns > section span{line-height: 30px;}
+.campaigns-list .campaigns  .advertiser{width: 56%;}
+.campaigns-list .campaigns  label{font-weight: bold;font-size: 11px;}
+.campaigns-list .campaigns > footer{padding: 2px 0px;background: #f6f6f6;font-size: 10px;color: #a5a4a4;border-bottom-left-radius: 4px;border-bottom-right-radius: 4px;font-weight: bold;}
+.campaigns-list .campaigns > footer ul{margin-bottom: 0;width: 100%;}
+.campaigns-list .campaigns > footer li{	float: left;padding-left: 10px;	width: 23%;}
+.button.save{background-color: #7fb2e5;}
+.height-25{height:25px;}
+

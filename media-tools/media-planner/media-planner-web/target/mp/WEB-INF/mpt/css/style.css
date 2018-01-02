@@ -1,0 +1,110 @@
+body {font-family: segoe UI;}
+.tavant-logo-image {height: 50px;padding: 10px;}
+.tavant-logo-span {padding: 5px 0px 0px 34px;height: 50px;margin-left:0px;}
+.overflow-hidden{overflow-x:hidden;}
+.tavant-logo-admin {height: 50px;padding: 15px;}
+.glyphicon.glyphicon-chevron-down {margin-top: 3%;}
+.header-user-icon {margin-right: 5%;}
+.tavant-logo-admin .glyphicon-user {border: 1px solid black;border-spacing: 20px;padding: 5px;border-radius: 20px;}
+.container-fluid {background-color:;}
+.header {margin-bottom: -20px;}
+.navbar.navbar-inverse {border-radius: 0px !important;}
+.main-navigation-bar {background-color: #505050 !important;color: white !important;}
+.main_navigation_bar_content .active {background-color: #f89727 !important;}
+/* .main_navigation_bar_content {border-right: 1px solid black;color: white !important;} */
+.main_navigation_bar_content a {color: white !important;}
+ul .pagination-cloumn.active a {background-color: #f89727 !important;}
+ul .pagination-cloumn-arrow a {background-color: #222222;color: #ffffff;}
+ul .pagination-cloumn a {background-color: #8a8989;color: #ffffff;}
+.left-naviation-menu ul li:HOVER {color: black;}
+.left-naviation-menu {margin-left: -15px}
+.left-naviation-menu li:hover {	background: red !important;}
+.current {background-color: #f89727 !important;}
+
+.acb {background-color: green;}
+.search-box{float:right;margin:9px auto;}
+.labels{background: none;padding:0px;}
+.label{	background-color: #bed1e4;font-size: 13px;padding: 1px 10px;border-radius: 4px;line-height: 25px;}
+.search-campaign .search-box{width:100%;position: relative;margin-bottom: 30px;border: 1px solid #CECECE;padding: 10px 10px 0 10px;}
+.search-campaign .search-box .group-element{display: inline-block;vertical-align: top;margin-bottom: 20px;font-weight: bold;width: 225px;margin-right: 20px;}
+.search-campaign .search-box .reservations{display: inline-block;vertical-align: top;margin-top: 28px;width: 200px;font-weight: bold;}
+.search-campaign .search-box .group-element input[type="text"]{width: 100%;padding: 5px;margin: 2px 0;}
+.search-campaign .search-box .group-element span{display: inline-block;font-size: 11px;vertical-align: top;}
+.create-campaign{position: absolute;right: 0;top: 94px;}
+.create-campaign a{display: block;padding: 6px 12px;background-color: #1a5894;color: #fff;font-weight: bold;}
+.create-campaign span{display: inline-block;vertical-align: top;}
+.search-campaign{position: relative;}
+.search-campaign aside{top: 20px;left: 0;}
+.button{padding: 6px 14px;border: 0;color: #fff;cursor: pointer;border-radius: 2px;}
+.button:hover{opacity:0.9}
+.align-center{text-align: center;margin-top: 40px;}
+.align-center span{	margin-right: 20px;}
+.margin-1{margin:1% 0 1% 0;}
+.margin-bottom{margin-bottom:0.4%;}
+.padding-1{padding:1%;border:1px solid #e7e7e7;margin-bottom:2%;background:white;}
+.editable-wrap .editable-controls > input, .editable-wrap .editable-controls > select, .editable-wrap .editable-controls > textarea{ width: 85px;}
+.container-fluid .nav-list {
+	padding-right: 35px !important; padding-left: 0% !important;
+}
+.navbar-nav {
+  float: left;
+  margin: 0;
+}
+
+nav {
+	border: 1px solid #e8e8e8 !important;
+}
+.container-fluid .nav>li>a {
+	/* font-size: 18px; */ color: #666666;
+}
+
+.nav>li>a {
+	font-size: 14px; color: #666666;
+}
+
+.container-fluid {
+	padding: 0;
+}
+
+.selectedTab {
+	border-bottom: 4px solid #337ab7 !important;
+}
+.active>a {
+	  /* border-bottom: 5px solid #35BDB2; */
+	  border-bottom: 5px solid #00BAFF;
+}
+.welcome-user{min-width:200px;}
+.header-navigation a{
+  color: #f0f0f0 !important;
+}
+.header-navigation .navbar-header a{
+  font-size:x-large;
+}
+.navbar{margin-bottom:0px !important;min-height:40px;}
+.sub-navigation-menu a{color:black !important;}
+.sub-navigation-menu .navbar-nav>li>a {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.sub-navigation-menu  .container-fluid {
+  background-color: #e8e8e8 !important;
+  border-color: #e8e8e8 !important;
+}
+.sub-navigation-menu .navbar-inverse {
+  background-color: none !important;
+  border-color: none !important;
+  
+}
+.nav-1 .navbar-inverse {
+  background-color: none !important;
+  border-color: none !important;
+  background-image:url("../images/header.jpg");
+}
+.sub-navigation-menu.navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:hover, .navbar-inverse .navbar-nav>.active>a:focus {
+  color: #fff;
+  background-color: #ffffff;
+  }
+  th{text-align:center;}
+  th a{color:white ;}
+  .btn{padding:4px 13px;font-size:13px;margin-top:1.5%;}

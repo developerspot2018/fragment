@@ -1,0 +1,109 @@
+<section>
+	<div class="row proposal" style="margin-left: 10px;">
+		<div class="content-area search-campaign" style="padding-top: 0px;">
+			<div class="row">
+				<div class="row campaign-filters">
+					<div class="col-lg-2 col-md-2 col-sm-3 pp-filter-panel">
+						<left-navigation></left-navigation>
+					</div>
+					<div class="col-lg-10 col-md-10 col-sm-9 pp-dashboard-panel"
+						style="padding-right: 40px; padding-left: 0px;">
+						<div class="proposal">
+							<div class="mpt-breadcrum brcm-wrapper">
+								<ui-breadcrumbs displayname-property="data.displayName"
+									abstract-proxy-property="data.proxy"
+									template-url="plugins/proposal/partials/uiBreadcrumbs.html"></ui-breadcrumbs>
+							</div>
+							<div class="summary-section"
+								ng-controller="createUpdateProposalCtrl">
+								<!-- <div style="width: 86%; margin: 0 auto;"> -->
+								<!-- </div> -->
+								<form class="pp-create-form" name="createUpdateProposalorm"
+									novalidate>
+									<div style="width: 100%; padding-top: 20px;margin-bottom:20px;">
+										<div style="width: 49%; float: left;">
+											<section style="width: 100%;" class="form-group"></section>
+											<section style="width: 100%;" class="form-group ">
+												<label>{{property.proposalName}}<span
+													class="mandatory">*</span></label> <span class="view">{{proposalName}}</span>
+											</section>
+											<section style="width: 100%;" class="form-group">
+												<label>{{property.createAdvertiserName}}</label> <span
+													class="view">{{advertiserName}}</span>
+											</section>
+
+											<section style="width: 100%;" class="form-group ">
+												<label>{{property.agencyMargin}}</label> <span class="view">{{agencyMargin}}</span>
+											</section>
+
+											<section style="width: 100%;" class="form-group show-errors">
+												<label>{{property.createStartDate}}<span
+													class="mandatory">*</span></label> <span class="view">{{startDate}}</span>
+											</section>
+
+											<section style="width: 100%;" class="form-group ">
+												<label>{{property.reuestedOn}}<span
+													class="mandatory">*</span></label> <span class="view">{{requestedOn}}</span>
+											</section>
+
+											<section style="width: 100%;">
+												<label>{{property.createSalesCategory}}</label> <span
+													class="view">{{salesCategory}}</span>
+											</section>
+
+											<section style="width: 100%;">
+												<label>{{property.grossOrNet}}</label> <span class="view">{{grossorNet}}</span>
+											</section>
+											<section style="width: 100%;">
+												<label>{{property.priority}}</label> <span class="view">{{priority}}</span>
+											</section>
+
+										</div>
+										<div style="width: 49%; float: right;margin-bottom:20px;">
+											<section style="width: 100%;" class="form-group "></section>
+											<section style="width: 100%;">
+												<label>{{property.campaignName}}</label> <span class="view">{{compaignName}}</span>
+											</section>
+
+											<section style="width: 100%;">
+												<label>{{property.accountManager}}</label> <span
+													class="view">{{accountManager}}</span>
+											</section>
+											<section style="width: 100%;" class="form-group ">
+												<label>{{property.agencyName}}</label> <span class="view">{{agencyName}}</span>
+											</section>
+
+											<section style="width: 100%;" class="form-group">
+												<label>{{property.createEndDate}}<span
+													class="mandatory">*</span></label> <span class="view">{{endDate}}</span>
+											</section>
+
+											<section style="width: 100%;">
+												<label>{{property.dueOn}}<span class="mandatory">*</span></label>
+												<span class="view">{{dueOn}}</span>
+											</section>
+
+											<section style="width: 100%;">
+												<label>{{property.proposalCurrency}}</label> <span
+													class="view">{{proposalCurrency}}</span>
+
+											</section>
+
+											<section style="width: 100%;" class="form-group">
+												<label>{{property.createBudget}}</label> <span class="view">{{budget}}</span>
+											</section>
+											<section style="width: 100%;">
+												<label>{{property.addProposalNote}}</label> <span
+													class="view" style="height:auto">{{custom1}}</span>
+											</section>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>

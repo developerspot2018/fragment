@@ -1,0 +1,207 @@
+<div class="campaigns-list">
+<div class="mpt-breadcrum brcm-wrapper">
+	<b><ui-breadcrumbs displayname-property="data.displayName" abstract-proxy-property="data.proxy" template-url="plugins/proposal/partials/uiBreadcrumbs.html">
+    </ui-breadcrumbs></b>
+</div>
+	<div class="filterapply">
+		<div class="row" style="margin: 0;">
+			<div class="filterheader">
+				<label class="ng-binding">{{property.applyFilters}}</label>
+				<i class="glyphicon glyphicon-chevron-right"></i>
+				<a href="javascript:void(0);"   ng-click="isCollapsed = !isCollapsed" class="pull-right add-creative-button">				
+					<span ng-if="!isCollapsed" class="fa fa-plus"></span>
+					<span ng-if="isCollapsed"  class="fa fa-minus"></span>
+				 </a> 
+			</div>
+			<div collapse="!isCollapsed">
+				<div class="col-lg-12 pp-filter-window noPad" style="padding:10px;">
+					<div class="col-lg-3 col-md-3 col-sm-3 noPad">
+						
+							<div class="col-lg-12 mar2">
+								 <span class="pp-filter-label ng-binding" style="padding-left: 10px;">{{property.filtersbyProposalName}}</span>
+								 <input class="form-control" type="text" name="proposalNameFilter" ng-model="proposalNameFilter" id="proposalNameFilter" style="width:100%;height:26px"/>
+							</div>
+						
+					</div>
+					<div class="col-lg-3 col-md-3 col-sm-6">
+						<div class="col-lg-12 mar2">
+							<span class="pp-filter-label ng-binding" style="padding-left:10px;">{{property.filtersbyBudget}}</span>
+							<div class="budget-digit">
+                                  	<input class="pull-left budget-txt form-control" type="text" name="budgetMin" ng-model="budgetMin" id="budgetMin" style="width:39% !important;height:26px;margin-right:10px;"/>
+							  	<span class="pull-left budget-seprator" style="display:inline-block;margin:2px 10px;">-</span>
+								<input class="pull-left budget-txt form-control" type="text" name="budgetMax" ng-model="budgetMax" id="budgetMax" style="width:39% !important;height:26px"/>
+					    	</div>
+						</div>
+						
+					</div>
+					<div class="col-lg-3 col-md-3 col-sm-6 noPad">
+						
+							
+							<div class="col-lg-12 mar2">
+								<span class="pp-filter-label ng-binding">
+                                   <span class="pp-filter-start-date">Start Date</span>
+                                   <span class="pp-filter-end-date">End Date</span>
+                                   <span class="clearfix"></span>
+								</span>
+								<div class="budget-digit">
+                                   
+                                   <input class="pull-left ng-pristine ng-valid form-control" name="startDateFilter" style="width:39% !important;height:26px;margin-right:10px;" id="startDateFilter" data-ng-model="startDateFilter" placeholder="mm/dd/yy" type="text">
+								  <span class="pull-left budget-seprator" style="display:inline-block;margin:2px 10px;">&nbsp;</span>
+								
+								<input class="pull-left ng-pristine ng-valid form-control" name="endDateFilter" style="width:39% !important;height:26px;margin-right:10px;" id="endDateFilter" data-ng-model="endDateFilter" placeholder="mm/dd/yy" type="text">
+
+								</div>
+								
+							</div>
+						
+					</div>
+					<div class="col-lg-3 col-md-3 col-sm-6 noPad">
+							<div class="col-lg-12">
+								 <span class="pp-filter-label ng-binding" style="padding-left: 10px;">{{property.filtersbyAdvertiser}}</span>
+								 <input class="form-control" type="text" name="advertiserName" ng-model="advertiserName" id="advertiserName" style="width:100%;height:26px"/>
+							</div>
+						
+					</div>
+				</div>
+				<div class="col-lg-12 pp-filter-window noPad">
+				    
+					<div class="col-lg-3 col-md-3 col-sm-6 noPad">
+							<div class="col-lg-12">
+								<span class="pp-filter-label ng-binding" style="padding-left: 10px;">{{property.filtersbySalesCategory}}</span>
+								<select class="sales-category" name="salesCategoryListOption" ng-model="salesCategoryListOption" style="margin-left:9px;width:82% !important;height:26px"
+									ng-options="salesCategoryListOption as salesCategoryListOption.label for salesCategoryListOption in salesCategoryListOptions">
+									<option value=''>-- select --</option>
+								</select>
+							</div>
+						
+					</div>
+					<div class="col-lg-3 col-md-3 col-sm-6 noPad">
+							<div class="col-lg-12">
+								<span class="pp-filter-label ng-binding" style="padding-left:10px;">{{property.filtersbyAssignedTo}}</span>
+							<select class="assigned-to" name="assignedToOption" ng-model="assignedToOption" style="margin-left:9px;width:83%!important;height:26px"
+									ng-options="assignedToOption as assignedToOption.label for assignedToOption in assignedToOptions">
+									<option value=''>-- select --</option>
+								</select>
+							</div>
+						
+					</div>
+					<div class="col-lg-6 col-md-6 col-sm-6 noPad div-pp-filter-btn pp-filter-btn-wrapper">
+						<a href="javascript:void(0);" ng-click="resetFilter()" class="pp-filter-btn btn pull-right add-creative-button" style="margin-top: 0px;">&nbsp;Reset</a>
+					    <a href="javascript:void(0);" ng-click="applyFilter(subSelectedTab)" class="pp-filter-btn btn pull-right add-creative-button" style="margin-top: 0px;margin-right: 5px;">&nbsp;Apply</a>
+					</div>	
+				</div>
+				
+			</div>
+		</div>
+		</div>
+		<header class="proposal-tool" style="padding: 4px;margin-bottom:10px">
+			<div class="row tool-row">
+				<div class="col-lg-4 col-md-4 col-sm-4 noPad">
+                    <label class="proposal-label pull-left">{{property.filtersbyProposalId}}</label>
+                    <div class="col-lg-8 col-md-8 col-sm-8 noPad">
+                       <input class="pull-left" placeholder="Search by Proposal ID" type="text" ng-keyup="$event.keyCode == 13 ?filterByProposalID(): null"
+                        numbers-only="" name="proposalId" ng-model="proposalId" id="proposalId" style="width:80%;height:30px"/>
+                       <span class="input-group-addon">
+                        <span
+							class="glyphicon glyphicon-search"
+							ng-click="filterByProposalID()"></span>
+						</span>
+                    </div>
+                    <span class="pull-left pagination-refresh glyphicon glyphicon-refresh" title="Refresh"  ng-click="refreshProposalGrid()"></span>
+				</div>
+				<!--<div class="col-lg-1 col-md-1 col-sm-1">&nbsp;</div>-->
+	            <div class="col-lg-8 col-md-8 col-sm-8">
+                    
+                       <div class="pull-right pp-btn-iPad">
+                          <div id="demo5" style="display:inline;width:44%;">
+							  <a href="#/proposal/create-proposal" class="btn pull-right pp-create-btn add-creative-button" style="margin-top: 0px;">
+							  	<span class="glyphicon glyphicon-plus-sign"></span>&nbsp;{{property.createProposalButton}}
+							  </a>
+						  </div>
+                   </div>
+                    <select style="width:200px !important;margin-right:10px;" class="pull-right" ng-model="proposalOrderBy" ng-change="sortProposal()"
+				ng-options="orderByOption as orderByOption.label for orderByOption in proposalOrderByOptions">
+			            </select> 
+                    	<select style="width:200px !important;margin-right:10px;" class="pull-right" ng-model="proposalSortBy" ng-change="sortProposal()" ng-options="sortByOption as sortByOption.label for sortByOption in proposalSortByOptions">
+				        </select>
+                  	  
+		              <label class="pp-sort-label pull-right">{{property.sortBy}}</label>
+	            </div>
+			</div>
+		</header>
+		<div class="row proposal-pagination dashboard-pages">
+			<div class="col-lg-6 col-sm-6 col-md-6">&nbsp;</div>
+			<!--<div class="col-lg-6 col-md-6 col-sm-6">
+						<select ng-model='selectedNumber'  ng-options='number for number in recordPerPage' ng-change="setRecordPerPage()"></select>
+				</div>-->
+				<div class="col-lg-6 col-md-6 col-sm-6">
+					<div pagination="" page="currentPage" max-size="maxNoPageSize" on-select-page="setPage(page)" boundary-links="true" total-items="totalNoOfItems" items-per-page="entryLimit"
+						class="pagination pagination-sm pull-right" style="margin-top: -4px; margin-bottom: 0px;" previous-text="&laquo;" next-text="&raquo;">
+					</div>
+                    
+                  <div class="pagination-select pull-right">
+                    <select ng-model='selectedNumber'  ng-options='number for number in recordPerPage' ng-change="setRecordPerPage()"></select>
+                 </div>
+
+			     <!-- <span class="pull-right pagination-refresh glyphicon glyphicon-refresh" title="Refresh"  ng-click="refreshProposalGrid()"></span> -->
+				</div>
+				
+		</div>
+		<section>
+			<div class="campaigns proposal-list-section" ng-repeat="proposal in newProposals">
+				<div class="column-30" ng-if=false>
+					<label>{{property.advertiser}}</label>{{proposal.id}}
+				</div>
+				<header class="proposal-list-header">
+					<div class="column-30 col-lg-6 col-sm-6 text-elipsis" title="{{proposal.proposalName}}">
+						<span class="ui-icon ui-icon-star"></span> <a ng-click="openAccordian()" class="proposal-heading" href="{{proposal.linkPath}}">Proposal : {{proposal.proposalName}}</a>
+					</div>
+					<div class="column-30 col-lg-3 col-sm-3">
+						<label>{{property.status}}</label> {{proposal.status}}
+					</div>
+					<div class="column-30 col-lg-3 col-sm-3">
+						<label>{{property.proposalId}}</label> {{proposal.id}}
+					</div>
+				</header>
+				<section class="campaign-details">
+					
+	                    <div class="column-30 text-elipsis" title="{{proposal.advertiserName}}">
+							<label>{{property.advertiserName}}</label>
+							{{proposal.advertiserName}}
+						</div>
+						<div class="column-30">
+							<label>{{property.startDate}}</label> {{proposal.startDate}}
+						</div>
+						<div class="column-30">
+							<label>{{property.endDate}}</label> {{proposal.endDate}}
+						</div>
+					
+                        <div class="column-30">
+							<label>{{property.salesCategory}}</label>
+							{{proposal.salesCategory}}
+						</div>
+						<div class="column-30">
+							<label>{{property.createdBy}}</label> {{proposal.user.firstName}}
+							{{proposal.user.lastName}}
+						</div>
+						<div class="column-30">
+							<label>{{property.budget}}</label> {{proposal.budget}}
+						</div>
+					
+				</section>
+				<footer class="clearfix">
+				</footer>
+			</div>
+			<div class="campaigns" ng-show="newProposals.length ==0">
+				<header>
+					<div class="column-30">{{propertyMessage.NoDataFoundMsg}}</div>
+				</header>
+			</div>
+			<div class="campaigns" ng-hide="newProposals.length  > -1">
+				<header>
+					<div class="column-30">{{propertyMessage.loadingDataMsg}}</div>
+				</header>
+			</div>
+
+		</section>
+	</div>

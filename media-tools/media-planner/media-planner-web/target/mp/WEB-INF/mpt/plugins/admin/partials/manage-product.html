@@ -1,0 +1,263 @@
+<div class="admin-div">
+	<div ng-include="'plugins/admin/partials/admin-nav.html'"></div>
+	<div class="col-lg-10 main-container" ng-controller="productCtrl">
+		<div class="row">
+			<h4 class="text-left">Manage Product</h4>
+		</div>
+		<div class="row attribute-header">
+			<div class="col-lg-1 col-sm-12 col-md-2 filter-div">
+				<span>Filter</span>
+			</div>
+			<div class="col-lg-3 col-sm-12 col-md-2">
+				<div class="input-group input-group filter_dev">
+					<input type="text" class="form-control filter_height" placeholder="Filter product list ..." ng-model="filterProducts" ng-change="resetLimit();">
+						<span class="input-group-addon">
+							<span class="glyphicon glyphicon-search"></span>
+						</span>
+				</div>
+			</div>
+			<div class="col-lg-6 col-sm-12 col-md-8"></div>
+			<div class="col-lg-2 col-sm-12 col-md-6">
+				<button class="btn pull-right add-creative-button" ng-click="addProduct()">
+					<span class="glyphicon glyphicon-plus-sign"></span> Add Product
+				</button>
+			</div>
+		</div>
+
+		<div class=" row table-responsive">
+			<table class="table table-striped font-12 table-bordered table-hover table-condensed" id="productTable">
+				<thead>
+					<tr>
+						<th>Name&nbsp;
+							<a ng-click="sort_by('name');">
+								<i class="glyphicon glyphicon-sort"></i>
+							</a>
+						</th>
+						<th>Type&nbsp;
+							<a ng-click="sort_by('type');">
+								<i class="glyphicon glyphicon-sort"></i>
+							</a>
+						</th>
+						<th>Class</th>
+						<th>Sales Target</th>
+						<th>Creative</th>
+						<th>Base Rate</th>
+						<th>Description</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="product in filteredItems = (products | filter: filterProducts) | filter:filterProducts | orderBy:predicate :reverse | startProductFrom:(currentPage-1)*entryLimit | limitTo:entryLimit"
+							animate-on-change='product.name + product.type + product.value'	ng-animate=" 'animate'">
+						<td colspan="8">
+							<table style="width: 100%; table-layout:fixed">
+								<tbody>
+									<tr>
+										<td title="{{product.name}}" class="addEllipsis">
+											<span editable-text="product.name" e-name="name" e-form="productform" e-required> 
+												{{product.name}}
+											</span>
+										</td>
+										<td  title="{{product.type}}" class="addEllipsis">
+											<span editable-select="product.type" e-name="type"	e-form="productform" e-ng-options="t.value as t.text for t in types" e-required>
+												{{product.type}}
+											</span>
+										</td>
+										<td  title="{{product.classs}}" class="addEllipsis">
+											<span editable-select="product.classs" e-name="classs" e-form="productform" e-ng-options="c.value as c.text for c in classes" e-required>
+												{{product.classs}}
+											</span>
+										</td>		
+										<td  class="addEllipsis">
+											<span editable-select="product.salesTargetList" e-name="salesTargetList" e-form="productform" e-ng-options="s.id as s.name for s in salesTargets">
+									 			{{showSalesTargetName(salesTrgets)}}
+									 		 </span>
+									 	</td> 
+									 
+										<td  class="addEllipsis">
+											<span editable-select="product.creative" e-name="creatives"	e-form="productform" e-ng-options="c.name as c.text for c in creativesList">
+									 			{{product.creative}}
+									 		</span>
+										</td>
+										<td  class="addEllipsis">
+											<span editable-number="product.basePrice" e-name="basePrice" e-form="productform" e-type="number" e-step="any"> {{product.basePrice}} </span>
+										</td>
+										<td title="{{product.description}}"  class="addEllipsis">
+											<span editable-text="product.description" e-name="description" e-form="productform">
+												{{product.description}} 
+											</span>
+										</td>
+										<td style="white-space: nowrap;width: 150px;" align="center">
+											<form editable-form method="post" name="productform" onbeforesave="saveProduct($data, product)" ng-show="productform.$visible" class="form-buttons form-inline" shown="inserted == product">
+												<div class="buttons">
+					          						<button ng-disabled="productform.$waiting" type="submit" class="glyphicon glyphicon-floppy-save" style="vertical-align: middle; cursor:pointer; border: none;"></button>&nbsp;
+					          						<span class="glyphicon glyphicon-remove" style="vertical-align: middle; cursor:pointer" ng-disabled="productform.$waiting" ng-click="cancel(product,$index,productform)"></span>
+					        					</div>
+											</form>
+											<div class="buttons" ng-show="!productform.$visible">
+												<span class="glyphicon glyphicon-edit" style="vertical-align: middle; cursor: pointer" ng-click="productform.$show()"></span>&nbsp; 
+												<span class="glyphicon glyphicon-trash" style="vertical-align: middle; cursor: pointer" confirmed-click="removeProduct(this)" ng-confirm-click="Are you sure you want to delete this record ?">
+												</span>&nbsp; 
+												<span class="glyphicon glyphicon-plus" style="vertical-align: middle; cursor: pointer" ng-click="fetchAttributes(this)" ng-show="!product.showAttributes">
+												</span>&nbsp;
+												<span class="glyphicon glyphicon-minus" style="vertical-align: middle; cursor: pointer" ng-click="hide(this)" ng-show="product.showAttributes"></span>&nbsp;
+											</div>
+										</td>
+									</tr>
+									<tr data-ng-show="product.showAttributes">
+										<td colspan=8>
+											<table style="width: 100%;">
+												<tbody id="attribute-container">
+													<tr id="attribute-container-row">
+														<td colspan=8>
+															<div class=" content-area tab-content" id="attribute-container-div">
+																<div class="row">
+																	<h8 class="text-left">Associated Attributes</h8>
+																</div>
+																<div class="row attribute-header">
+																	<div class="child_filter_dev">
+																		<span>Filter</span>
+																	</div>
+																	<div>
+																		<div class="input-group input-group child_filter_text">
+																			<input type="text" class="form-control filter_height" placeholder="Filter Attribute List ..." ng-model="filterAttribute" ng-change="resetAttributeLimit();">
+																				<span class="input-group-addon">
+																					<span class="glyphicon glyphicon-search"></span>
+																				</span>
+																		</div>
+																	</div>
+																	<div></div>
+																	<div>
+																		<button class="btn pull-right add-creative-button child_grid_add_button" ng-click="addAttribute()">
+																			<span class="glyphicon glyphicon-plus-sign"></span>
+																			Link Attribute
+																		</button>
+																	</div>
+																</div>
+																<div class="row table-responsive" style="min-height: 160px; max-height: 160px; overflow: auto">
+																	<table class="table table-striped font-12 table-bordered table-hover table-condensed tableFixed"">
+																		<thead>
+																			<tr>
+																				<th>Name&nbsp;
+																					<a ng-click="sortAttribute_by('name');">
+																						<i class="glyphicon glyphicon-sort"></i>
+																					</a>
+																				</th>
+																				<!-- 							<th >Type&nbsp;<a ng-click="sortAttribute_by('type');"><i class="glyphicon glyphicon-sort"></i></a></th> -->
+																				<th>Value</th>
+																				<th>Description</th>
+																				<th>Action</th>
+																			</tr>
+																		</thead>
+																		<tbody>
+																			<tr ng-show="attributeGrid.attributes.length==0">
+																				<td style="vertical-align: middle;" colspan="4">
+																					<i class="fa fa-ban fa-3x"></i>&nbsp;No data found
+																				</td>
+																			</tr>
+																			<tr ng-hide="attributeGrid.attributes.length>-1">
+																				<td style="vertical-align: middle;" colspan="4">
+																					<i class="fa fa-cog fa-3x fa-spin"></i>&nbsp;Loading
+																				</td>
+																			</tr>
+																			<tr data-ng-repeat="attribute in attributeFilteredItems = (attributeGrid.attributes | filter: filterAttribute)| filter:filterAttribute | orderBy:attributePredicate :reverseAttribute | startAttributeFrom:(currentPage-1)*attributeEntryLimit | limitTo:attributeEntryLimit"
+																				animate-on-change='attribute.name + attribute.type' ng-animate=" 'animate'">
+																				<td ng-show=false>
+																					<span editable-text="attribute.id" class="spantext" e-name="id" e-form="attributeform" e-required>
+																						{{attribute.id}} 
+																					</span>
+																				</td>
+																				<td title="{{attribute.name}}">
+																					<span editable-text="attribute.name" class="spantext" e-name="name" e-form="attributeform" e-required ng-if="attributeEdit"> {{attribute.value}} </span> 
+																					<span editable-select="attribute.name" class="spantext" e-name="name" e-form="attributeform" e-required e-ng-options="s as s.name for s in attributeList"
+																						e-ng-change="selectAttribute(this)" ng-if="attributeAssociate"> 
+																						{{attribute.name}} 
+																					</span>
+																				</td>
+																				<!-- 							<td> -->
+																				<!-- 								<span  editable-text="attribute.type" e-name="type" e-form="attributeform" e-required> -->
+																				<!-- 									{{attribute.type}} -->
+																				<!-- 								</span> -->
+																				<!-- 							</td> -->
+																				<td title="{{attribute.value}}">
+																					<span editable-text="attribute.value" e-name="value" e-form="attributeform" e-required ng-if="attributeEdit"> {{attribute.value}} </span> 
+																					<span ng-if="attributeAssociate">{{attribute.value}} </span>
+																				</td>
+																				<td title="{{attribute.description}}">
+																					<span editable-text="attribute.description" e-name="description" e-form="attributeform" e-required ng-if="attributeEdit">
+																						{{attribute.description}} 
+																					</span> 
+																					<span ng-if="attributeAssociate">
+																						{{attribute.description}} 
+																					</span>
+																				</td>
+																				<td style="white-space: nowrap" align="center">
+																					<form editable-form method="post" name="attributeform" onbeforesave="saveAttribute($data, attribute)" ng-show="attributeform.$visible"
+																						class="form-buttons form-inline" shown="inserted == attribute">
+																						<button type="submit" ng-disabled="attributeform.$waiting">
+																							<i class="glyphicon glyphicon-ok" align="center"></i>
+																						</button>
+																						<button type="button" align="center" ng-disabled="attributeform.$waiting" ng-click="attributeform.$cancel();cancelAttributeEdit(this)">
+																							<i class="glyphicon glyphicon-remove"></i>
+																						</button>
+																					</form>
+																					<div class="buttons" ng-show="!attributeform.$visible" align="center">
+																						<span class="glyphicon glyphicon-edit" style="vertical-align: middle; cursor: pointer" ng-click="attributeform.$show();editAttributeForm(this)">
+																						</span>&nbsp;
+																						<span class="glyphicon glyphicon-trash" style="vertical-align: middle; cursor: pointer" confirmed-click="removeAttribute(this)" ng-confirm-click="Are you sure delete this record ?">
+																						</span>
+																					</div>
+																				</td>
+																			</tr>
+																		</tbody>
+																	</table>
+																</div>
+																<div class="row"
+																	style="background-color: #e6e6e6; padding: 4px;">
+																	<div pagination="" page="attributeCurrentPage"
+																		max-size="5" on-select-page="setPage(page)"
+																		boundary-links="true"
+																		total-items="attributeFilteredItems.length"
+																		items-per-page="attributeEntryLimit"
+																		class="pagination pagination-sm col-lg-6"
+																		style="margin-top: 1px; margin-bottom: 0px;"
+																		previous-text="&laquo;" next-text="&raquo;"></div>
+																	<div class="col-lg-4"></div>
+																	<!-- 			<div class="col-lg-2 "> -->
+																	<!-- 				<button class="btn pull-right add-creative-button" ng-click="addAttribute()"><span class="glyphicon glyphicon-plus-sign"></span> Assocciate Attribute</button> -->
+																	<!-- 			</div> -->
+																</div>
+																<!-- </div> -->
+															</div>
+														</td>
+													</tr>
+												</tbody>
+											</table>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</td>
+					</tr>
+					<tr ng-show="products.length==0"> 
+						<td style="vertical-align: middle;" colspan="9">
+						 	<i class="fa fa-ban fa-3x"></i>&nbsp;No data found
+						</td>
+					</tr>
+					<tr ng-hide="products.length > -1">
+						<td style="vertical-align: middle;" colspan="9">
+							<i class="fa fa-cog fa-3x fa-spin"></i>&nbsp;Loading
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="row" style="background-color: #e6e6e6; padding: 4px;">
+			<div pagination="" page="currentPage" max-size="5" on-select-page="setPage(page)" boundary-links="true" total-items="filteredItems.length" items-per-page="entryLimit"
+				class="pagination pagination-sm col-lg-12" style="margin-top: 1px; margin-bottom: 0px;" previous-text="&laquo;" next-text="&raquo;">
+			</div>
+		</div>
+		<br>
+
+	</div>
+</div>

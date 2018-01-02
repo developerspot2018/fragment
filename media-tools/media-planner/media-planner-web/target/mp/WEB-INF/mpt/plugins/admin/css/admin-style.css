@@ -1,0 +1,72 @@
+.left-naviation-menu ul {background-color: #e6e6e6;height: 680px;}
+.nav-pills>li.active>a, .nav-pills>li.active>a:hover, .nav-pills>li.active>a:focus{background-color: #f89727;background-image: url("../images/nav-arrow.png");background-position: right;	background-repeat: no-repeat;color: black;}
+.nav-pills>li>a { border-radius: 0px;}
+.left-naviation-menu ul li a {margin-left: 8px;font-weight: 400 !important;font-size: 15px; color: black !important;}
+.left-naviation-menu ul li a span{margin-right: 13px;background-color: transparent;}
+.main-container {margin-bottom: 20px;}
+.attribute-header {background-color: #58595b;padding: 1px;height:36px;}
+.filter-div {padding-top: 6px;color: #ffffff;  float: left;  width: 6%;  margin: 0 27px 0 -8px;  font-size: 15px;  font-weight: bold;}
+.input-group {margin-left: -40px;width:250px;}
+.add-creative-button {background-color: #428BCA;color: white;}
+.row.table-responsive {margin-top: 10px;margin-bottom: -10px;min-height:305px;}
+thead {background-color: #797A7C;color: white;}
+.table>tbody>tr {background-color: #DADADA;}
+.table>tbody>tr>th, .table>tfoot>tr>th, .table>thead>tr>td,	.table>tbody>tr>td, .table>tfoot>tr>td {padding: 4px;}
+.table-hover tbody tr:hover td, .table-hover tbody tr:hover th { background-color: #FEF5E9;}
+#attribute-container-div{  width: 98%;  padding: 6px 32px 10px 32px;  margin: 0.5% 1% 0.5% 1%;border:1px solid grey ;background:#f5f5f5;}
+
+#attribute-container-row:hover td{background-color:white !important;}
+#attribute-container-row:hover th{background-color:#B8B8B8 !important;}
+.subMenuActive {background-color: white !important;  border-left: 5px solid #00BAFF;}
+.subMenuActive>a {  border-left: 8px solid #00BAFF;}
+.text-left {font-weight:600;}
+@media screen and (min-width: 1000px) {
+.attribute-header .col-lg-2{width:17% !important}
+.attribute-header .col-lg-10{width:82% !important}
+
+.admin-div .col-lg-2{width:22%}    
+.admin-div .col-lg-10{width:77% !important}
+}
+@media screen and (min-width: 1500px) {
+.admin-div .col-lg-2{width:18%}    
+.admin-div .col-lg-10{width:81% !important}
+}
+.float-right{float:right;}
+.astrix{color: red;}
+.addEllipsis {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.filter_dev {
+	margin-top: 2px;
+}
+
+.child_filter_dev {
+	color: #ffffff;
+  	float: left;
+  	width: 6%;
+  	margin: 6px 13px 0 10px;
+  	font-size: 14px;
+  	font-weight: bold;
+}
+.child_grid_add_button {
+	width: 8%;
+  	margin: 6px 13px 0 10px;
+  	font-size: 9px;
+  	font-weight: bold;
+}
+
+.filter_height {
+	 height: 30px !important;
+}
+
+.child_filter_text{
+	width: 18%;
+  	float: left;
+  	margin-top: 2px;
+}
+
+.text-elipsis{ white-space: nowrap;  overflow: hidden;  text-overflow: ellipsis;cursor:default;}
+.text-elipsis>span{cursor:default;}

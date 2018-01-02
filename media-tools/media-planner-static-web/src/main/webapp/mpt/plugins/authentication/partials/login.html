@@ -1,0 +1,97 @@
+<div class="container-fluid">
+     <div class="row login-section">
+	     <div class="col-md-9 col-sm-7 login-landing-image noPad">
+	            <div class="login_bg window-height" style="width:100%;height:100vh;"></div>
+	     </div>
+	     <div class="col-md-3 col-sm-5 login-pannel noPad">
+
+	     	  
+					<div style="z-index: 100;">
+						<div class="row login-right-sec">
+							<div class="col-sm-12 navbar-header"  align="left">
+								<span class="tool-label">Media Planning Tool</span>
+							</div>
+					</div>
+					<div  class="login-wrapper">
+						<fieldset class="scheduler-border">
+							<div id="login-box">
+								<form name="loginForm" class="form-horizontal form-floating"
+									role="form">
+									<div class="form-group">
+										<span class="glyphicon glyphicon-user"></span> <input type="text"
+											class="form-control form-floating input" name="username"
+											ng-model="login.username" required /> <label
+											class="control-label" for="email">Email</label>
+									</div>
+									<div class="form-group">
+										<span class="glyphicon glyphicon-lock"></span> <input type="password" class="form-control form-floating input"
+											ng-model="login.password" required /> <label
+											class="control-label" for="password">Password</label>
+									</div>
+									<a class="forgot-pwd" href="javascript:void(0);"  ng-click="forgetPassword()">Forgot Password?</a>
+									<div class="row form-group center-block pull-right">
+										<div class="login-btn"> 
+											<button type="submit" class="btn btn-primary" ng-click="doLogin(login)" data-ng-disabled="loginForm.$invalid">LOGIN</button>
+										</div>
+									</div>
+								</form>
+							</div>
+							
+						</fieldset>
+					</div>
+
+                </div>
+                    <!-- <section class="footer-section">
+							<div class="footer" style="margin-bottom: 0px;" align="center">
+									<span class="" style="color: #666666;font-family: 'Segoe UI','Segoe','SegoeUI-Regular-final',Tahoma,Helvetica,Arial,sans-serif;font-size: 0.9em;">Copyright &copy;2015 Tavant Technologies Pvt Ltd</span>
+								</div>
+						</section>-->
+            </div>
+
+
+
+</div>
+<script>
+$(function() {
+	$("#typedProjectName").typed({
+		strings : [ "Media Planning Tool" ],
+		typeSpeed : 30,
+		backDelay : 500,
+		loop : false,
+		contentType : 'html', // or text
+		// defaults to false for infinite loop
+		loopCount : false,
+		callback : function() {
+			foo();
+		},
+		resetCallback : function() {
+			newTyped();
+		}
+	});
+
+	$(".reset").click(function() {
+		$("#typedProjectName").typed('reset');
+	});
+
+	
+	$(".form-floating input").focus(function(){
+    	$(this).parent().addClass("touch-or-filled");
+    });
+    
+    $(".form-floating input").blur(function(){
+    	if($(this).val().length === 0){
+    		$(this).parent().removeClass("touch-or-filled");
+    	}
+    });
+    
+    $(".form-floating input").change(function(){
+    	$.each($(".form-floating input"), function(){
+     		if($(this).val().length > 0){
+    			$(this).parent().addClass("touch-or-filled");
+    		}
+    	});
+    });   
+});
+
+function newTyped() { /* A new typed object */}
+</script>

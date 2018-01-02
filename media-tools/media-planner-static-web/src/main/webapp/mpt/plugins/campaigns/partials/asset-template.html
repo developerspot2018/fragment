@@ -1,0 +1,171 @@
+<style>
+.campaigns-line-item .basic-detail-section > div, .summary-section form, .summary-section > div {
+  -moz-border-bottom-colors: none;
+  -moz-border-left-colors: none;
+  -moz-border-right-colors: none;
+  -moz-border-top-colors: none;
+  background-color: #f5f8fb;
+  border-color: -moz-use-text-color #8EC9FA #8EC9FA;
+  border-image: none;
+  border-right: 1px solid #8EC9FA;
+  border-style: none solid solid;
+  border-width: 0 1px 1px;
+  float: left;
+  margin: 0 0%;
+  width: 100%;
+}
+.row.table-responsive {
+  margin-bottom: -10px;
+  margin-top: 1px;
+}
+</style>
+
+<section>
+ <div class="row campaigns" style="margin-left:10px;">
+	<div class="content-area search-campaign">
+	 <div class="row">
+	   <div class="campaign-filters">
+		<div class="col-lg-2 cpm-filter-nav">
+		  <left-nav></left-nav>
+		</div>
+		<div class="col-lg-10 cpm-listing-container">
+		 	<div class="campaigns-list">
+		<section>
+		<div class="asset-ads campaigns-line-item">
+			<div class="basic-detail-section main-container summary-section">
+			<header>
+                <a class="breadcrumb-text">{{property.assets}}</a>
+            </header>
+			<div class="row lineItem-header">
+				<div class="col-lg-1 col-sm-12 col-md-2 filter-div">
+					<span>{{property.filter}}</span>
+				</div>
+				<div class="col-lg-3 col-sm-3 col-md-3">
+					<div class="input-group input-group">
+						<input type="text" class="form-control"
+							placeholder="Filter ads list ..." size="20" maxlength="20"
+							ng-model="filterAssets"
+							ng-keyup="$event.keyCode == 13 ?getFilterAssets(): null">
+						<span class="input-group-addon"> <span
+							class="glyphicon glyphicon-search"
+							ng-click="getFilterAssets()"></span>
+						</span>
+					</div>
+				</div>
+				<div class="col-lg-6 col-sm-12 col-md-8"></div>
+				<div class="col-lg-2 col-sm-12 col-md-6"></div>
+			</div>
+		<div class="row table-responsive"
+				style="margin-left: 0px; margin-right: 0px; width: 100%">
+				<table
+					class="table table-striped font-12 table-bordered table-hover table-condensed mpt-table">
+					<thead>
+						<tr>
+							<th ng-click="sort_by('name');">Name&nbsp;<a>
+								<span class="sorter">
+								<i class="glyphicon glyphicon-triangle-top"></i>
+								<i class="glyphicon glyphicon-triangle-bottom"></i>	
+								</span>
+							</a></th>
+							
+							<th>Type</th>
+							<th>Height</th>
+							<th>Width</th>
+							<th>Action</th>
+						</tr>
+					</thead>
+					<tbody>
+					<tr	ng-repeat="lineItem in assetTemplateList"  ng-animate=" 'animate'">
+					<!--<tr	ng-repeat="lineItem in lineItems = (assetTemplateList | filter: filterLineItems) | filter:{name:filterLineItems} | orderBy:predicate :reverse | startAssetFrom:(currentPage-1)*entryLimit | limitTo:entryLimit"
+							ng-animate=" 'animate'">
+					 <tr
+						ng-repeat="lineItem in lineItems = (assetTemplateList | filter: filterLineItems) | filter:{name:filterLineItems} | orderBy:predicate :reverse | startLineItemFrom:(currentPage-1)*entryLimit | limitTo:entryLimit"
+						ng-animate=" 'animate'">-->
+							<td title="{{lineItem.name}}"><span
+								e-name="name"
+								e-form="lineform" e-required>
+								<span editable-text="attribute.name" e-maxlength="50" e-name="name" e-form="rowform" e-required ng-if="lineItem.assetType=='HTML'">
+								<a href="javascript:void(0);" ng-click='open("lg","plugins/campaigns/partials/emtHtmlModalContent.html",lineItem.id);' style="cursor: pointer;">{{lineItem.name}}</a>
+								</span>
+								<span editable-text="attribute.name" e-maxlength="50" e-name="name" e-form="rowform" e-required ng-if="lineItem.assetType=='image'">
+								<a href="javascript:void(0);" ng-click='open("lg","plugins/campaigns/partials/emtImageModalContent.html",lineItem.id);' style="cursor: pointer;">{{lineItem.name}}</a>
+								</span>
+								<span editable-text="attribute.name" e-maxlength="50" e-name="name" e-form="rowform" e-required ng-if="lineItem.assetType=='video'">
+								<a href="javascript:void(0);" ng-click='open("lg","plugins/campaigns/partials/emtVideoModalContent.html",lineItem.id);' style="cursor: pointer;">{{lineItem.name}}</a>
+								</span>
+								</span></td>
+							<td title="{{lineItem.type}}"><span
+								e-name="type"
+								e-form="lineform" e-required>{{lineItem.type}}</span></td>
+							<td title="{{lineItem.imageHeight}}">
+							<span ng-if="lineItem.type=='HTML'">{{lineItem.htmlHeight}}</span>
+							<span ng-if="lineItem.type!='HTML'">{{lineItem.imageHeight}}</span>
+								
+								</td>
+							<td title="{{lineItem.imageWidth}}">
+							<span ng-if="lineItem.type=='HTML'">
+									{{lineItem.htmlWidth}} </span>									
+							<span ng-if="lineItem.type!='HTML'">
+									{{lineItem.imageWidth}} </span>		
+							</td>
+							<td title="Action" style="text-align:center"><span class="glyphicon glyphicon-trash" ng-click="removeAssets(this)" style="vertical-align: middle; cursor: pointer"></span></td>
+						</tr>
+						 
+					</tbody>
+					<tr ng-show="assetTemplateList.length==0">
+						<td style="vertical-align: middle;" colspan="5"><i
+							class="fa fa-ban fa-3x"></i>&nbsp;{{propertyMessage.NoDataFoundMsg}}</td>
+					</tr>
+					<tr ng-hide="assetTemplateList.length > -1">
+						<td style="vertical-align: middle;" colspan="5"><i
+							class="fa fa-cog fa-3x fa-spin"></i>&nbsp;{{propertyMessage.loadingDataMsg}}</td>
+					</tr>
+				</table>
+				</div>
+				<div class="row admin-pagination">
+				<div class="col-lg-12" style="padding-right: 0px;float: right;">
+				
+				<div style="float: right;padding-right:2%">
+						<div pagination="" page="currentPage" max-size="maxNoPageSize"
+							on-select-page="setPage(page)" boundary-links="true"
+							total-items="totalNoOfItems" items-per-page="entryLimit"
+							class="pagination pagination-sm"
+							style="margin-top: 1px; margin-bottom: 0px; float: right;"
+							previous-text="&laquo;" next-text="&raquo;"></div>
+					</div>
+					<div style="float: right;padding:0px 10px">
+					
+					<select ng-model='selectedNumber' style="float: right;margin-top:2px;"
+							ng-options='number for number in recordPerPage'
+							ng-change="setRecordPerPage()"></select>
+						<span class="glyphicon glyphicon-refresh" title="Refresh"
+							ng-click="refreshAssetsGrid()"></span>
+					</div>
+					
+					
+				</div>
+			</div>
+				<!-- <div class="row lineItem-footer" style="background-color: #e6e6e6; padding: 4px;">
+					<div pagination="" page="currentPage" max-size="5"
+						on-select-page="setPage(page)" boundary-links="true"
+						total-items="lineItems.length" items-per-page="entryLimit"
+						class="pagination pagination-sm pull-right"
+						style="margin-top: 1px; margin-bottom: 0px;" previous-text="&laquo;"
+						next-text="&raquo;"></div>
+		
+				</div>-->
+			 </div>
+		</div>
+	</section>
+	</div>
+		</div>
+	   </div>
+	 </div>
+	</div>
+	<div ng-include="'plugins/admin/partials/modal.html'"></div>
+	<div ng-include="'plugins/admin/partials/editModal.html'"></div>	
+ </div>
+</section>
+  
+		
+		

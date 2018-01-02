@@ -1,0 +1,299 @@
+<div class="proposal">
+<div class="mpt-breadcrum brcm-wrapper"><ui-breadcrumbs displayname-property="data.displayName" abstract-proxy-property="data.proxy" template-url="plugins/proposal/partials/uiBreadcrumbs.html"></ui-breadcrumbs></div>
+<section  class="proposal-line-item">
+	<div>
+        <!-- TOP NAVIGATION-->
+        <div class="row pp-app-bar">
+           <div class="col-md-3 col-lg-3 col-sm-3 pp-app-item">
+                 <span class="pp-app-status pull-left">Status:</span>
+                 <span class="pp-app-status pp-status-txt pull-left">{{proposalData.status}}</span>
+           </div>
+           <div class="col-md-3 col-lg-3 col-sm-3 pp-app-item">
+           <div class="assignTo-select" ng-if="proposalData.status!='Sold' && proposalData.status!='Signed'">
+                
+	                <span class="pp-app-status  pull-left">
+	                	<label class="assignTo" ng-if="proposalData.status!='Sold' && proposalData.status!='Signed'">Assign To :</label>
+	                </span>
+	                <span class="pp-app-status pp-status-select pull-left">
+                        <select ng-model="proposalData.assignedToUser" ng-change="getAssignedTo()" name="assignedToUser">
+							<option ng-selected="{{proposalData.assignedToUser == proposalData.user.clientId}}"
+								ng-repeat="assignedToUserVal in assignedToUserList" value="{{assignedToUserVal.value}}">
+								{{assignedToUserVal.label}}
+							</option>
+						</select>            
+	                </span>
+                </div>
+           </div> 
+           <div class="col-md-3 col-lg-3 col-sm-3 pp-app-item">
+            <div class="proposal-icons">
+                    <span ng-repeat="st in proposalData.nextStatus">
+                    	<a href="javascript:void(0);"  ng-click="changeStatus(proposalData.id, st.action);" title="{{st.name}}">
+                    		 <!-- <img ng-src="plugins/proposal/images/{{st.name}}.png" height="20" width="20"> --> 
+                    		<div class="status-wrapper wrapper-{{st.name}}">
+                    		   <div class="proposal-status status-{{st.name}}" title="{{st.name}}">
+                    		 	  <span>{{st.shortName}}</span>
+                    		 	</div>
+                    		</div>
+                    	</a>
+                    </span>
+                   <div class="status-wrapper wrapper-clone">
+                    
+                        <div class="proposal-status status-clone" title="Clone">
+                   	        <a href="javascript:void(0);" ng-click="cloneProposal(proposalData.id);">
+                   	             <span class="glyphicon glyphicon-link" title="Clone Proposal">
+                   	            </span>
+                   	        </a> 
+                   	    </div>
+                   </div>
+                    <div class="clearfix"></div>
+
+            </div>
+        </div>
+        <div class="col-md-3 col-lg-3 col-sm-3 pp-app-item">
+           <!-- <div class="pp-edit-tool pull-right" ng-if="(roleName=='ADMIN' && (proposalData.status!='Signed' && proposalData.status!='Sold')) || (roleName=='PLANNER' && (proposalData.assignedToUser == userId && (proposalData.status=='Pending' || proposalData.status=='Rejected')))"-->
+           <div class="pp-edit-tool pull-right" ng-if="(roleName=='ADMIN' && (proposalData.status=='Pending' || proposalData.status=='Rejected')) || (roleName=='PLANNER' && (proposalData.assignedToUser == userId && (proposalData.status=='Pending' || proposalData.status=='Rejected')))"
+                    ng-click="editPropsal(proposalData.id)">
+                        <div class="status-wrapper">
+                        	<div class="proposal-status status-Edit" title="Edit Proposal">
+                        		<span class="glyphicon glyphicon-pencil"></span>
+                        	</div>
+                        </div>
+                        	<!-- {{property.editProposalButton}} -->
+                    </div>
+                    <div class="pp-edit-tool pull-right" ng-if="proposalData.status=='Sold' || proposalData.status=='Signed'"
+                    ng-click="viewPropsal(proposalData.id)">
+                        <div class="status-wrapper">
+                        	<div class="proposal-status status-Edit" title="View Proposal">
+                        		<span class="glyphicon glyphicon-eye-open" style="padding-left:5px;padding-top:3px;"></span>
+                        	</div>
+                        </div>
+                    </div>     
+        </div>
+    </div>
+		<div class="summary-section view-proposal basic-detail-section">
+			<header>
+				<a class="breadcrumb-text">{{property.basicDetails}}</a>
+				<div class="pull-right text-right">
+					<div class="btn-group">
+						
+					 </div>
+				</div>
+			</header>
+		    <div>
+		        <aside class="pull-left">
+			        <section>
+				        <label>{{property.proposalName}}</label> <span class="text-elipsis" title="{{proposalData.proposalName}}">{{proposalData.proposalName}}</span>
+			        </section>
+			        <section>
+				        <label>{{property.createAdvertiserName}}</label> <span title="{{proposalData.advertiserName}}" class="text-elipsis">{{proposalData.advertiserName}}</span>
+			        </section>	
+			        <section>
+				        <label>{{property.createStartDate}}</label> <span>{{proposalData.startDate}}</span>
+			        </section>
+			        <section>
+				        <label>{{property.reuestedOn}}</label> <span>{{proposalData.requestedOn}}</span>
+			        </section>
+			        <section>
+				        <label>{{property.createSalesCategory}}</label> <span>{{proposalData.salesCategory}}</span>
+			        </section>				
+			        <section>
+				        <label>{{property.priority}}</label> <span>{{proposalData.priority}}</span>
+			        </section>
+			        <section>
+				        <label>{{property.remainingBudget}}</label> <span>{{remainingBudget}}</span>
+			        </section>
+		        </aside>
+		        <aside class="pull-right">
+			        <section>
+				        <label>{{property.campaignName}}</label> <span title="{{proposalData.compaignName}}" class="text-elipsis">{{proposalData.compaignName}}</span>
+			        </section>
+			        <section>
+				        <label>{{property.accountManager}}</label> <span class="text-elipsis">{{proposalData.accountManager}}</span>
+			        </section>
+			        <section>
+				        <label>{{property.createEndDate}}</label> <span>{{proposalData.endDate}}</span>
+			        </section>
+			        <section>
+				        <label>{{property.dueOn}}</label> <span> <div ng-if="proposalData.dueOn!=''">{{proposalData.dueOn}}</div></span>
+			        </section>
+			        <section>
+				        <label>{{property.createBudget}}</label> <span>{{proposalData.budget}}</span>
+			        </section>
+			        
+			        <section>
+				        <label>{{property.totalInvestment}}</label> <span>{{totalInvestment}}</span>
+			        </section>
+			        <section>
+				        <label>{{property.noteView}}</label> <span class="text-elipsis">{{proposalData.custom1}}</span>
+			        </section>
+		        </aside>
+	        </div>
+	    </div>
+    </div>
+
+	<div>
+		<div class="basic-detail-section main-container summary-section">
+			<header>
+                <a class="breadcrumb-text">{{property.lineItems}}</a>
+                    <button class="btn pull-right pp-create-btn add-creative-button ng-binding"
+                    	ng-if="(roleName=='ADMIN' && (proposalData.status=='Pending' || proposalData.status=='Rejected')) || (roleName=='PLANNER' && (proposalData.assignedToUser == userId && (proposalData.status=='Pending' || proposalData.status=='Rejected')))"
+                            style="margin-top: 3px; margin-right: 16px"
+                            ng-click="addLineItem(proposalData.id)">
+                        <span class="glyphicon glyphicon-plus-sign"></span> {{property.addLineItemButton}}
+                    </button>
+            </header>
+			<div class="row lineItem-header">
+				<div class="col-lg-1 col-sm-12 col-md-2 filter-div">
+					<span>Filter</span>
+				</div>
+				<div class="col-lg-3 col-sm-12 col-md-2" style="padding-left: 0px;">
+					<div class="input-group input-group">
+						<input type="text" class="form-control"
+							placeholder="Filter line Item list ..." ng-model="filterLineItems"
+							ng-change="resetLimit();"> <span
+							class="input-group-addon"> <span
+							class="glyphicon glyphicon-search"></span>
+						</span>
+					</div>
+				</div>
+				<div class="col-lg-6 col-sm-12 col-md-8"></div>
+				<div class="col-lg-2 col-sm-12 col-md-6"></div>
+			</div>
+
+			<div class="row table-responsive">
+				<table
+					class="table table-striped font-12 table-bordered table-hover table-condensed mpt-table">
+					<thead>
+						<tr>
+							<th ng-click="sort_by('placeHolder');">{{property.tablePlacementName}}&nbsp;<a>
+								<span class="sorter">
+									<i class="glyphicon glyphicon-triangle-top"></i>
+									<i class="glyphicon glyphicon-triangle-bottom"></i>	
+								</span></a>
+							</th>
+							<th ng-click="sort_by('price');">{{property.price}}&nbsp;<a>
+								<span class="sorter">
+								<i class="glyphicon glyphicon-triangle-top"></i>
+								<i class="glyphicon glyphicon-triangle-bottom"></i>	
+								</span></a>
+							</th>
+							<th ng-click="sort_by('paymentModel');">{{property.gridPaymentModel}}&nbsp;<a>
+								<span class="sorter">
+								<i class="glyphicon glyphicon-triangle-top"></i>
+								<i class="glyphicon glyphicon-triangle-bottom"></i>	
+								</span></a>
+							</th>
+							<th ng-click="sort_by('offeredQuantity');">{{property.offeredQuantity}}&nbsp;<a>
+								<span class="sorter">
+									<i class="glyphicon glyphicon-triangle-top"></i>
+									<i class="glyphicon glyphicon-triangle-bottom"></i>	
+								</span></a>
+							</th>
+							<th ng-click="sort_by('investment');">{{property.investment}}&nbsp;<a>
+								<span class="sorter">
+									<i class="glyphicon glyphicon-triangle-top"></i>
+									<i class="glyphicon glyphicon-triangle-bottom"></i>	
+								</span></a>
+							</th>
+							<th ng-click="sort_by('startDate');">{{property.gridStartDtae}}&nbsp;<a>
+								<span class="sorter">
+									<i class="glyphicon glyphicon-triangle-top"></i>
+									<i class="glyphicon glyphicon-triangle-bottom"></i>	
+								</span></a>
+							</th>
+							<th ng-click="sort_by('endDate');">{{property.gridEndDtae}}&nbsp;<a>
+								<span class="sorter">
+									<i class="glyphicon glyphicon-triangle-top"></i>
+									<i class="glyphicon glyphicon-triangle-bottom"></i>	
+								</span></a>
+							</th>
+							<!-- <th ng-if="(roleName=='ADMIN' && (proposalData.status!='Signed' && proposalData.status!='Sold')) || (roleName=='PLANNER' && (proposalData.assignedToUser == userId && (proposalData.status=='Pending' || proposalData.status=='Rejected')))">{{property.action}}</th>-->
+							<th ng-if="(roleName=='ADMIN' && (proposalData.status=='Pending' || proposalData.status=='Rejected')) || (roleName=='PLANNER' && (proposalData.assignedToUser == userId && (proposalData.status=='Pending' || proposalData.status=='Rejected')))">{{property.action}}</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr
+							ng-repeat="lineItem in filteredItems = (lineItems | filter: filterLineItems) | filter:{placeHolder:filterLineItems} "
+							ng-animate=" 'animate'">
+							<td title="{{lineItem.placeHolder}}"><a ng-click="view(lineItem)"><span
+								editable-number="lineItem.placeHolder" e-name="placeHolder"
+								e-form="lineform" e-required>{{lineItem.placeHolder}}</span></a></td>
+								
+							<td title="{{lineItem.price}}"><span
+								editable-number="lineItem.price" e-name="price"
+								e-form="lineform" e-required>{{lineItem.price}}</span></td>
+							<td title="{{lineItem.paymentModel}}"><span
+								editable-number="lineItem.paymentModel" e-name="paymentModel"
+								e-form="lineform" e-required>{{lineItem.paymentModel}}</span></td>
+							<td title="{{lineItem.offeredQuantity}}"><span
+								editable-number="lineItem.offeredQuantity" e-name="offeredQuantity"
+								e-form="lineform" e-required>{{lineItem.offeredQuantity}}</span></td>
+							<td title="{{lineItem.investment}}"><span
+								editable-number="lineItem.investment"
+								e-name="investment" e-form="lineform">
+									{{lineItem.investment}} </span></td>
+							<td title="{{lineItem.startDate}}"><span
+								editable-number="lineItem.startDate"
+								e-name="investment" e-form="lineform">
+									{{lineItem.startDate}} </span></td>
+							<td title="{{lineItem.endDate}}"><span
+								editable-number="lineItem.endDate"
+								e-name="endDate" e-form="lineform">
+									{{lineItem.endDate}} </span></td>	
+						    
+							<!-- <td style="white-space: nowrap" align="center" ng-if="(roleName=='ADMIN' && (proposalData.status!='Signed' && proposalData.status!='Sold')) || (roleName=='PLANNER' && (proposalData.assignedToUser == userId && (proposalData.status=='Pending' || proposalData.status=='Rejected')))">-->
+							<td style="white-space: nowrap" align="center" ng-if="(roleName=='ADMIN' && (proposalData.status=='Pending' || proposalData.status=='Rejected')) || (roleName=='PLANNER' && (proposalData.assignedToUser == userId && (proposalData.status=='Pending' || proposalData.status=='Rejected')))">	
+								
+								<div class="buttons">
+									<span class="glyphicon glyphicon-edit"
+										style="vertical-align: middle; cursor: pointer"
+										ng-click="edit(lineItem)"></span>&nbsp; 
+										<span class="glyphicon glyphicon-trash"
+										style="vertical-align: middle; cursor: pointer"
+										ng-click="removeLineItem(this)"></span>
+								</div>
+							</td>
+						</tr>
+						<tr class="pp-loading-status" ng-show="lineItems.length==0">
+							<td style="vertical-align: middle;" colspan="8"><i
+							class="fa fa-ban fa-2x"></i>&nbsp;{{propertyMessage.NoDataFoundMsg}}</td>
+						</tr>
+						<tr class"pp-loading-status" ng-hide="lineItems.length > -1">
+							<td style="vertical-align: middle;" colspan="8"><i
+								class="fa fa-cog fa-2x fa-spin"></i>&nbsp;{{propertyMessage.loadingDataMsg}}</td>
+						</tr>
+					</tbody>
+					
+				</table>
+
+			</div>
+			<div class="row pp-litm-pagination" style="height:36px;background-color: #E6E6E6;padding:3px;margin-top:10px !important;border: 0px none;">
+				<div class="col-lg-12">
+				 		
+				<div style="float: right;">
+					<div pagination="" page="currentPage" max-size="maxNoPageSize" on-select-page="setPage(page)" boundary-links="true" total-items="totalNoOfItems" items-per-page="entryLimit"
+						class="pagination pagination-sm" style="margin-top: 1px; margin-bottom: 0px;" previous-text="&laquo;" next-text="&raquo;">
+					</div>
+				</div>
+				<div style="float: right;padding: 0px 10px;">
+				 <span class="pagination-refresh glyphicon glyphicon-refresh" title="Refresh"  ng-click="refreshLineItemGrid()"></span>
+						<div class="pagination-select pull-right">
+							<select class="" ng-model='selectedNumber'  ng-options='number for number in recordPerPage' ng-change="setRecordPerPage()"></select>
+						</div>
+				</div>
+				
+				</div>
+			</div>
+			<!-- <div class="row" style="background-color: #e6e6e6;">
+				<div pagination="" page="currentPage" max-size="5"
+					on-select-page="setPage(page)" boundary-links="true"
+					total-items="filteredItems.length" items-per-page="entryLimit"
+					class="pagination pagination-sm col-lg-12"
+					style="margin-top: 1px; margin-bottom: 0px;"
+					previous-text="&laquo;" next-text="&raquo;"></div>
+
+			</div>-->
+		</div>
+	</div>
+</section>
+</div>

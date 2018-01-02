@@ -1,0 +1,98 @@
+<div class="grey_bg"></div>
+        <div class="modal-header">
+            <h4 class="modal-title">
+				<button type="button" class="close" data-dismiss="modal" ng-click='cancel();' aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<span class='addImage'>{{property.addAnAsset}}</span>				
+			</h4>
+        </div>
+        <form name="assetImageForm">
+        <div class="asset-body modal-body">
+            <div class='row addImage'>
+				<div class='col-md-6'>
+					<h6>{{property.assetName}}<span class="star-mark">*</span></h6>    				
+    				<input type="text" placeholder="{{property.enterName}}" class="form-control" ng-model='assetModel.creativeVideoName' maxlength="50">
+					<p  class="asset-error" ng-if="creativeVideoNameValidation">{{creativeVideoNameValidationMsg}}</p>
+					<h5 >{{property.size}}<span class="star-mark">*</span>  {{assetModel.videoResolution}}</h5>    
+					<p class="asset-error" ng-if="creativeSizeValidation">{{creativeSizeValidationMsg}}</p>
+				</div>
+				<div class='col-md-6'>
+					<h5>{{property.preview}}</h5>
+					<!-- <div id="message"></div>
+					<input class="mpt-video" type="file" accept="video/*"/>
+					<video controls autoplay></video>-->
+     				<div id="upload-videoButtonDiv">
+						<!-- <p style='color:#ccc;'>{{property.yourPreviewWillAppearHere}}</p>-->
+						   <div style="margin-top:-10px;" class="asset-video-wrapper">
+							<span class="video-asset-upload btn btn-default btn-file">
+    							<div id="message"></div>
+    							<input type="file" class="mpt-video" ng-video-select="onFileSelect($files)" accept='video/*' id='assetVideoFile'>
+    							<video style="height:200px;width:300px;" controls ngf-src="files[0]" ngf-accept="'video/*'" autoplay></video>
+							</span>
+						</div>
+					</div>
+					<p class="asset-error">{{upladVideoButtonDivErrorMsg}}</p>
+					<div  style='text-align: center;border: 1px solid #999;position:relative;'>
+						<img ng-if="assetModel.mediaType" src="data:{{assetModel.mediaType}};base64,{{videoSrc}}" class='col-md-12'>
+					</div>
+				</div>
+			</div>
+
+	</div>
+	<div class="asset-footer modal-footer" style='text-align: right;'>
+	<button class="btn btn-default addImage" ng-click="cancel()">{{property.cancel}}</button>
+	<button class="btn btn-primary addImage" ng-click="okVideoData()">{{property.add}}</button>
+	</div>	
+	</form>
+        
+    <script language="javascript">
+(function localFileVideoPlayerInit(win) {
+    var URL = win.URL || win.webkitURL,
+        displayMessage = (function displayMessageInit() {
+            var node = document.querySelector('#message');
+
+            return function displayMessage(message, isError) {
+                node.innerHTML = message;
+                node.className = isError ? 'error' : 'info';
+            };
+        }()),
+        playSelectedFile = function playSelectedFileInit(event) {
+            var file = this.files[0];
+
+            var type = file.type;
+
+            var videoNode = document.querySelector('video');
+
+            var canPlay = videoNode.canPlayType(type);
+
+            canPlay = (canPlay === '' ? 'no' : canPlay);
+
+            var message = 'Can play type "' + type + '": ' + canPlay;
+
+            var isError = canPlay === 'no';
+
+            displayMessage(message, isError);
+
+            if (isError) {
+                return;
+            }
+
+            var fileURL = URL.createObjectURL(file);
+
+            videoNode.src = fileURL;
+        },
+        inputNode = document.querySelector('input.mpt-video');
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+    if (!URL) {
+        displayMessage('Your browser is not ' + 
+           '<a href="http://caniuse.com/bloburls">supported</a>!', true);
+        
+        return;
+    }                
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+    inputNode.addEventListener('change', playSelectedFile, false);
+}(window));
+
+
+</script>    
+        
+        

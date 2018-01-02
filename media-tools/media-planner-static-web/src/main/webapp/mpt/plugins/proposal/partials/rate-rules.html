@@ -1,0 +1,82 @@
+<section>
+  <div class="row proposal" style="margin-left: 10px;">
+      <div class="content-area" style="padding-top: 0px;">
+        <div class="row rc-content-wrapper">
+           <div class="row rc-left-nav">
+              <div class="col-lg-2 col-md-2 col-sm-3 pp-filter-panel">
+                  <left-navigation></left-navigation>
+              </div>
+              <div class="col-lg-10 col-md-10 col-sm-10 pp-rrule-wrapper">
+                <div class="row rrl-header">
+                    <h4 class="text-left ng-binding">Rate Rules:</h4>
+                </div>
+                <div class="row attribute-header">
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                       <label class="lbl-rc-filter ng-binding pull-left">Filter</label>
+                        <select ng-options="filterOption as filterOption.label for filterOption in filterLst" ng-model="selectedFilterAttribute" class="rc-rule-select pull-left ng-pristine ng-untouched ng-valid">
+                            <option value="0" selected="selected" label="-- select --">-- select --</option>
+                            <option value="1" label="Name">Name</option>
+                            <option value="2" label="Type">Type</option>
+                       </select>
+                       <div class="rc-search-wrapper pull-left">
+                           <span class="input-group input-group pull-left">
+                                    <input type="text" ng-keyup="$event.keyCode == 13 ?getFilterAttribute(): null" ng-model="filterAttribute" maxlength="20" size="20" placeholder="Filter rules ..." class="form-control filter-attr ng-pristine ng-untouched ng-valid ng-valid-maxlength">
+                                    <span class="input-group-addon">
+                                       <span ng-click="getFilterAttribute()" class="glyphicon glyphicon-search"></span>
+                                    </span>
+                           </span>
+                       </div>
+                       <span ng-click="refreshAttributeGrid()" title="Refresh" class="pull-left glyphicon glyphicon-refresh"></span>
+                    </div>
+                     <div class="col-lg-6 col-md-6 col-sm-6 noPad">
+                        <button ng-click="addAttribute()" class="btn pull-right pp-create-btn add-creative-button ng-binding">
+                              <span class="glyphicon glyphicon-plus-sign"></span>
+                                Add Rule
+                        </button>
+                    </div>
+                </div>
+
+                <div class="rule-wrapper">
+                  <table class="tbl-rc-rules table table-striped font-12 table-bordered table-hover table-condensed mpt-table">
+                      <tr>
+                          <th>Product name
+                            <span class="sorter">
+                             <i class="glyphicon glyphicon-triangle-top"></i>
+                             <i class="glyphicon glyphicon-triangle-bottom"></i>
+                           </span>
+                         </th>
+                          <th>Segment</th>
+                          <th>Base Price</th>
+                          <th>Base Price</th>
+                          <th>Notes</th>
+                          <th>Actions</th>
+                      </tr>
+                      <tr>
+                          <td class="col-rc-product">&nbsp;</td>
+                          <td class="col-rc-segment">&nbsp;</td>
+                          <td class="col-rc-baseprice">&nbsp;</td>
+                          <td class="col-rc-notes">&nbsp;</td>
+                          <td class="col-rc-notes">&nbsp;</td>
+                          <td class="col-rc-actions">
+                              <span ng-click="editUser(user.clientId)"  class="glyphicon glyphicon-edit"></span>
+                              <span ng-click="deleteUser(user.clientId)" class="glyphicon glyphicon-trash"></span>
+                          </td>
+                      </tr>
+                     <tr>
+                        <td class="col-rc-product">&nbsp;</td>
+                        <td class="col-rc-segment">&nbsp;</td>
+                        <td class="col-rc-baseprice">&nbsp;</td>
+                        <td class="col-rc-notes">&nbsp;</td>
+                        <td class="col-rc-notes">&nbsp;</td>
+                        <td class="col-rc-actions">
+                            <span ng-click="editUser(user.clientId)"  class="glyphicon glyphicon-edit"></span>
+                            <span ng-click="deleteUser(user.clientId)" class="glyphicon glyphicon-trash"></span>
+                        </td>
+                    </tr>
+                  </table>
+                </div>
+            </div>
+        </div>
+      </div>
+  </div>
+</section>

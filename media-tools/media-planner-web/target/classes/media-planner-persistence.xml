@@ -1,0 +1,70 @@
+<!-- Author: Rahul Chauhan -->
+<beans xmlns="http://www.springframework.org/schema/beans" 
+	xmlns:mvc="http://www.springframework.org/schema/mvc" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:cache="http://www.springframework.org/schema/cache"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:repository="http://www.springframework.org/schema/data/repository"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd 
+		http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+		http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa-1.3.xsd
+		http://www.springframework.org/schema/data/repository http://www.springframework.org/schema/data/repository/spring-repository.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+		
+		<bean id="propertySource" 
+        class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"
+        p:location="classpath:core-config.properties"/>
+		
+		<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+	        <property name="dataSource" ref="dataSource"/>
+	        <property name="jpaVendorAdapter" ref="jpaVendorAdapter"/>
+	        <!-- spring based scanning for entity classes-->
+	        <property name="packagesToScan" value="com.tavant.media.core.entity, com.tavant.media.target.entity, com.tavant.media.core.audit.entity, com.tavant.media.core.rules.entity"/>
+	        <property name="jpaProperties">
+		        <props>
+		            <prop key="hibernate.format_sql">true</prop>
+		            <prop key="hibernate.hbm2ddl.auto">${hibernate.hbm}</prop>
+		            <!-- <prop key="hibernate.enable_lazy_load_no_trans">true</prop> -->
+		        </props>
+		    </property>
+		</bean>
+
+		<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+	    	<property name="entityManagerFactory" ref="entityManagerFactory" />
+	  	</bean>
+	
+		<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		   <property name="driverClass" value="${media.planner.hibernate.driver}" />
+		   <property name="jdbcUrl" value="${media.planner.url}" />
+		   <property name="user" value="${media.planner.username}" />
+		   <property name="password" value="${media.planner.password}" />
+		   <property name="maxPoolSize" value="${jdbc.maxPoolSize}" />
+       	   <property name="minPoolSize" value="${jdbc.minPoolSize}" /> 
+		</bean>
+
+		<bean id="jpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+	        <property name="showSql" value="true"/>
+	        <property name="generateDdl" value="true"/>
+	        <property name="database" value="MYSQL"/>
+	    </bean>
+	    
+	    <aop:aspectj-autoproxy >
+			<aop:include name="loggingAspect"/>
+			<aop:include name="auditAction"/>
+		</aop:aspectj-autoproxy>
+		 
+		<bean id="loggingAspect" class="com.tavant.media.core.logger.LoggingAspect"></bean>
+</beans>		

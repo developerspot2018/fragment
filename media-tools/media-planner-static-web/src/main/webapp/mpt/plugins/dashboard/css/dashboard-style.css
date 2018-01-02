@@ -1,0 +1,60 @@
+.Dashboard .left-naviation-menu ul { background-color: #e6e6e6; height: 680px;border-top: 1px solid #ccc; }
+.Dashboard .left-naviation-menu ul li ul { background-color: #f9f9f9;height: auto;}
+.Dashboard .left-naviation-menu ul li ul li{ background-color: #f9f9f9;}
+.Dashboard .left-naviation-menu ul li ul li a{ background-color: #f9f9f9;padding-left: 30px;border-left: 8px solid #f9f9f9;}
+.Dashboard .left-naviation-menu ul li ul li.subMenuActive> a{ background-color: white; border-left: 8px solid #428bca;padding-left: 30px;}
+.Dashboard .left-naviation-menu ul li { border-bottom: 1px solid #ccc; margin: 0;/*  border-left: 5px solid #00BAFF; */ }
+.Dashboard .left-naviation-menu ul li a:hover { background: #BBD0E2; }
+.Dashboard .left-naviation-menu ul li.subMenuActive > a { border-left: 8px solid #428bca; }
+/* .Dashboard .nav-pills > li.active > a, .nav-pills > li.active > a:hover, .nav-pills > li.active > a:focus { background-color: #f89727; background-image: url("../images/nav-arrow.png"); background-position: right; background-repeat: no-repeat; color: black; } */
+.Dashboard .nav-pills > li > a { border-radius: 0; }
+.Dashboard .left-naviation-menu ul li a { border-left: 8px solid #e6e6e6;/*  margin-left: 8px;  */font-weight: 400 !important; font-size: 14px; color: black !important; }
+.Dashboard .left-naviation-menu ul li a span { margin-right: 13px; background-color: transparent; }
+.Dashboard .addEllipsis {overflow: hidden;text-overflow: ellipsis;vertical-align: top;white-space: nowrap;}
+.Dashboard .chart-wrapper{/*pointer-events:none;*/}
+.Dashboard .subMenuActive {background-color: white !important;}
+.Dashboard .graph-label-wrapper {background-color: transparent;float: left;height: 140px;margin-left: 973px;position: absolute;width: 400px;z-index:800;}
+thead {background-color: #797a7c;color: white;}
+/*.Dashboard .dashboard-wrapper table th, .Dashboard .dashboard-wrapper table td{width:220px;}*/
+.Dashboard .table-responsive .db-pp-name{width:22%;}
+.Dashboard .table-responsive .db-pp-date{width:12%;}
+.Dashboard .dashboard-campaign .future-cpm-grid{min-height:360px;padding-left: 0px;}
+.Dashboard .delivery-campaigns table tr td{width:25% !important;border-right:1px solid #D1D2D2;}
+.Dashboard .db-calendar-tbl table tr td{width:25% !important;border-right:1px solid #D1D2D2;}
+.Dashboard .mpt-table .th-cpm-live{width:40%;border-right:1px solid #D1D2D2;}
+.Dashboard .mpt-table .th-cpm-flight, .Dashboard .mpt-table .th-cpm-daystolive{width:20%;}
+.mpt-db-left-section, .mpt-db-right-section{width:13% !important;}
+.chart-wrapper{width:80% !important;}
+.Dashboard .dashboard-chart{/*width:auto !important;*/}
+/* @media screen and (min-width: 1280px) {
+    .col-lg-2 { width: 20% !important; }
+    .col-lg-10 { width: 78% !important; }
+}
+
+@media screen and (min-width: 1500px) {
+    .col-lg-2 { width: 16.6667% !important; }
+    .col-lg-10 { width: 82% !important; }
+} */
+/*.campaign-table th.width-30p{display:block;width:40%;}
+.campaign-table th.width-20p{display:block;width:20%;}*/
+
+.Dashboard .cpm-grid-outer{border:1px solid #D1D2D2;border-radius:8px;padding:3px;box-shadow: 3px 3px 10px #D1D2D2;}
+.Dashboard .cpm-board-completed{width:49% !important;margin-left:10px;}
+.Dashboard .campaign-filters > div{background-color:#f5f8fb;margin-top:10px;}
+.Dashboard .cpm-gotolive-header .cpm-delay-txt{margin-left: 4px;margin-right: 20px;padding-top: 3px;}
+
+
+.Dashboard .pagination-select select{margin:5px 20px 0px 10px;height:23px;}
+.Dashboard .pagination-refresh{display:inline-block;margin-right:10px; margin-top: 10px; margin-bottom: 0px;cursor: pointer;}
+.Dashboard .col-lg-2 {width: 17.41%;}
+.Dashboard .col-lg-10 {width: 82.533%;}
+.Dashboard .mpt-table thead > tr > th .sorter {display: inline-block;float: right;}
+.Dashboard .mpt-table thead > tr > th .glyphicon {background: none repeat scroll 0 0 rgba(0, 0, 0, 0);cursor: pointer;display: block;font-size: 10px;height: 12px;top: -1px;width: 17px;}
+.Dashboard .campaign-table .width-70p{width:70%;}
+.Dashboard .campaign-table .campaign-delay{margin-top:5px;}
+.Dashboard .nav-stacked .glyphicon{margin-right:10px;color: #448aff;font-size: 16px;}
+.cmp-chart-container{width:100% !important;height:280px;}
+.Dashboard .dashboard-pages{margin:0px 0px;}
+.Dashboard .cmp-grid-wrapper{padding-left:0px;height:298px;}
+.cpm-gotolive-header{min-height:30px;font-weight:bold;padding:8px 0px 0px 4px !important;background-color: rgb(202, 225, 249);}
+.cpm-graph-outer{border:1px solid #d1d2d2;margin-left: 20px;width:48.0%;border-radius:5px;box-shadow: 3px 3px 10px #D1D2D2;}

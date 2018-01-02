@@ -1,0 +1,22 @@
+{ 
+	"changePasswordMsg": "Password changed successfully",
+	"errorInChangePpasswordMsg": "An error occurred. Please try after some time",
+	"commaNotAllowedMsg": "Comma not allowed",
+	"oldPasswordReqMsg": "Old password required",
+	"passwordReqMsg": "Password required",
+	"confirmPasswordReqMsg": "Confirm password required",
+	"bothPasswordNotEqualMsg": "Please make sure Password and Confirm Password match!",
+	"deleteUserMsg": "User deleted successfully",
+	"firstNameReqMsg": "First Name required",
+	"lastNameReqMsg": "Last Name required",
+	"passwordMinimumSixCharMsg": "Password should be at least six characters",
+	"emailIdReqMsg": "Email required",
+	"invalidEmailIdMsg": "Invalid Email",
+	"roleReqMsg": "User role required",
+	"userDetailsUpdatedMsg": "User details updated successfully",
+	"userCreatedMsg": "User created successfully",
+	"changePasswordConfermationMsg": "Are you sure you want to change password?",
+	"updateUserDetailConfirmMsg": "Are you sure you want to update this details?",
+	"confirmDeleteMsg": "Are you sure you want to delete this record?",
+	"oldPasswordNotMatchMsg": "Your old password doesn't match?"
+}

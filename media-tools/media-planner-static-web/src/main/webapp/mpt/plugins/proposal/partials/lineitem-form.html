@@ -1,0 +1,310 @@
+<div class="proposal" style="float:left;">
+	<div class="mpt-breadcrum brcm-wrapper"><ui-breadcrumbs displayname-property="data.displayName" abstract-proxy-property="data.proxy" template-url="plugins/proposal/partials/uiBreadcrumbs.html"></ui-breadcrumbs></div>
+	<form name="lineItemForm" method="post" novalidate>
+		<div class="summary-section add-line-items basic-detail-section" style="float: left;">
+			<header>
+				<a class="breadcrumb-text"> {{property.basicDetails}} </a>
+			</header>
+			<div class="line-item-fields" style="margin-bottom: 10px;"> 
+				<aside class="pull-left basic-details">
+					<input type="hidden" name="placeHolder" data-ng-model="newLineItem.placeHolder"
+							id="placeHolder" readonly="readonly" ng-disabled="true" />
+					<section class="form-group " show-errors>
+						<label>{{property.addLineItemProduct}}<span class="mandatory">*</span></label>
+						 <select style="margin: 0px;" ng-model="newLineItem.product" ng-change="getSalestargets();getBasePrice();" required
+							name="productName" class="form-control pp-litm-select">
+							<option
+								ng-selected="{{productVal.id == newLineItem.selectedProductVal}}"
+								ng-repeat="productVal in productList | orderBy:'name':false"
+								value="{{productVal.id}}">{{productVal.name}}</option>
+						</select>
+						<a href="javascript:void(0);" class="status-wrapper" style="width: 6%;" ng-if="showCreativeIcon=='show'" ng-click="showCreativeDetails('true')" >
+							<div class="proposal-status" style="background-color: #CC3300;" title="View Creative">
+								<div class="glyphicon glyphicon-eye-open"  style="padding-top:6px;padding-left:6px;"></div>								
+							</div>
+						</a>
+						<a href="javascript:void(0);" class="status-wrapper" style="width: 6%;" ng-if="showCreativeIcon=='hide'" ng-click="showCreativeDetails('false')" >
+							<div class="proposal-status" style="background-color: #CC3300;" title="Hide Creative">
+								<div class="glyphicon glyphicon-eye-close"  style="padding-top:6px;padding-left:6px;"></div>
+							</div>
+						</a>
+						
+						<label class="help-block"
+							ng-if="lineItemForm.productName.$error.required && checkErrors">
+							{{propertyMessage.productRequiredMsg}}</label>
+					</section>
+					<section>
+						<label>{{property.placementName}}</label> <div class="form-control placeholder" name="placeHolder" data-ng-model="newLineItem.placeHolder"
+							id="placeHolder" readonly="readonly" ng-disabled="true">{{newLineItem.placeHolder}}</div>
+					</section>
+					<section>
+						<label>{{property.addLineItemNote}}</label>
+						<div>
+							<textarea class="form-control" rows="1" data-ng-model="newLineItem.custom4"
+								id="custom4" name="custom4" maxlength="500"></textarea>
+								<span class="help-block char-limit">Character limit - {{500 - newLineItem.custom4.length}}</span>
+						</div>
+					</section>
+				</aside>
+				<aside class="pull-right basic-details">
+					<section class="salesTargetDiv">
+						<label>{{property.addLineItemSalesTarget}}<span class="mandatory">*</span></label>
+						<div multi-select input-model="salesTargetList"
+							tick-property="ticked" output-properties="name ticked"
+							max-labels="1" button-label="name" item-label="name"
+							output-model="selectedSalesTarget" tick-property="ticked"
+							id="advertiserError" disable-property=false></div>
+						<label class="help-block" style="padding-left: 34%;"
+							ng-if="isSalesTargetListCheckErrors">{{propertyMessage.segmentsRequiredMsg}}</label>
+					</section>
+					<section class="form-group " show-errors>
+						<label>{{property.addLineItemStartDate}}</label>
+						<input type="text" name="startDate" max=newLineItem.endDate
+							 id="lineItemStartDate"
+							data-ng-model="newLineItem.startDate" readonly="readonly" class="form-control"/>
+					</section>
+					<section>
+						<label>{{property.addLineItemEndDate}}</label>
+						<input class="form-control" type="text" name="endDate"
+							id="lineItemEndDate" ng-model="newLineItem.endDate"
+							readonly="readonly" />
+							<label style="color: #a94442; margin-left: 40px" class="help-block"
+							ng-if="showDateError">{{propertyMessage.lineItemendtDateRangeMsg}}</label>
+						<label style="color: #a94442; margin-left: 40px" class="help-block"
+							ng-if="showDateFlightError">{{propertyMessage.lineItemFlightRange}}</label>
+					</section>
+				</aside>
+			</div>
+		</div>
+		<div class="summary-section add-line-items basic-detail-section" style="float: left;" ng-if="showCreative">
+			<header>
+				<a class="breadcrumb-text"> {{property.creativeDetails}} </a>
+			</header>
+			<div class="line-item-fields" style="margin-bottom: 10px;"> 
+				<aside class="pull-left basic-details" style="height: auto;min-height: 100px;">
+					<section class="form-group ">
+						<label>{{property.creativeName}}</label>
+						<div class="form-control placeholder" readonly="readonly">{{productCreativeDetails.name}}</div>
+					</section>
+					<section>
+						<label>{{property.creativeType}}</label> 
+						<div class="form-control placeholder" readonly="readonly">{{productCreativeDetails.type}}</div>
+					</section>
+				</aside>
+				<aside class="pull-right basic-details" style="height: auto;min-height: 100px;">
+					<section class="salesTargetDiv">
+						<label>{{property.creativeHeigth1}}</label>
+						<div class="form-control placeholder" readonly="readonly">{{productCreativeDetails.height1}}</div>
+					</section>
+					<section class="form-group">
+						<label>{{property.creativeWidth1}}</label>
+						<div class="form-control placeholder" readonly="readonly">{{productCreativeDetails.width1}}</div>
+					</section>
+				</aside>
+			</div>
+		</div>
+		
+		
+		
+		
+		
+		
+		
+		
+
+		<div class="summary-section add-line-items basic-detail-section" style="float: left;">
+			<header>
+				<a class="breadcrumb-text"> {{property.targetingBoxHeading}}</a>
+			</header>
+			<div class="campaigns-list">
+				<div class="campaigns ng-scope">
+					<!-- TARGET SECTION-->
+					<section style="padding-left: 40px; width:98%;">
+						<div class="row">
+                               <div class="col-md-6 col-lg-6 col-sm-6 list-target-item">                                       
+                                    <label style="width: 26%;">{{property.addLineItemTargetType}}</label>
+							        <select class="form-control" ng-model="targetTypeOption" style="width:54%;" ng-change="getElements()" ng-options="targetTypeOption  as targetTypeOption.name for targetTypeOption in targetTypeOptions | orderBy:'name':false">
+							        </select>                                       
+                               </div>
+                               <div class="col-md-6 col-lg-6 col-sm-6 list-target-item">
+
+	                                 <div  class="pp-list-item-zip" ng-hide="targetTypeOption.name=== 'Zip Code'">
+									<label style="width:26%;">{{property.addLineItemElements}}</label>
+									<!-- <select class="form-control" ng-model="element"
+										style="width:54%; margin-right: 0px;"
+										ng-options="elementArrayValue as elementArrayValue.value for elementArrayValue in elementArray"></select>  -->
+										<div multi-select input-model="elemntLst"
+												tick-property="ticked" output-properties="value ticked"
+												max-labels="1" button-label="value" item-label="value"
+												output-model="selectedElements" tick-property="ticked"
+												id="targetedElements" disable-property=false>
+										</div>
+									<!-- <button ng-click="addElement()" class="lst-add-btn btn add-creative-button ng-binding"
+										ng-disabled="targetTypeOption.name == undefined || element.value == undefined">
+										<span class="line-add-btn glyphicon glyphicon-plus-sign"></span>&nbsp;{{property.targetingAddButton}}
+									</button> -->
+									<button ng-click="addTargetElement()" class="pull-right lst-add-btn btn add-creative-button ng-binding"
+										ng-disabled="targetTypeOption.name == undefined || selectedElements.length == 0">
+										<i class="line-add-btn glyphicon glyphicon-plus-sign">{{property.targetingAddButton}}</i>
+									</button>                                     
+                               </div>
+                               <div class="pp-list-item-zip"
+								ng-show="targetTypeOption.name=== 'Zip Code'">
+								<label style="width: 20%;">ZipCode</label>
+								<input type="text" style="width: 60%;" ng-model="zipcode" />
+								<button ng-click="addTargetElement()"
+									class="pp-filter-btn btn pull-right add-creative-button"
+									ng-disabled="targetTypeOption.name == undefined || zipcode == undefined">
+									<span class="line-add-btn glyphicon glyphicon-plus-sign">Add</span>
+								</button>
+							</div>             
+
+						</div>
+						<div class="col-sm-12 col-md-12 col-lg-12 pp-target-table">
+                                 <table class="table table-striped font-12 table-bordered table-hover table-condensed">
+									<thead>
+										<tr>
+											<th class="target-header">{{property.addLineItemTargetTypeTh}}&nbsp;</th>
+											<th class="element-header">{{property.addLineItemElementsTh}}&nbsp;</th>
+											<th class="action-header">{{property.addLineItemActionTh}}&nbsp;</th>
+										</tr>
+									</thead>
+									<tbody>
+										<!-- <tr ng-repeat="targetListElement in targetListElements">
+											<td title="">{{targetListElement.name.name}}</td>
+											<td title="">{{targetListElement.value.value}}</td>
+											<td style="text-align: center">
+												<span class="glyphicon glyphicon-trash"
+												style="vertical-align: middle; cursor: pointer"
+												ng-click="deleteTargetListitem(targetListElement)"></span>
+											</td>
+										</tr>-->
+										<tr ng-repeat="targetListElement in targetListElements">
+											<td title="">{{targetListElement.categoryName}}</td>
+											<td title=""><span ng-repeat="elementList in targetListElement.targetElements">{{elementList.targetElementsValue}}<span ng-show=" ! $last ">, </span></span></td>
+											<td style="text-align: center">
+												<span class="glyphicon glyphicon-trash"
+												style="vertical-align: middle; cursor: pointer"
+												ng-click="deleteTargetListitem(targetListElement)"></span>
+											</td>
+										</tr>
+									</tbody>
+								</table>                                 
+							</div>
+						</div>
+					</section>
+				</div>
+			</div>
+		</div>
+
+		<div class="summary-section add-line-items basic-detail-section" style="float: left;">
+			<header>
+				<a class="breadcrumb-text">{{property.rateCardBoxHeading}} </a>
+			</header>
+			<div class="line-item-fields" style="margin-bottom: 10px;">
+				<aside class="pull-left" style="margin-right: 0px;">
+					<section>
+						<label>{{property.addLineItemRateCardPrice}}</label>
+						 <input class="form-control" type="text" placeholder="Please enter a number" numbers-only data-ng-model="newLineItem.basePrice" id="basePrice" required readonly="readonly"/>
+						 <a style="margin-top: 0px;" class="btn pull-right pp-create-btn add-creative-button ng-binding" href="#">Calculate</a>
+					</section>
+					
+				</aside>
+				<div class="view-details-wrapper pull-left" style="width:45%;">
+                       <span class="view-details">View Rules&nbsp;&nbsp;<i class="fa fa-angle-double-down" style="color:#01579b;font-size:16px;"></i></span>
+                       <div class="rule-details" style="min-height:200px;width:90%;border:1px solid #D1D2D2;background-color:#FFF;margin:8px;box-shadow:0px 3px 8px #D1D2D2;">&nbsp;</div>
+                       
+				</div>
+			</div>
+		</div>
+		<div class="summary-section add-line-items basic-detail-section" style="float: left;">
+			<header>
+				<a class="breadcrumb-text">{{property.lineItemDetailsBoxHeading}}</a>
+			</header>
+			<div class="line-item-fields line-item-info" style="margin-bottom: 10px;">
+				<aside class="pull-left">
+					<section class="form-group" show-errors>
+						<label>{{property.addLineItemOfferedPrice}}<span class="mandatory">*</span></label> 
+						<input class="form-control" type="text" name="price" ng-change="getInvestment();"
+							min="{{newLineItem.basePrice}}" data-ng-model="newLineItem.price"
+							id="price" placeholder="Please enter a number" valid-decimal-number/>
+						<label class="text-center help-block" style="margin-right:59px !important;" ng-if="lineItemForm.price.$error.min && checkErrors">
+							{{propertyMessage.offeredPriceLessThanZeroMsg}}</label>
+						<label class="text-center help-block" style="color: #a94442;margin-right:59px !important;" ng-if="isOfferedPriceLess">{{propertyMessage.offeredPriceLessThanBasePriceMsg}}</label>
+						<label class="text-center help-block" style="margin-right:59px !important;" ng-if="lineItemForm.price.$error.number && checkErrors">
+							{{propertyMessage.offeredPriceNumericMsg}}
+						</label>
+					</section>
+					<section>
+						<label>{{property.addLineItemSpecType}}</label>
+						<select class="form-control pp-litm-select" ng-model="newLineItem.specTypeOption">
+							<option
+								ng-repeat="specTypeOption in specTypeOptions | orderBy:'label':false"
+								value="{{specTypeOption.label}}">
+								{{specTypeOption.label}}
+							</option>
+						</select>
+					</section>
+					<section>
+						<label>{{property.addLineItemAvails}}</label> <input type="text" class="form-control"
+							name="custom2" data-ng-model="newLineItem.custom2" id="custom2"
+							numbers-only />
+					</section>
+					<section>
+						<label>{{property.addLineItemInvestment}}</label> 
+						<input class="form-control" type="text" name="investment" data-ng-model="newLineItem.investment"
+						 id="investment" ng-blur="getDynamicField();" numbers-only/>
+					</section>
+				</aside>
+				<aside class="pull-right">
+					<section>
+						<label class="pull-left pp-litm-label">{{property.addLineItemPriceType}}</label> <select class="form-control pp-litm-select"
+							ng-model="newLineItem.paymentModel" ng-change="changeOfferImpLable()">
+							<option
+								ng-repeat="paymentModelVal in priceTypeOptions | orderBy:'label':false"
+								value="{{paymentModelVal.label}}">
+								{{paymentModelVal.label}}</option>
+						</select>
+					</section>
+					
+					<section class="form-group " show-errors>
+						<label class="pull-left offered-txt pp-litm-label">{{offerImpressionLable}}<!-- {{property.addLineItemOfferedImpressions}} --><span class="mandatory">*</span></label>
+						 <input class="form-control" placeholder="Please enter a number"
+							type="text" min="0" name="offeredQuantity"
+							data-ng-model="newLineItem.offeredQuantity" id="offeredQuantity"
+							required ng-change="getInvestment()" numbers-only/>
+						<label class="offered-error text-center help-block" ng-if="isOfferedQuantityEmpty" style="color: #a94442;">
+							{{propertyMessage.offeredImpressionsRequiredMsg}}</label>
+
+						<label class="text-center help-block" ng-if="isOfferedQuantityLessThanZero" style="color: #a94442;">
+							{{propertyMessage.offeredImpressionsGreaterZeroMsg}}</label>
+					</section>
+					
+					
+					<section>
+						<label class="pull-left pp-litm-label">{{property.addLineItemPriority}}</label> <select class="form-control pp-litm-select"
+							ng-model="newLineItem.deliveryPriority">
+							<option
+								ng-repeat="paymentModelVal in priorityTypeOptions" 
+								value="{{paymentModelVal.label}}">{{paymentModelVal.label}}</option>
+						</select>
+					</section>
+				</aside>
+			</div>
+		</div>
+
+
+		<footer class="line-item-footer">
+			<button type="button" ng-click="cancelLineItem()"
+				style="height: 32px; margin-top: 0px;"
+				class="btn add-creative-button cancel-button ng-binding">
+				<span class="glyphicon glyphicon-remove"></span>&nbsp;{{property.addLineItemCancelButton}}
+			</button>
+			<button type="submit" style="height: 32px; margin-top: 0px;"
+				class="btn add-creative-button ng-binding"
+				ng-click="saveEdittedLineItem()" ng-disabled="disableButton">
+				<span class="glyphicon glyphicon-plus-sign"></span>&nbsp;{{property.addLineItemSaveButton}}
+			</button>
+		</footer>
+	</form>
+</div>

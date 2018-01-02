@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<States>
+	<State>
+		<fail>Draft</fail>
+		<current>Default</current>
+		<success>Draft</success>
+	</State>
+	<State>
+		<fail>Draft</fail>
+		<current>Draft</current>
+		<success>Active</success>
+	</State>
+	<State>
+		<fail>Draft</fail>
+		<current>Active</current>
+		<success>Ready</success>
+	</State>
+	<State>
+		<fail>Active</fail>
+		<current>Ready</current>
+		<success>Delivering</success>
+	</State>
+	<State>
+		<fail>Completed</fail>
+		<current>Delivering</current>
+		<success>Completed</success>
+	</State>
+</States>

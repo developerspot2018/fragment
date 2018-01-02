@@ -1,0 +1,54 @@
+/** STYLE FOR USER MANAGEMENT SCREEN **/
+.window-height{/*height:93%*/}
+.cpwd-wrapper{margin:0 auto;border:0px solid #D1D2D2;min-height:680px;position:relative;border-radius: 5px;background-color:#f5f8fb;}
+.make-center{position: absolute;top: 50%;left: 50%;margin-right: -50%;transform: translate(-50%, -70%);}
+.pwd-content{background-color:#c3e1fa;width:40%;min-height:275px; margin: 0;border:0px solid #337ab7;border-radius: 5px;}
+.pwd-header{font-size:14px;font-weight:bold;padding:8px 0px 0px 12px;background-color:#337ab7;height:40px;color:#FFF;
+	        background: rgba(0, 0, 0, 0) -moz-linear-gradient(center top , #4787be 50%, #337ab7 50%) repeat scroll 0 0;
+	        background: -webkit-linear-gradient(center top , #4787be 50%, #337ab7 50%) repeat scroll 0 0;
+	       }
+.username, .user-newpwd, .user-confirmpwd{padding:20px 10px 0px 30px;}
+
+ /* CSS FOR NAVIGATION */
+.change-pwd .left-naviation-menu ul, .manage-user-outer .left-naviation-menu ul, .mpt-create-user .left-naviation-menu ul{background-color:#e6e6e6;border-top:1px solid #ccc;height:80vh;}
+.change-pwd .left-naviation-menu ul li, .manage-user-outer .left-naviation-menu ul li, .mpt-create-user .left-naviation-menu ul li{border-bottom: 1px solid #ccc;margin: 0;}
+.change-pwd .subMenuActive, .manage-user-outer .subMenuActive, .mpt-create-user .subMenuActive{background-color: white !important;}
+.change-pwd .left-naviation-menu ul li.subMenuActive > a, .manage-user-outer .left-naviation-menu ul li.subMenuActive > a {border-left: 8px solid #428bca;}
+.user-input{width:84%;height:35px;}
+.change-btn{padding:10px 10px 10px 30px;margin-top:45px;}
+.change-btn .pp-create-btn{margin-top: 0px;color:#FFF;height:32px;}
+.manage-user-outer{margin:0 auto;border:0px solid #D1D2D2;min-height:80vh;position:relative;border:0px solid #D1D2D2;border-radius:5px;}
+.manageuser-content{background-color:#f5f8fb;width:100%;height:auto;margin-bottom:2px;border:0px solid #337ab7;border-radius:5px;}
+.tbl-manage-user{margin-top:20px;width:100%;}
+.tbl-manage-user tr th{background-color:#797a7c;color:#FFF;height:35px;vertical-align: middle !important;}
+.cpwd-wrapper .mpt-table .actions .glyphicon{background: #428bca none repeat scroll 0 0;border: medium none;border-radius: 4px;color: #fff;height:23px;padding:5px;width:25px;}
+.cpwd-wrapper .mpt-table tr td.actions{text-align: center;}
+.cpwd-wrapper .mpt-table tr td.actions span{margin-right: 5px;}
+.cpwd-wrapper .btn-create-user a{margin:40px 5% 10px 0px;cursor:pointer;}
+.cpwd-wrapper .btn-create-user .glyphicon-plus{margin-right:4px;font-size:11px;}
+.cpwd-wrapper ..mpt-table th.user-srNo{width:8%;}
+.pwd-content .help-block{color:#a94442;display:inline !important;margin-top:4px;margin-left:4px;}
+.pwd-content label{white-space:nowrap;}
+.manage-user-outer .cpwd-wrapper{border:0px solid #D1D2D2 !important;}
+.manage-user-outer .muser-pagination{background-color: #e6e6e6; padding: 4px;margin:0px 2px 20px;}
+#usersRoleList button.multiSelectButton{width:84%;text-align:left;}
+.mpt-create-user .create-user-header, .manage-user-outer .create-user-header{margin:0px 8px;}
+.mpt-create-user .create-user-header h4, .manage-user-outer .create-user-header h4{font-weight:bold;}
+.manage-user-header{background-color: rgb(202, 225, 249);padding: 4px 4px 4px 10px;margin:10px 1px;height:40px;}
+.manage-user-header .lb-filter{font-weight: 700;padding-top: 7px;}
+.manage-user-header select{height:29px;width:140px;}
+.manage-user-header .lb-filter-select{margin-left: 10px;padding-top: 1px;}
+.manage-user-header .filter-search{width:180px;margin-left:10px;z-index:2;height:30px;}
+.manage-user-header .input-group-addon{width:19px;padding:6px;}
+.manage-user-header .muser-search-filter{padding-top:2px;}
+.manage-user-header .pp-create-btn{margin-top:1px;color:#FFF;height:30px;}
+.manage-user-header .glyphicon-refresh{margin-left:10px;cursor:pointer;margin-top:13px;}
+.manageuser-content .mpt-table th.th-mu-name, .manageuser-content .mpt-table .th-mu-email{width:25%;}
+.manageuser-content .mpt-table .th-mu-role{width:30%;}
+.manageuser-content .mpt-table thead > tr > th .sorter{display:inline-block;float:right;}
+.manageuser-content .mpt-table thead > tr > th .sorter .glyphicon{display:block;padding:1px;cursor:pointer;}
+.create-user-outer .change-btn, .pwd-content .change-btn{margin-right:2px;}
+.create-user-outer .add-creative-button, .pwd-content .add-creative-button{margin-left:10px;}
+.muser-pagination .page-count{height: 27px;width:38px;padding-top:3px;margin-top:3px;}
+.create-user-outer .multiSelect .show{min-width:auto;}
+.create-user-outer .multiSelect .checkBoxContainer, .create-user-outer .multiSelect .multiSelectItem{width:100%;}

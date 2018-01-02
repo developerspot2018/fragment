@@ -1,0 +1,48 @@
+<div class="col-lg-2">
+<div class="left-naviation-menu">
+	<accordion> 
+	<accordion-group heading="Proposals" is-open="true" is-disabled="false"> 
+		<a href="#/proposal" ng-click="setProposalStatus('All')" style="text-decoration: none;">
+			<div class="panel-body-content" ng-class="{subMenuActive:subSelectedTab=='all'}">
+				<span class="glyphicon" style="margin-right: 13px; background-color: transparent;"></span>All Proposals
+			</div>
+	   </a> 
+		<a href="#/proposal" ng-click="setProposalStatus('MyOrders')" style="text-decoration: none;">
+			<div class="panel-body-content" ng-class="{subMenuActive:subSelectedTab=='my'}">
+				<span class="glyphicon" style="margin-right: 13px; background-color: transparent;"></span>My Proposals
+			</div>
+	   </a> 
+	   <a href="#/proposal" ng-click="setProposalStatus('Pending')" style="text-decoration: none;">
+			<div class="panel-body-content" ng-class="{subMenuActive:subSelectedTab=='pending'}">
+				<span class="glyphicon" style="margin-right: 13px; background-color: transparent;"></span>Pending
+			</div>
+	   </a> 
+	  <a href="#/proposal" ng-click="setProposalStatus('Proposed')" style="text-decoration: none;">
+			<div class="panel-body-content" ng-class="{subMenuActive:subSelectedTab=='proposed'}">
+				<span class="glyphicon" style="margin-right: 13px; background-color: transparent;"></span>Proposed
+			</div>
+	   </a> 
+	    <a href="#/proposal" ng-click="setProposalStatus('Rejected')" style="text-decoration: none;">
+			<div class="panel-body-content" ng-class="{subMenuActive:subSelectedTab=='rejected'}">
+				<span class="glyphicon" style="margin-right: 13px; background-color: transparent;"></span>Rejected
+			</div>
+	   </a>
+	    <a href="#/proposal" ng-click="setProposalStatus('Review')" style="text-decoration: none;">
+			<div class="panel-body-content" ng-class="{subMenuActive:subSelectedTab=='review'}">
+				<span class="glyphicon" style="margin-right: 13px; background-color: transparent;"></span>Review
+			</div>
+	   </a>
+	   <a href="#/proposal" ng-click="setProposalStatus('Signed')" style="text-decoration: none;">
+			<div class="panel-body-content" ng-class="{subMenuActive:subSelectedTab=='signed'}">
+				<span class="glyphicon" style="margin-right: 13px; background-color: transparent;"></span>Signed
+			</div>
+	   </a>
+	   <a href="#/proposal" ng-click="setProposalStatus('Sold')" style="text-decoration: none;">
+			<div class="panel-body-content" ng-class="{subMenuActive:subSelectedTab=='sold'}">
+				<span class="glyphicon" style="margin-right: 13px; background-color: transparent;"></span>Sold
+			</div>
+	   </a>
+</accordion-group> 
+</accordion>
+</div>
+</div>

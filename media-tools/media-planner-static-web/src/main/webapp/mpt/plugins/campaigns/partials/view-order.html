@@ -1,0 +1,99 @@
+<section>
+	<div class="row campaigns" style="margin-left: 10px;">
+		<div class="content-area search-campaign" style="padding-top: 0px;">
+			<div class="row">
+				<div class="campaign-filters">
+					<div class="col-lg-2 cpm-filter-nav">
+						<left-nav></left-nav>
+					</div>
+					<div class="col-lg-10 cpm-listing-container">
+						<div class="campaigns">
+							<div class="cpm-brcm">
+								<ui-breadcrumbs displayname-property="data.displayName"
+									abstract-proxy-property="data.proxy"
+									template-url="plugins/proposal/partials/uiBreadcrumbs.html"></ui-breadcrumbs>
+							</div>
+							<div class="summary-section" style="margin: 0;border-top:1px solid #8ec9fa;float: left;" ng-controller="campaignsCtrl">
+									<div style="width: 100%; padding-top: 20px;">
+										<div style="width: 49%; float: left;">
+											<section style="width: 100%;" class="form-group"></section>
+											<section style="width: 100%;" class="form-group ">
+												<label>{{property.proposalName}}<span
+													class="mandatory">*</span></label> <span class="cpm-view-data">{{proposalName}}</span>
+											</section>
+											<section style="width: 100%;" class="form-group">
+												<label>{{property.createAdvertiserName}}</label> <span class="cpm-view-data">{{advertiserName}}</span>
+											</section>
+
+											<section style="width: 100%;" class="form-group ">
+												<label>{{property.agencyMargin}}</label> <span class="cpm-view-data">{{agencyMargin}}</span>
+											</section>
+
+											<section style="width: 100%;" class="form-group">
+												<label>{{property.createStartDate}}<span
+													class="mandatory">*</span></label> <span class="cpm-view-data">{{startDate}}</span>
+											</section>
+
+											<section style="width: 100%;" class="form-group">
+												<label>{{property.reuestedOn}}<span
+													class="mandatory">*</span></label> <span class="cpm-view-data">{{requestedOn}}</span>
+											</section>
+
+											<section style="width: 100%;">
+												<label>{{property.createSalesCategory}}</label> <span class="cpm-view-data">{{salesCategory}}</span>
+											</section>
+
+											<section style="width: 100%;">
+												<label>{{property.grossOrNet}}</label> <span class="cpm-view-data">{{grossorNet}}</span>
+											</section>
+											<section style="width: 100%;">
+												<label>{{property.priority}}</label> <span class="cpm-view-data">{{priority}}</span>
+											</section>
+
+										</div>
+										<div style="width: 49%; float: right;">
+											<section style="width: 100%;" class="form-group "></section>
+											<section style="width: 100%;">
+												<label>{{property.campaignName}}</label> <span class="cpm-view-data">{{compaignName}}</span>
+											</section>
+
+											<section style="width: 100%;">
+												<label>{{property.accountManager}}</label> <span class="cpm-view-data">{{accountManager}}</span>
+											</section>
+
+											<section style="width: 100%;" class="form-group ">
+												<label>{{property.agencyName}}</label> <span class="cpm-view-data">{{agencyName}}</span>
+											</section>
+
+											<section style="width: 100%;" class="form-group">
+												<label>{{property.createEndDate}}<span
+													class="mandatory">*</span></label> <span class="cpm-view-data">{{endDate}}</span>
+											</section>
+
+											<section style="width: 100%;">
+												<label>{{property.dueOn}}<span class="mandatory">*</span></label>
+												<span style="width:61%">{{dueOn}}</span>
+											</section>
+
+											<section style="width: 100%;">
+												<label>{{property.proposalCurrency}}</label> <span class="cpm-view-data">{{proposalCurrency}}</span>
+											</section>
+
+											<section style="width: 100%;" class="form-group">
+												<label>{{property.createBudget}}</label> <span class="cpm-view-data">{{budget}}</span>
+											</section>
+											<section style="width: 100%;">
+												<label>{{property.addProposalNote}}</label> <span class="cpm-view-data">{{custom1}}</span>
+											</section>
+
+										</div>
+									</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>

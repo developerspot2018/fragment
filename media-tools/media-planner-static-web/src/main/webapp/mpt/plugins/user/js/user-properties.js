@@ -1,0 +1,26 @@
+{ 
+	"oldPassword": "Old Password:",
+	"newPassword": "New Password:",
+	"confirmPassword": "Confirm Password:",
+	"changePasswordButton": "Change Password",
+	"cancelButton": "Cancel",
+	"manageUsers": "Manage Users",
+	"createUser": "Create User",
+	"thUserName": "User Name",
+	"thEmail": "Email",
+	"thRole": "Role",
+	"thActions": "Action",
+	"thResourceID": "Resource",
+	"firstName": "First Name:",
+	"lastName": "Last name:",
+	"userEmail": "Email:",
+	"saveUserButton": "Save",
+	"userRole": "Role",
+	"optionalEmail": "Alternate Email:",
+	"manageAttributes": "Attributes",
+	"manageCreatives": "Creatives",
+	"manageProducts": "Products",
+	"manageSalesTargets": "Segments",
+	"manageUsers": "Manage Users"
+		
+}

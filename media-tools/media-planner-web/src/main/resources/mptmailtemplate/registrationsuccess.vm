@@ -1,0 +1,12 @@
+<html>
+<body>
+<h4>Hi, ${user.firstName}/${user.clientId},</h4>
+<div>
+	You were successfully registered to Tavant's media planner for ${user.account.accId}.
+	<p>With Role ${role1} ${role2} ${role3}
+</div>
+<p>username : ${user.clientId}
+<p>password : ${password}
+For more details please contact <a href="mailto:${user.additionalInfo}">${user.additionalInfo}</a>
+</body>
+</html>

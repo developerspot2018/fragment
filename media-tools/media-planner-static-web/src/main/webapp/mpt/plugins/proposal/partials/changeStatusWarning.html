@@ -1,0 +1,38 @@
+<form name="statusHtmlForm">
+<div class="proposal modal-header">
+            <h4 class="modal-title">
+				<button type="button" class="close" data-dismiss="modal" ng-click='close();' aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<span class='addImage'>{{property.changeStatus}}</span>				
+			</h4>
+        </div>
+        <div class="modal-body" ng-if="proposalData.currentStatus=='Proposed' && actionStatus=='fail'">
+			<div class='row'>
+				<div class='col-md-8'>
+					<h5>{{property.reason}}<span class="star-mark">*</span></h5>    
+					 <label ng-repeat="reason in statusChangeReasonList">
+					 <!--  <input
+					    type="checkbox"
+					    name="selectedReason[]"
+					    value="{{reason}}"
+					    ng-checked="selectedReason.indexOf(reason) > -1"
+					    ng-click="toggleSelection(reason)"
+					  > {{reason}}-->
+					   <input type="checkbox" name="selectedReason[]" value="{{reason.id}}"
+					    ng-checked="selectedReason.indexOf(reason.description) > -1" ng-click="toggleSelection(reason.id)"> {{reason.description}}
+					</label>
+					 
+					<p style='color:#a94442;font-size: 14px !important;' ng-if="creativeHtmlSizeValidation">{{creativeHtmlSizeValidationMsg}}</p>
+					<br/>
+					<span style='float:left'><h5>{{property.other}}</h5></span>
+					<textarea class="form-control htmlErrorClass" rows="5" ng-model="proposalModel.otherReason" placeholder="Please enter your reason" maxlength="65535"></textarea>
+					
+					<p ng-show='htmlErrorClass == true' style='color:red;'>{{property.compilationError}}</p>
+					<p style='color:#a94442;font-size: 14px !important;' ng-if="creativeHtmlCodeValidation">{{creativeHtmlCodeValidationMsg}}</p>
+				</div>
+			</div>
+        </div>
+        <div class="modal-footer" style='text-align: right;'>
+            <button class="btn btn-default" ng-click="close()">{{property.cancelButton}}</button>
+            <button class="btn btn-primary" ng-click="changeStatusWithReason()">{{property.changeStatusButton}}</button>
+ 	 </div>
+</form>

@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:cache="http://www.springframework.org/schema/cache"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:repository="http://www.springframework.org/schema/data/repository"
+	xmlns:task="http://www.springframework.org/schema/task" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd 
+		http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+		http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa-1.3.xsd
+		http://www.springframework.org/schema/data/repository http://www.springframework.org/schema/data/repository/spring-repository.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<mvc:annotation-driven validator="validator">
+		<mvc:argument-resolvers>
+			<bean class="com.tavant.media.core.secessentials.ClientResolver"
+			    c:_0-ref="clientDao"/>
+			<bean class="com.tavant.media.core.secessentials.CurrentAccountResolver"
+			    c:_0-ref="clientDao"/>
+		</mvc:argument-resolvers>
+	 	<mvc:message-converters>
+			<bean
+				class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+				<property name="objectMapper">
+					<bean class="com.tavant.media.core.mapper.LazyObjectMapper" />
+				</property>
+			</bean>
+		</mvc:message-converters> 
+	</mvc:annotation-driven>
+
+	<context:property-placeholder location="classpath:core-config.properties" />
+	<import resource="classpath:application-context.xml" />
+	<bean id="messageSource"
+		class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basename">
+			<value>locale/messages</value>
+		</property>
+	</bean>
+
+	<context:component-scan base-package="com.tavant.media.core.controllers"/>
+
+	<bean id="validator"
+		class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+		<property name="validationMessageSource" ref="messageSource" />
+	</bean>
+
+	<bean class="org.springframework.validation.DefaultMessageCodesResolver"
+		p:prefix="validation." />
+	<!-- All Controller definition should be entered here -->
+
+	<bean id="attributeController" class="com.tavant.media.core.controllers.AttributeController">
+		<property name="attributeService" ref="attributeService"></property>
+		<property name="attributeValidator" ref="attributeValidator"></property>
+	</bean>
+
+	<bean id="creativeController" class="com.tavant.media.core.controllers.CreativeController">
+		<property name="creativeService" ref="creativeService"></property>
+		<property name="creativeValidator" ref="creativeValidator"></property>
+	</bean>
+
+	<bean id="productController" class="com.tavant.media.core.controllers.ProductController">
+		<property name="productService" ref="productService"></property>
+		<property name="productValidator" ref="productValidator"></property>
+	</bean>
+
+	<bean id="proposalController" class="com.tavant.media.core.controllers.ProposalController">
+		<property name="proposalService" ref="proposalService" />
+		<property name="proposalValidator" ref="proposalValidator" />
+		<property name="clientService" ref="clientService" />
+		<property name="lineItemService" ref="lineItemService" />
+	</bean>
+
+	<bean id="salesTargetController" class="com.tavant.media.core.controllers.SalesTargetController">
+		<property name="salesTargetService" ref="salesTargetService"></property>
+		<property name="salesTargetValidator" ref="salesTargetValidator"></property>
+	</bean>
+
+	<bean id="lineItemController" class="com.tavant.media.core.controllers.LineItemController">
+		<property name="lineItemService" ref="lineItemService" />
+		<property name="lineItemValidator" ref="lineItemValidator" />
+		<property name="assetService" ref="assetService" />
+		<property name="clientService" ref="clientService" />
+		<property name="ROOT_LOCATION" value="${media.location}" />
+	</bean>
+	<bean id="authenticationController"
+		class="com.tavant.media.core.controllers.AuthenticationController"
+		c:_0-ref="clientService" c:_1-ref="clientValidator"/>
+
+	<bean id="targetCategoryController"
+		class="com.tavant.media.core.controllers.TargetCategoryController">
+		<property name="targetCategoryService" ref="targetCategoryService"></property>
+	</bean>
+
+	<bean id="targetCategoryValueController"
+		class="com.tavant.media.core.controllers.TargetCategoryValueController">
+		<property name="targetCategoryValueService" ref="targetCategoryValueService"></property>
+	</bean>
+
+	<bean id="assetController" class="com.tavant.media.core.controllers.AssetController">
+		<property name="assetValidator" ref="assetValidator"/>
+		<property name="assetService" ref="assetService" />
+		<property name="ROOT_LOCATION" value="${media.location}" />
+	</bean>
+	
+	<bean id="companyController" class="com.tavant.media.core.controllers.CompanyController">
+	    <property name="companyService" ref="companyService"/>
+	</bean>
+	
+	<!-- <bean id="readingProposal" class="com.tavant.media.core.states.ReadingProposal"></bean> -->
+	<bean id="auditAction" class="com.tavant.media.core.audit.AuditAction">
+	 <property name="proposalAuditService" ref="proposalAuditService"/>
+	 <property name="lineItemAuditService" ref="lineItemAuditService"/>
+	 <property name="productAuditService" ref="productAuditService"/>
+	 <property name="attributeAuditService" ref="attributeAuditService"/>
+	 <property name="creativeAuditService" ref="creativeAuditService"/>
+	 <property name="salesTargetAuditService" ref="salesTargetAuditService"/>
+	 <property name="assetAuditService" ref="assetAuditService"/>
+	 <property name="seasonalDiscountAuditService" ref="seasonalDiscountAuditService"/>
+	 <property name="targettingPremiumAuditService" ref="targettingPremiumAuditService"/>
+	 </bean> 
+	 
+	 <bean id="seasonalDiscountController" class="com.tavant.media.core.rules.controllers.SeasonalDiscountController">
+		 <property name="seasonalDiscountService" ref="seasonalDiscountService"/>
+	 </bean>
+     <bean id="targettingPremiumController" class="com.tavant.media.core.rules.controllers.TargettingPremiumController">
+	 	<property name="targettingPremiumService" ref="targettingPremiumService"/>
+	 </bean>
+	 
+	 <bean id="ruleInvoker" class="com.tavant.media.core.rules.framework.RuleInvoker">
+		 <constructor-arg index="0">
+			 <list>   
+			  <bean class="com.tavant.media.core.rules.framework.AgencyMarginRuleImpl" c:_0-ref="proposalService" c:_1-ref="productService"/>
+			  <bean class="com.tavant.media.core.rules.framework.TargettingPremiumRuleImpl" c:_0-ref="targettingPremiumService"/>
+			  <bean class="com.tavant.media.core.rules.framework.SeasonalDiscountRuleImpl" c:_0-ref="seasonalDiscountService"/>  
+			 <!--   <bean class="com.tavant.media.core.rules.framework.ProposalDiscountRuleImpl" c:_0-ref="proposalService" c:_1-ref="productService"/> -->
+			  <bean class="com.tavant.media.core.rules.framework.AdvertiserDiscountRuleImpl" c:_0-ref="proposalService" c:_1-ref="productService"/>
+			  </list>
+		 </constructor-arg>
+		 <constructor-arg index="1" ref="rateCardService"/>
+		     
+		 <property name="lineItemValidator" ref="lineItemValidator" />
+	 </bean>
+	 <bean id="reasonsController"
+		class="com.tavant.media.core.controllers.ReasonsController">
+		<property name="reasonsService" ref="reasonsService"></property>
+	</bean>
+	<bean id="commentsController"
+		class="com.tavant.media.core.controllers.CommentsController">
+		<property name="commentsService" ref="commentsService"></property>
+	</bean>
+	
+	<bean id="roleController" class="com.tavant.media.core.controllers.RoleController"
+	    p:roleService-ref="roleService"/>
+	
+	<bean id="scopeController" class="com.tavant.media.core.controllers.ScopeController"
+	    p:scopeService-ref="scopeService"/>
+	
+	<!-- Validation beans -->
+	<bean id="lineItemValidator" class="com.tavant.media.core.validator.LineItemValidator">
+		<property name="proposalService" ref="proposalService"></property>
+	</bean>
+    <bean id="assetValidator" class="com.tavant.media.core.validator.AssetValidator" />
+	<bean id="proposalValidator" class="com.tavant.media.core.validator.ProposalValidator" />
+		<bean id="clientValidator" class="com.tavant.media.core.validator.ClientValidator"
+	    p:clientDao-ref="clientDao"/>
+	
+	<bean id="attributeValidator" class="com.tavant.media.core.validator.AttributeValidator" />
+	<bean id="creativeValidator" class="com.tavant.media.core.validator.CreativeValidator" />
+	<bean id="productValidator" class="com.tavant.media.core.validator.ProductValidator" />
+	<bean id="salesTargetValidator" class="com.tavant.media.core.validator.SalesTargetValidator" />
+	
+	 <bean id="rateCardController" class="com.tavant.media.core.rules.controllers.RateCardController">
+	 	<property name="rateCardService" ref="rateCardService"/>
+	 	<property name="targettingPremiumService" ref="targettingPremiumService"/>
+	 	<property name="seasonalDiscountService" ref="seasonalDiscountService"/>
+	 </bean>
+</beans>

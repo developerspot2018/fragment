@@ -1,0 +1,167 @@
+<div><img src="images/dashboard-graph.png"/></div>
+<!-- <section>
+	
+			<div class="labels"><div class="label active margin-left">Dashboard <span class="sprite label-active-close"></span></div></div>
+			
+			<div class="content-area">
+				<div class="arrow"><img src="images/arrow.gif"/></div>
+				<div class="row">
+				<div class="col-lg-3 col-md-4 col-sm-12 col-xs-12">
+				<aside>
+					<header>
+						Apply Filters
+					</header>
+					<section>
+						<div class="saved-filters">
+							<label>Saved Filters</label>
+							<select name="saved-filters">
+								<option>Fashion</option>
+								<option>Arts</option>
+								<option>Auto Mobiles</option>
+							</select>
+						</div>
+						<div class="other-filters">
+							<label>By Sales Category</label>
+							<select name="sales-filter">
+								<option>Fashion</option>
+								<option>Arts</option>
+								<option>Books</option>
+								<option>Auto Mobiles</option>
+							</select>
+							<label>By User</label>
+							<select name="user-filter">
+								<option>User1</option>
+								<option>User2</option>
+								<option>User3</option>
+							</select>
+							<label>By Priority</label>
+							<select name="priority-filter">
+								<option>Standard</option>
+								<option>House</option>
+								<option>Bulk</option>
+								<option>Network</option>
+							</select>
+							<label>By Due Date</label>
+							<select name="due-date-filter">
+								<option>Last 7 Days</option>
+								<option>Day Before Yesterday</option>
+								<option>Yesterday</option>
+								<option>Today</option>
+								<option>Day After Tomorrow</option>
+							</select>
+						</div>
+						<div class="button-group">
+							<input type="submit" class="button apply" value="Apply"/>
+							<input type="submit" class="button save" value="Save"/>
+							<input type="reset" class="button reset" value="Reset"/>
+						</div>
+					</section>
+				</aside>
+			    </div> 
+				<div class="col-lg-9 col-md-8 col-sm-12 col-xs-12 ">
+				
+				<div id="tabs">
+				    <div class="row">
+					 <ul class="clearfix">
+						<li><a href="#tabs-1">Planner View</a></li>
+						<li><a href="#tabs-2">Status View</a></li>
+						<div class="ahead-shedule">
+							<span class="square green"></span><span>Ahead of Schedule</span>
+						</div>
+						<div class="behind-shedule">
+							<span class="square red"></span><span>Behind the Schedule</span>
+						</div>
+						<div class="auto-refresh">
+							Auto refresh in
+							<span class="circle">09:59</span>
+						</div>
+					 </ul>
+					</div>
+					<div id="tabs-1">
+						<div id="bar-chart"></div>
+						<table id="list"></table>
+						<div id="pager"></div>
+					</div>
+					<div id="tabs-2">
+						<div id="pie-chart"></div>
+						<table id="list1"></table>
+						<div id="pager1"></div>
+					</div>
+				</div>
+			     </div>
+			</div>
+			</div>
+		</section>
+ <script src="js/welcome-data.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	
+	$(".dropdown").hover(function(){
+		$(this).find(".dropdown-list").show();
+	},function(){
+		$(".dropdown-list").hide();
+	});
+	$(".circle").countdowntimer({
+		minutes : 09,
+        seconds : 59,
+        size : "lg"
+	});
+
+	$.jqplot.config.enablePlugins = false;
+	  var s1 = [11, 2, 7, 3, 6, 9, 5, 7];
+	  var s2 = [2, -1, -1, -1, -1, -1, -1, -1];
+	  var plot1 = $.jqplot('bar-chart', [s1, s2], {
+	    stackSeries: true,
+	    captureRightClick: true,
+	    seriesDefaults:{
+	      renderer:$.jqplot.BarRenderer,
+	      rendererOptions: {
+	          barMargin: 30,
+	          highlightMouseDown: true   
+	      },
+	      pointLabels: {show: true},
+		  shadow: false,
+	    },
+		seriesColors: [ "#ce4242", "#93b666", "#EAA228", "#579575", "#839557", "#958c12",
+	        "#953579", "#4b5de4", "#d8b83f", "#ff5800", "#0085cc"],
+	    axes: {
+	      xaxis: {
+	          renderer: $.jqplot.CategoryAxisRenderer,
+			ticks: ["Unassigned(Sales Force)","User2","User3","User4","User5","User6","User7","User8"],
+			tickOptions: {
+	          showGridline: false,
+	          showMark: false,
+			  textAlign: "center",
+	        },
+
+	      },
+	      yaxis: {
+	        padMin: 0,
+			min: 0,
+			tickOptions: {
+	          showGridline: false,
+	          showMark: false,
+	        },
+	      }
+	    }   
+	  });
+	  var data = [
+	              ['Ahead Shedule', 12],['Behind Shedule', 9]
+	            ];
+      var plot2 = jQuery.jqplot ('pie-chart', [data], 
+        { 
+          seriesDefaults: {
+            renderer: jQuery.jqplot.PieRenderer, 
+            rendererOptions: {
+              showDataLabels: true
+            }
+          }, 
+    	  seriesColors: [ "#93b666", "#ce4242", "#EAA228", "#579575", "#839557", "#958c12",
+            "#953579", "#4b5de4", "#d8b83f", "#ff5800", "#0085cc"],
+          legend: { show:true, location: 'e' }
+        }
+      );
+      $( "#tabs" ).tabs();
+});
+</script>-->
+		

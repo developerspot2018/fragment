@@ -1,0 +1,37 @@
+<form name="assetHtmlForm">
+<div class="modal-header">
+            <h4 class="modal-title">
+				<button type="button" class="close" data-dismiss="modal" ng-click='cancel();' aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<span class='addImage'>{{property.addAnAsset}}</span>				
+			</h4>
+        </div>
+        <div class="asset-body modal-body">
+			<div class='row'>
+				<div class='col-md-6'>
+					<h5>{{property.assetName}}<span class="star-mark">*</span></h5>    				
+    				<input type="text" placeholder="{{property.enterName}}" class="form-control" ng-model='assetModel.creativeHTMLName' maxlength="50">
+					<p style='color:#a94442;font-size: 14px !important;' ng-if="creativeHtmlNameValidation">{{creativeHtmlNameValidationMsg}}</p>
+					<h5>{{property.size}}<span class="star-mark">*</span></h5>    
+					<select class="form-control" ng-model="assetModel.selectedHTMLOption">
+						<option ng-selected="{{assetModel.selectedHTMLOption==size.value}}"
+							ng-repeat="size in assetModel.creativeSize" value="{{size.value}}">
+							{{size.label}}</option>
+					   </select>
+					<!-- {{assetModel.selectedHTMLOption}} -->
+					<p style='color:#a94442;font-size: 14px !important;' ng-if="creativeHtmlSizeValidation">{{creativeHtmlSizeValidationMsg}}</p>
+					<span style='float:left'><h5>{{property.htmlCode}}<span class="star-mark">*</span></h5></span>
+					<textarea class="form-control cpm-asset-code htmlErrorClass" rows="5" ng-model="assetModel.htmlText" ng-change='previewCode();' placeholder="Enter Code" maxlength="65535"></textarea>
+					<p ng-show='htmlErrorClass == true' style='color:red;'>{{property.compilationError}}</p>
+					<p style='color:#a94442;font-size: 14px !important;' ng-if="creativeHtmlCodeValidation">{{creativeHtmlCodeValidationMsg}}</p>
+				</div>
+				<div class='col-md-6'>
+					<h4>{{property.preview}}</h4>
+					<iframe class="edit-asset-Iframe" name="myFrame" src="{{iframeText}}"></iframe>					
+				</div>
+			</div>
+        </div>
+        <div class="asset-footer modal-footer" style='text-align: right;'>
+            <button class="btn btn-default" ng-click="cancel()">{{property.cancel}}</button>
+            <button class="btn btn-primary" ng-click="okHtml(assetModel)">{{property.add}}</button>
+  </div>
+</form>

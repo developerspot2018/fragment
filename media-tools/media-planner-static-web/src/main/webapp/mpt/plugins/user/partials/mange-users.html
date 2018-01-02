@@ -1,0 +1,102 @@
+<div class="manage-user-outer">
+	<div ng-include="'plugins/admin/partials/admin-nav.html'"></div>
+    <div class="col-lg-10 col-md-10 col-sm-10 muser-outer-wrapper">
+    	<div class="row create-user-header">
+            <h4 class="text-left ng-binding">Manage Users</h4>
+         </div>
+         <div class="row manage-user-header">
+             <div class="col-lg-6 col-md-6 col-sm-6 noPad">
+                <span class="lb-filter pull-left">Filter&nbsp;&nbsp;</span>
+                <span class="lb-filter-select pull-left">
+                	<!-- <select class="user-filter-select">
+                		<option>User-1</option>
+                	    <option>User-2</option>
+                        <option>User-3</option>
+                    </select>-->
+                </span>
+        <div class="input-group input-group pull-left">
+        
+        <div class="input-group input-group">
+					<input type="text" class="form-control"
+						placeholder="Filter attribute list ..." ng-model="filterAttribute"
+						ng-change="resetLimit();"> <span class="input-group-addon"><span
+						class="glyphicon glyphicon-search"></span></span>
+				</div>
+        
+        
+					<!-- <input type="text" class="form-control pull-left" placeholder="Filter user list ..." ng-model="filterAttribute" ng-change="resetLimit();"> -->
+           <!-- <span class="input-group-addon">
+               <span class="glyphicon glyphicon-search"></span>
+           </span> -->
+				</div>
+                <span ng-click="refreshAttributeGrid()" title="Refresh" class="glyphicon glyphicon-refresh pull-left"></span>
+             </div>
+             <div class="col-lg-6 col-md-6 col-sm-6 noPad">
+                <span class="change-btn btn-create-user">
+                 	<a href="#/admin/create-user" class="btn pull-right pp-create-btn add-creative-button ng-binding">
+						  	<i class="glyphicon glyphicon-plus"></i>&nbsp;&nbsp;{{property.createUser}}
+				    </a>
+				</span>
+             </div>
+         </div>
+         <div class="cpwd-wrapper">
+                  <div class="manageuser-content">
+                     <table class="tbl-manage-user table table-striped font-12 table-bordered table-hover table-condensed mpt-table">
+                        <thead>
+                           <tr>
+                              <th class="th-mu-name" ng-click="sort_by('firstName')">
+                              	  {{property.thUserName}}
+                              	  <span class="sorter"> <i class="glyphicon glyphicon-triangle-top"></i> <i class="glyphicon glyphicon-triangle-bottom"></i></span>
+                              	  
+                              </th>
+                              <th class="th-mu-email" ng-click="sort_by('clientId')">
+                              	{{property.thEmail}}
+                              	<span class="sorter"> <i class="glyphicon glyphicon-triangle-top"></i> <i class="glyphicon glyphicon-triangle-bottom"></i></span>
+                              </th>
+                              <th class="th-mu-role")>
+                                {{property.thRole}}
+                              </th>
+                              <th class="th-mu-action">{{property.thActions}}</th>
+                           </tr>
+                        </thead>
+						<!-- <tr ng-repeat="user in filteredItems = (users | filter: filterUser) | filter:{name: filterUser} | orderBy:predicate :reverse | startUserFrom:(currentPage-1)*entryLimit | limitTo:entryLimit"
+						animate-on-change='user.firstName + user.clientId'
+						ng-animate=" 'animate'"> -->
+						<tr
+						ng-repeat="user in filteredItems = (users | filter: filterAttribute) | filter:{firstName: filterAttribute} | orderBy:predicate :reverse | startaAttributeFrom:(currentPage-1)*entryLimit | limitTo:entryLimit"
+						ng-animate=" 'animate'">
+							<td>{{user.firstName}}  {{user.lastName}}</td>
+                        	<td>{{user.clientId}}</td>
+                        	<td><span ng-repeat="elementList in user.roles">{{elementList.role}}<span ng-show=" ! $last ">, </span></span></td>
+                        	<td class="actions">
+							    <span ng-click="editUser(user.clientId)" style="vertical-align: middle; cursor: pointer" class="glyphicon glyphicon-edit">
+								</span>
+								<span ng-click="deleteUser(user.clientId)" style="vertical-align: middle; cursor: pointer" class="glyphicon glyphicon-trash"></span>
+							</td>
+                        </tr>
+                        <tr ng-show="users.length==0">
+							<td style="vertical-align: middle;" colspan="5"><i
+							class="fa fa-ban fa-3x"></i>&nbsp;No data found</td>
+						</tr>
+						<tr ng-hide="users.length > -1">
+							<td style="vertical-align: middle;" colspan="5"><i
+							class="fa fa-cog fa-3x fa-spin"></i>&nbsp;Loading</td>
+						</tr>
+	                  </table>
+	                     
+	                  </div>
+	                  <div class="row muser-pagination">
+						<div class="pull-right" pagination="" page="currentPage" max-size="5"
+							on-select-page="setPage(page)" boundary-links="true"
+							total-items="filteredItems.length" items-per-page="entryLimit"
+							class="pagination pagination-sm col-lg-12"
+							style="margin-top: 1px; margin-bottom: 0px;" previous-text="&laquo;"
+							next-text="&raquo;"></div>
+			                <div style="float: right;padding: 0px 10px;">
+				
+						<select class="page-count" ng-model='selectedNumber'  ng-options='number for number in recordPerPage' ng-change="setRecordPerPage()"></select>
+				</div>
+					</div>
+         </div>
+    </div>	
+</div>
