@@ -20,132 +20,90 @@
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-	<mvc:annotation-driven validator="validator">
-		<mvc:argument-resolvers>
-			<bean class="com.tavant.media.core.secessentials.ClientResolver"
-			    c:_0-ref="clientDao"/>
-			<bean class="com.tavant.media.core.secessentials.CurrentAccountResolver"
-			    c:_0-ref="clientDao"/>
-		</mvc:argument-resolvers>
-		<mvc:message-converters>
-			<bean
-				class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
-				<property name="objectMapper">
-					<bean class="com.tavant.media.core.mapper.LazyObjectMapper" />
-				</property>
-			</bean>
-		</mvc:message-converters>
+	<mvc:annotation-driven validator="validator" >
+        <mvc:argument-resolvers>
+            <bean class="org.springframework.security.web.bind.support.AuthenticationPrincipalArgumentResolver" />
+        </mvc:argument-resolvers>
+        <!-- <mvc:message-converters>
+            <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+                <property name="objectMapper">
+                    <bean class="com.tavant.media.core.mapper.LazyObjectMapper"/>
+                </property>
+            </bean>
+        </mvc:message-converters> -->
 	</mvc:annotation-driven>
-
+		
 	<context:property-placeholder location="classpath:core-config.properties" />
-	<import resource="classpath:application-context.xml" />
+	<import resource="classpath:application-context.xml"/>
 	<bean id="messageSource"
-		class="org.springframework.context.support.ResourceBundleMessageSource">
-		<property name="basename">
-			<value>locale/messages</value>
-		</property>
-	</bean>
-
-
-	<bean id="validator"
-		class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
-		<property name="validationMessageSource" ref="messageSource" />
+        class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="basename"> 
+        <value>locale/messages</value></property>
+    </bean>
+    
+ 
+	 <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+	    <property name="validationMessageSource" ref="messageSource" />
 	</bean>
 
 	<bean class="org.springframework.validation.DefaultMessageCodesResolver"
-		p:prefix="validation." />
+	p:prefix="validation." />
 	<!-- All Controller definition should be entered here -->
-
+		
 	<bean id="attributeController" class="com.tavant.media.core.controllers.AttributeController">
-		<property name="attributeService" ref="attributeService"></property>
-	</bean>
-
-	<bean id="creativeController" class="com.tavant.media.core.controllers.CreativeController">
-		<property name="creativeService" ref="creativeService"></property>
-	</bean>
-
-	<bean id="productController" class="com.tavant.media.core.controllers.ProductController">
-		<property name="productService" ref="productService"></property>
-	</bean>
-
-	<bean id="proposalController" class="com.tavant.media.core.controllers.ProposalController">
-		<property name="proposalService" ref="proposalService" />
-		<property name="proposalValidator" ref="proposalValidator" />
-		<property name="clientService" ref="clientService" />
-		<property name="lineItemService" ref="lineItemService" />
-		<property name="PROPOSAL_STATUS"  value="${proposal.status}"/>
-	</bean>
-
-	<bean id="salesTargetController" class="com.tavant.media.core.controllers.SalesTargetController">
-		<property name="salesTargetService" ref="salesTargetService"></property>
-	</bean>
-
-	<bean id="lineItemController" class="com.tavant.media.core.controllers.LineItemController">
-		<property name="lineItemService" ref="lineItemService" />
-		<property name="lineItemValidator" ref="lineItemValidator" />
-		<property name="assetService" ref="assetService" />
-		<property name="clientService" ref="clientService" />
-		<property name="ROOT_LOCATION" value="${media.location}" />
-	</bean>
-	<bean id="authenticationController"
-		class="com.tavant.media.core.controllers.AuthenticationController"
-		c:_0-ref="clientService" c:_1-ref="roleService" c:_2-ref="myEncoder" />
-
-	<bean id="targetCategoryController"
-		class="com.tavant.media.core.controllers.TargetCategoryController">
-		<property name="targetCategoryService" ref="targetCategoryService"></property>
-	</bean>
-
-	<bean id="targetCategoryValueController"
-		class="com.tavant.media.core.controllers.TargetCategoryValueController">
-		<property name="targetCategoryValueService" ref="targetCategoryValueService"></property>
-	</bean>
-
-	<bean id="assetController" class="com.tavant.media.core.controllers.AssetController">
-		<property name="validator">
-			<bean class="com.tavant.media.core.validator.AssetValidator" />
-		</property>
-		<property name="assetService" ref="assetService" />
-		<property name="ROOT_LOCATION" value="${media.location}" />
+	<property name="attributeService" ref="attributeService"></property>	
 	</bean>
 	
-	<bean id="companyController" class="com.tavant.media.core.controllers.CompanyController">
-	    <property name="companyService" ref="companyService"/>
+	<bean id="creativeController" class="com.tavant.media.core.controllers.CreativeController">
+	<property name="creativeService" ref="creativeService"></property>	
 	</bean>
-	<!-- Validation beans -->
-	<bean id="lineItemValidator" class="com.tavant.media.core.validator.LineItemValidator">
-		<property name="proposalService" ref="proposalService"></property>
+	
+	<bean id="productController" class="com.tavant.media.core.controllers.ProductController">
+	<property name="productService" ref="productService"></property>	
 	</bean>
-
-	<bean id="proposalValidator" class="com.tavant.media.core.validator.ProposalValidator" />
+	
+	<bean id="proposalController" class="com.tavant.media.core.controllers.ProposalController">
+		<property name="proposalService" ref="proposalService"/>
+		<property name="proposalValidator" ref="proposalValidator"/>
+		<property name="userService" ref ="userService"/>
+		<property name="lineItemSerivice" ref="lineItemService"/>
+	</bean>
+	
+	<bean id="salesTargetController" class="com.tavant.media.core.controllers.SalesTargetController">
+	<property name="salesTargetService" ref="salesTargetService"></property>	
+	</bean>
+	
+	<bean id="lineItemController" class="com.tavant.media.core.controllers.LineItemController">
+	    <property name="lineItemService" ref="lineItemService"/>
+	    <property name="lineItemValidator" ref="lineItemValidator"/>
+		<property name="assetService" ref="assetService"/>
+		<property name="userService" ref ="userService"/>
+		<property name="ROOT_LOCATION" value="${media.location}"/>
+	</bean>
+<bean id="authenticationController" class="com.tavant.media.core.controllers.AuthenticationController"
+	    c:_0-ref="userService" c:_1-ref="roleService" c:_2-ref="myEncoder"/>
+	
+	<bean id="targetCategoryController" class="com.tavant.media.core.controllers.TargetCategoryController">
+	     <property name="targetCategoryService" ref="targetCategoryService"></property>
+	 </bean>
+	 
+	<bean id="targetCategoryValueController" class="com.tavant.media.core.controllers.TargetCategoryValueController">
+	     <property name="targetCategoryValueService" ref="targetCategoryValueService"></property>
+	 </bean>
+	 
+	<bean id="assetController" class="com.tavant.media.core.controllers.AssetController">
+	    <property name="validator">
+	        <bean class="com.tavant.media.core.validator.AssetValidator"/>
+	    </property>
+	    <property name="assetService" ref="assetService"/>
+	    <property name="ROOT_LOCATION" value="${media.location}"/>
+	</bean>
+	<!-- Validation beans --> 
+	<bean id = "lineItemValidator" class="com.tavant.media.core.validator.LineItemValidator">
+	<property name="proposalService" ref="proposalService"></property>
+	</bean>
+	
+	<bean id="proposalValidator" class="com.tavant.media.core.validator.ProposalValidator"/>
 	<!-- <bean id="readingProposal" class="com.tavant.media.core.states.ReadingProposal"></bean> -->
-	<bean id="auditAction" class="com.tavant.media.core.audit.AuditAction">
-	 <property name="proposalAuditService" ref="proposalAuditService"/>
-	 <property name="lineItemAuditService" ref="lineItemAuditService"/>
-	 <property name="productAuditService" ref="productAuditService"/>
-	 <property name="attributeAuditService" ref="attributeAuditService"/>
-	 <property name="creativeAuditService" ref="creativeAuditService"/>
-	 <property name="salesTargetAuditService" ref="salesTargetAuditService"/>
-	 <property name="assetAuditService" ref="assetAuditService"/>
-	 <property name="PROPOSAL_STATUS"  value="${proposal.status}"/>
-	 </bean> 
-	 
-	 <bean id="seasonalDiscountController" class="com.tavant.media.core.rules.controllers.SeasonalDiscountController">
-		 <property name="seasonalDiscountService" ref="seasonalDiscountService"/>
-	 </bean>
-     <bean id="targettingPremiumController" class="com.tavant.media.core.rules.controllers.TargettingPremiumController">
-	 	<property name="targettingPremiumService" ref="targettingPremiumService"/>
-	 </bean>
-	 
-	 <bean id="ruleInvoker" class="com.tavant.media.core.rules.framework.RuleInvoker">
-		 <constructor-arg index="0">
-			 <list>   
-			  <bean class="com.tavant.media.core.rules.framework.AgencyMarginRuleImpl" c:_0-ref="proposalService" c:_1-ref="productService"/>
-			  <bean class="com.tavant.media.core.rules.framework.TargettingPremiumRuleImpl" c:_0-ref="productService" c:_1-ref="targettingPremiumService"/>
-			  <bean class="com.tavant.media.core.rules.framework.SeasonalDiscountRuleImpl" c:_0-ref="productService" c:_1-ref="seasonalDiscountService"/>  
-			  <bean class="com.tavant.media.core.rules.framework.ProposalDiscountRuleImpl" c:_0-ref="proposalService" c:_1-ref="productService"/>
-			  <bean class="com.tavant.media.core.rules.framework.AdvertiserDiscountRuleImpl" c:_0-ref="proposalService" c:_1-ref="productService"/>
-			  </list>
-		 </constructor-arg>
-	 </bean>
+		
 	</beans>

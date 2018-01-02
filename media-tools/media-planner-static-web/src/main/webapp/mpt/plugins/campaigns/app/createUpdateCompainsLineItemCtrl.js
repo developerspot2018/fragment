@@ -179,7 +179,7 @@ app.controller('createUpdateCompainsLineItemCtrl', function ($route, $routeParam
 	                         ];
 	
 	                  	$scope.priorityTypeOptions = [
- 	                  	      { value: 'standard', label: 'Standard'},
+ 	                  	      { value: 'standarad', label: 'Standarad'},
                               { value: 'preemptible', label: 'Preemptible'},
                               { value: 'exclusive', label: 'Exclusive'}
                          ];

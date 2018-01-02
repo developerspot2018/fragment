@@ -235,17 +235,9 @@ app.controller('campaignDashboardCtrl', function ($scope, $rootScope, $location,
 		}
 	}
 	
-    $scope.sort_by_grid1 = function(predicateGrid1) {
-		 $scope.predicateGrid1 = predicateGrid1;
-		 $scope.reverseGrid1 = !$scope.reverseGrid1;
-	};
-	 $scope.sort_by_grid2 = function(predicateGrid2) {
-		 $scope.predicateGrid2 = predicateGrid2;
-		 $scope.reverseGrid2 = !$scope.reverseGrid2;
-	};
-	 $scope.sort_by_grid3 = function(predicateGrid3) {
-		 $scope.predicateGrid3 = predicateGrid3;
-		 $scope.reverseGrid3 = !$scope.reverseGrid3;
+    $scope.sort_by = function(predicate) {
+		 $scope.predicate = predicate;
+		 $scope.reverse = !$scope.reverse;
 	};
     
 });

@@ -21,30 +21,23 @@
 	
 	<bean id="attributeService" class="com.tavant.media.core.service.impl.AttributeServiceImpl">
 		<constructor-arg index="0" ref="attributeDao"/>
-		<constructor-arg index="1" ref="attributeAuditDao"/>
 	</bean>
 	
 	<bean id="creativeService" class="com.tavant.media.core.service.impl.CreativeServiceImpl">
 		<constructor-arg index="0" ref="creativeDao"/>
-		<constructor-arg index="1" ref="creativeAuditDao"/>
 	</bean>
 	
 	<bean id="productService" class="com.tavant.media.core.service.impl.ProductServiceImpl">
 		<constructor-arg index="0" ref="productDao"/>
-		<constructor-arg index="1" ref="productAuditDao"/>
 	</bean>
 	
 	<bean id="proposalService" class="com.tavant.media.core.service.impl.ProposalServiceImpl">
 		<constructor-arg index="0" ref="proposalDao"/>
-		<constructor-arg index="1" ref="proposalAuditDao"/>
-		<constructor-arg index="2" ref="proposalLiveDao"/>
-	    <property name="lineItemService" ref="lineItemService"/>
-	    <property name="proposalAuditService" ref="proposalAuditService"/>
+	    <property name="lineItemService" ref="lineItemService"></property>
 	</bean>
 	
 	<bean id="salesTargetService" class="com.tavant.media.core.service.impl.SalesTargetServiceImpl">
 		<constructor-arg index="0" ref="salesTargetDao"/>
-		<constructor-arg index="1" ref="salesTargetAuditDao"/>
 	</bean>
 	
 	<bean id="userService" class="com.tavant.media.core.service.impl.UserServiceImpl"
@@ -57,57 +50,15 @@
 	    c:_0-ref="userService"/>
 	
 	<bean id="assetService" class="com.tavant.media.core.service.impl.AssetServiceImpl"
-	    c:_0-ref="assetDao" c:_1-ref="assetAuditDao"/> 
-	
-	<bean id="clientService" class="com.tavant.media.core.service.impl.ClientServiceImpl"
-	    c:_0-ref="clientDao"/>
-	
-	<bean id="clientDetailsService" class="com.tavant.media.core.service.impl.CustomClientDetailsService"
-	    c:_0-ref="clientService"/>
-	
-	<bean id="companyService" class="com.tavant.media.core.service.impl.CompanyServiceImpl"
-	    c:_0-ref="companyDao"/>
+	    c:_0-ref="assetDao"/>
 	
 	
 	
 	
 	<bean id = "lineItemService" class="com.tavant.media.core.service.impl.LineItemServiceImpl"
-	    c:_0-ref="lineItemDao"  c:_1-ref="productDao" c:_2-ref="lineItemAuditDao"/>
+	    c:_0-ref="lineItemDao"  c:_1-ref="productDao"/>
 	<bean id = "targetCategoryService" class="com.tavant.media.core.service.impl.TargetCategoryServiceImpl"
 	    c:_0-ref="targetCategoryDao"/>
 	<bean id = "targetCategoryValueService" class="com.tavant.media.core.service.impl.TargetCategoryValueServiceImpl"
 	    c:_0-ref="targetCategoryValueDao"/>
-	    
-   <bean id="proposalAuditService" class="com.tavant.media.core.audit.service.impl.ProposalAuditServiceImpl"
-	    c:_0-ref="proposalAuditDao" c:_1-ref="proposalLiveDao" c:_2-ref="lineItemAuditDao"
-	    c:_3-ref="productAuditDao" c:_4-ref="salesTargetAuditDao" c:_5-ref="productDao" c:_6-ref="creativeAuditDao"> 
-	    <property name="lineItemService" ref="lineItemService"></property>
-	    <property name="proposalService" ref="proposalService"/>
-	    </bean>
-	    
-   <bean id="lineItemAuditService" class="com.tavant.media.core.audit.service.impl.LineItemAuditServiceImpl"
-	    c:_0-ref="lineItemAuditDao" >
-	    <property name="lineItemService" ref="lineItemService"/>
-	</bean>
-
-	<bean id="productAuditService" class="com.tavant.media.core.audit.service.impl.ProductAuditServiceImpl" c:_0-ref="productAuditDao">
-		<property name="productService" ref="productService"/>
-	</bean>
-	<bean id="attributeAuditService" class="com.tavant.media.core.audit.service.impl.AttributeAuditServiceImpl" c:_0-ref="attributeAuditDao">
-		<property name="attributeService" ref="attributeService"/>
-	</bean>
-	<bean id="creativeAuditService" class="com.tavant.media.core.audit.service.impl.CreativeAuditServiceImpl" c:_0-ref="creativeAuditDao">
-		<property name="creativeService" ref="creativeService"/>
-	</bean>
-	<bean id="salesTargetAuditService" class="com.tavant.media.core.audit.service.impl.SalesTargetAuditServiceImpl" c:_0-ref="salesTargetAuditDao">
-		<property name="salesTargetService" ref="salesTargetService"/>
-	</bean>
-	<bean id="assetAuditService" class="com.tavant.media.core.audit.service.impl.AssetAuditServiceImpl" c:_0-ref="assetAuditDao">
-		<property name="assetService" ref="assetService"/>
-	</bean>
-	
-	<bean id="seasonalDiscountService" class="com.tavant.media.core.rules.service.impl.SeasonalDiscountServiceImpl" c:_0-ref="seasonalDiscountDao"/>
-	
-	<bean id="targettingPremiumService" class="com.tavant.media.core.rules.service.impl.TargettingPremiumServiceImpl" c:_0-ref="targettingPremiumDao"/>
-	    
 </beans>		

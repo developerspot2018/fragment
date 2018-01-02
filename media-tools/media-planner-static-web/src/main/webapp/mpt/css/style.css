@@ -242,9 +242,3 @@ th a { color: white; }
   font-size: 12px;
   cursor: pointer;
 }
-
-.ui-datepicker .ui-datepicker-buttonpane button.ui-datepicker-current {
-  float: left;
-  background-color: #428bca;
-  color: white;
-}
