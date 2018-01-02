@@ -59,77 +59,37 @@ app.controller('creativeCtrl', function ($scope, $rootScope, $location, $modal, 
 		});
 	 });
 	
-    $scope.recordPerPage = ['10','20','30'];
-    
-    $scope.filterCreativeLst = [{value:'id', label: '-- select --'}, {value:'name', label: 'Name'},{value:'type', label: 'Type'}];
-    
-    $scope.setCreativeGridParam = function (currentRecordPerPage){
-    	$scope.selectedNumber = currentRecordPerPage; 
-        $scope.maxNoPageSize = 5;
-        $scope.currentPage = 1;
-        $scope.entryLimit = $scope.selectedNumber;
-        $scope.selectedFilterCreative =  $scope.filterCreativeLst[0];
-        $scope.name = '' ;
-		$scope.type = '';
-		$scope.order = 'desc'
-		$scope.sortBy = 'id';
-		$scope.filterCreative = "";
-    }
-    
-    
-    $scope.setCreativeGridParam($scope.recordPerPage[0]);
-    
-    $scope.getCreatives = function () {
-    	var url = '/creatives?name='+ $scope.name + '&type=' + $scope.type + '&sortBy=' + $scope.sortBy + '&order=' + $scope.order + '&pageNo=' + ($scope.currentPage -1) + '&pagesize=' + $scope.selectedNumber ;
-    	Data.get(url).then ( function (data) {
-    		data.data.content.forEach( function(data,i) {
-				data.showAttributes = false;
-			});
-    		$scope.creatives = data.data.content;
-    	    $scope.totalNoOfItems = data.data.totalElements;
-    	});
-    };
-
-    $scope.getCreatives();
-    
-    $scope.setPage = function(page){
-    	$scope.currentPage = page;
-		$scope.getCreatives();
-	};
-    
-	$scope.setRecordPerPage= function () {
-		$scope.setCreativeGridParam($scope.selectedNumber);
-		$scope.getCreatives();
-	}
-	
-	$scope.refreshCreativeGrid = function () {
-		$scope.setCreativeGridParam($scope.recordPerPage[0]);
-		$scope.getCreatives();
-	}
-	
-	$scope.sort_by = function (predicate) {
-		if ($scope.creativesFlag) {
-			$scope.reverse = !$scope.reverse;
-			$scope.order = $scope.order == 'desc' ? 'asc' : 'desc' ;
-			$scope.sortBy = predicate;
-			$scope.getCreatives();
-		} 
-	};
-
-	$scope.getFilterCreative = function () {
-		if($scope.filterCreative != '' && $scope.selectedFilterCreative.label != '-- select --') {
-			$scope.name = $scope.selectedFilterCreative.label == 'Name' ? $scope.filterCreative : ''  ;
-			$scope.type = $scope.selectedFilterCreative.label == 'Type' ? $scope.filterCreative : ''  ;
-			$scope.getCreatives();
-		}	
-	}
-    
-    /*
+	/*
 	 * Removes current row from creative table
 	 */
 	function removeCurrentCreative (creative) {
 		 var index = $scope.creatives.indexOf(creative); 
 		  $scope.creatives.splice(index, 1);
+	};
+	
+	/*
+	 * Retrieves creatives data from backend and dispalys on screen
+	 */
+	$scope.getCreatives = function () {
+		Data.get('creatives').then(function(data) {
+			$scope.creatives = data.data;
+		    $scope.totalItems = $scope.creatives.length;
+		    $scope.currentPage = 1; // current page
+		    $scope.entryLimit = 10; // max no of items to display in a page
+		    $scope.filteredItems = $scope.creatives.length; 
+		    // Initially for no filter
+		    $scope.sort_by_id('id');
+	        // $scope.reverse = true;
+		 });
+	};
+    
+	$scope.getCreatives();
+	 
+    $scope.sort_by = function (predicate) {
+    	if($scope.creativesFlag) {
+    		$scope.predicate = predicate;
+    		$scope.reverse = !$scope.reverse;
+    	}
 	};
 	
     $scope.sort_by_id = function (predicate) {
@@ -148,6 +108,11 @@ app.controller('creativeCtrl', function ($scope, $rootScope, $location, $modal, 
         	creativeform.$show();
         } else {
         	Data.post('creatives', data).success( function(result) {
+            	  /*
+					 * console.log('result ',result); index
+					 * =$scope.creatives.indexOf(creative);
+					 * $scope.creatives[index].id = result.data.id;
+					 */
         		$scope.getCreatives();
         		$scope.creativesFlag = true;
             }).error( function(result) {
@@ -237,21 +202,16 @@ app.controller('creativeCtrl', function ($scope, $rootScope, $location, $modal, 
 		$scope.rowClicked = true;
 		 for(var cretiveDataIndex in $scope.creatives){
 			 if($scope.creatives[cretiveDataIndex].id == creative_id) {
-				// $scope.selectedCreative = $scope.creatives[cretiveDataIndex];
-				angular.copy($scope.creatives[cretiveDataIndex], $scope.selectedCreative);
+				 $scope.selectedCreative = $scope.creatives[cretiveDataIndex];
 			 }
 			 
 		 }
-		 Data.get('creatives/'+ creative_id+'/attributes').then( function(result) {
+		Data.get('creatives/'+ creative_id).then( function(result) {
 			$scope.creatives.forEach( function(data,i) {
-				if(data.id == creative_id){
-					data.showAttributes = true;
-				} else {
-					data.showAttributes = false;
-				}
-			});
+				data.showAttributes = false;
+			})
 			$scope.selectedCreative.showAttributes = true;
-			$scope.attributeGrid.attributes = result.data ? result.data : [];
+			$scope.attributeGrid.attributes = result.data.attributes ? result.data.attributes : [];
 			$scope.totalAttributeItems = $scope.attributeGrid.attributes ? $scope.attributeGrid.attributes.length : -1;
 			$scope.attributeCurrentPage = 1; // current page
 			$scope.attributeEntryLimit = 100; // max no of items to display in
@@ -290,7 +250,7 @@ app.controller('creativeCtrl', function ($scope, $rootScope, $location, $modal, 
 			$scope.attributeAssociate = true;
 			$scope.attributeList=[];
 			
-			Data.get('attributes/list').then(function(result){
+			Data.get('attributes').then(function(result){
 				angular.forEach(result.data, function(list){
 					if (list.type==="Creative") {
 						$scope.attributeList.push(list);
@@ -313,62 +273,50 @@ app.controller('creativeCtrl', function ($scope, $rootScope, $location, $modal, 
 	};
 	
 	
-	$scope.selectAttribute = function(attribute){
+	 $scope.selectAttribute = function(attribute){
 		 var index = 0; 
 		 $scope.attributeGrid.attributes[index].type = attribute.type;
 		 $scope.attributeGrid.attributes[index].description = attribute.description;
 		 $scope.attributeGrid.attributes[index].value = attribute.value;
 		 $scope.attributeGrid.attributes[index].id = attribute.id;
 		 $scope.attributeGrid.attributes[index].name = attribute.name;
-	}
+	  }
 	
-	$scope.setPostData = function (){
-		 $scope.postData = {};
-		 $scope.postData.description=  $scope.selectedCreative.description;
-		 $scope.postData.height1=  $scope.selectedCreative.height1;
-		 $scope.postData.height2=  $scope.selectedCreative.height2;
-		 $scope.postData.id=  $scope.selectedCreative.id;
-		 $scope.postData.name=  $scope.selectedCreative.name;
-		 $scope.postData.type=  $scope.selectedCreative.type;
-		 $scope.postData.width1=  $scope.selectedCreative.width1;
-		 $scope.postData.width2=  $scope.selectedCreative.width2;
-	}
-	 
-	/*
-	 * Saves or Updates attribute for creative
-	 */
-	$scope.attrSet = [];
-	$scope.saveAttribute = function(data, attribute,self) {
-		 $scope.selectAttribute(data.name);
-		 if(!$scope.selectedCreative.attributes){
-			 $scope.selectedCreative.attributes = [];
-		 }
-		  
-		 var creativeData = self.$parent.creative;
-		 creativeData.attributes = [];
-  		
-		 for(var creAttIndex in $scope.attributeGrid.attributes){
-  			if($scope.attributeGrid.attributes[creAttIndex].id != undefined && $scope.attributeGrid.attributes[creAttIndex].name != "") {
-  				creativeData.attributes.push({"id":$scope.attributeGrid.attributes[creAttIndex].id});
-  			}
-		 }
-		 
-		 $scope.setPostData();
-		 $scope.postData.attributes =  creativeData.attributes;
-		 
-		 var validationResult = Validation.validationCheck("attribute",data.id ? data : data.name);
+	 /*
+		 * Saves or Updates attribute for creative
+		 */
+	 $scope.attrSet = [];
+		$scope.saveAttribute = function(data, attribute,self) {
+			$scope.selectAttribute(data.name);
+			if(!$scope.selectedCreative.attributes){
+				$scope.selectedCreative.attributes = [];
+			}
+			
+			$scope.attrSet.length = 0 ;
+			  for (var attrIndex in $scope.selectedCreative.attributes) {
+				  $scope.attrSet.push({"id" : $scope.selectedCreative.attributes[attrIndex].id});
+			  }
+			  
+		  angular.copy($scope.attrSet, $scope.selectedCreative.attributes);
+		  $scope.selectedCreative.attributes.push({"id":attribute.id});
+			
+			var postData = $scope.selectedCreative;
+			var validationResult = Validation.validationCheck("attribute",data.id ? data : data.name);
 		    
-		 if(validationResult.value){
-			  $scope.showEditModal(validationResult.error);
+			if(validationResult.value){
+				$scope.showEditModal(validationResult.error);
 		        attributeform.$show();
-		 } else {
-			 if($scope.attributeEdit){
-				 Data.put('attributes', self.attribute).then(function(result){
-				 });
-			 } else {
-				 Data.put('creatives', $scope.postData).success(function(result){
-						$scope.fetchAttributes($scope.selectedCreative.id);
+			} else {
+				if($scope.attributeEdit){
+					Data.put('attributes', self.attribute).then(function(result){
+						//console.log(result);
+					})
+				} else {
+					Data.put('creatives', postData).success(function(result){
+						//console.log('result ',result);
+						$scope.attributeGrid.attributes = result.attributes;
 						$scope.creativesAttributeFlag = true;
+						$scope.sortAttribute_by_id('id');
 					}).error(function(result){
 						var currentRow = self.attribute;
 						removeCurrentAttribute(currentRow);
@@ -386,89 +334,78 @@ app.controller('creativeCtrl', function ($scope, $rootScope, $location, $modal, 
 						  description: '',
 						  value: ''
 				};
-		}
-	};
+			}
+		};
 	
 	
-	/*
-	 * Delete Attribute from attribute table
-	 */
-	$scope.removeAttribute = function(self) {
-		$scope.deleteWarnigAttributeModal(self);
-	};
+		/*
+		 * Delete Attribute from attribute table
+		 */
+		$scope.removeAttribute = function(self) {
+			$scope.deleteWarnigAttributeModal(self);
+		};
 	
-	$scope.deleteWarnigAttributeModal = function(self) {
-			ModalService.showModal({
-		  	templateUrl: 'modal.html',
-		    controller: "ModalController"
-		  }).then(function(modal) {
-		    modal.element.modal();
-		    modal.close.then(function(result) {
-		    	if (result === 'Yes') {
-		    		removeCurrentAttribute(self.attribute);
-		    		var creativeData = self.$parent.creative;
-		    		creativeData.attributes = [];
-		    		for(var creAttIndex in $scope.attributeGrid.attributes){
-		    			if($scope.attributeGrid.attributes[creAttIndex].id != undefined && $scope.attributeGrid.attributes[creAttIndex].name != "") {
-		    				creativeData.attributes.push({"id":$scope.attributeGrid.attributes[creAttIndex].id});
-		    			}
-		    		}
+		 $scope.deleteWarnigAttributeModal = function(self) {
+				ModalService.showModal({
+			  	templateUrl: 'modal.html',
+			    controller: "ModalController"
+			  }).then(function(modal) {
+			    modal.element.modal();
+			    modal.close.then(function(result) {
+			    	if (result === 'Yes') {
+			    		removeCurrentAttribute(self.attribute);
+			    		var creativeData = self.$parent.creative;
+			    		creativeData.attributes.length = 0;
 			    		
-		    		$scope.setPostData();
-		   		 	$scope.postData.attributes =  creativeData.attributes;
-		   		 	
-		   		 	$scope.updateCreative = {
-		   		 		attributes: creativeData.attributes,
-		   		 		description: creativeData.description,
-		   		 		height1: creativeData.height1,
-		   		 		height2: creativeData.height2,
-		   		 		id: creativeData.id,
-		   		 		name: creativeData.name,
-		   		 		type: creativeData.type,
-			   		 	width1: creativeData.width1,
-			   		 	width2: creativeData.width2
-		 		    };
-		  		  	Data.put('creatives' , $scope.updateCreative ).then(function(result){
-			  		  		// console.log(updateCreative);
-		  		  	});
+			    		for(var creAttIndex in $scope.attributeGrid.attributes){
+			    			if($scope.attributeGrid.attributes[creAttIndex].id != undefined && $scope.attributeGrid.attributes[creAttIndex].name != "") {
+			    				creativeData.attributes.push({"id":$scope.attributeGrid.attributes[creAttIndex].id});
+			    			}
+			    		}
+			  		  	Data.put('creatives' , creativeData ).then(function(result){
+			  		  		//console.log(result);
+			  		  	});
 			      }
 			    });
-		   });
-	};
+			   });
+		 };
 	
-	/*
-	 * Removes current row from attribute table
-	 */
-	function removeCurrentAttribute (attribute) {
-		var indexToDelete;
-		$scope.attributeGrid.attributes.forEach(function(value,i){
-			if(value.id == attribute.id){
-				indexToDelete = i;  
-			}
-		})
-		$scope.attributeGrid.attributes.splice(indexToDelete,1);
-		$scope.attributeFilteredItems = $scope.attributeGrid.attributes.length;;
-	};
+		 /*
+			 * Removes current row from attribute table
+			 */
+		function removeCurrentAttribute (attribute) {
+			var indexToDelete;
+			$scope.attributeGrid.attributes.forEach(function(value,i){
+				if(value.id == attribute.id){
+					indexToDelete = i;  
+				}
+			})
+			$scope.attributeGrid.attributes.splice(indexToDelete,1);
+			$scope.attributeFilteredItems = $scope.attributeGrid.attributes.length;;
+		};
 	
-	/*
-	 * Cancel Editing Row in Attribute Table
-	 */
-	$scope.cancelAttributeEdit = function(self){
-		var currentRow = self.attribute;
-		if(currentRow.name == "" || currentRow.type == "" ||$scope.attributeAssociate){
-			removeCurrentAttribute(currentRow);
-		}
-		$scope.creativesAttributeFlag = true;
-  	};
+		  /*
+			 * Cancel Editing Row in Attribute Table
+			 */
+		  $scope.cancelAttributeEdit = function(self){
+			  var currentRow = self.attribute;
+			  if(currentRow.name == "" || currentRow.type == "" ||$scope.attributeAssociate){
+				  removeCurrentAttribute(currentRow);
+			  }
+			  $scope.creativesAttributeFlag = true;
+		  	};
 	
-	/* for hiding the inner grid */
-	$scope.hide=function(self){
-		self.creative.showAttributes = false;
-		$scope.creativesAttributeFlag  = true;
-	};
+		  	/* for hiding the inner grid */
+		  	
+			  $scope.hide=function(self){
+				self.creative.showAttributes = false;
+				$scope.creativesAttributeFlag  = true;
+			  };
+
 				 
-	function alertBox(msg){
-			var modalBody = '<div class="admin modal fade">'+
+				 
+			function alertBox(msg){
+				var modalBody = '<div class="admin modal fade">'+
 									'<div class="modal-dialog dialog-size-position">'+
 										' <div class="modal-content">'+
 										'  <div class="modal-header dialog-header-warnig">'+
@@ -486,50 +423,41 @@ app.controller('creativeCtrl', function ($scope, $rootScope, $location, $modal, 
 										'</div>'+
 										'</div>'+
 										'</div>'	;
-		return modalBody;
-	};
-		
-	$scope.showEditModal = function(msg) {
-			var modalTemplate = alertBox(msg);
-				ModalService.showModal({
-				template: modalTemplate,
-				controller: "ModalController"
-			}).then(function(modal) {
-				modal.element.modal();
-				modal.close.then(function(result) {
+				return modalBody;
+			};
+			 $scope.showEditModal = function(msg) {
+				 var modalTemplate = alertBox(msg);
+					ModalService.showModal({
+				  	template: modalTemplate,
+				    controller: "ModalController"
+				  }).then(function(modal) {
+				    modal.element.modal();
+				    modal.close.then(function(result) {
 
+				    });
+				   });
+				 };
+		
+			$scope.bindTextareaAuto = function(){
+				$(".editable-textarea").find("textarea").on("keydown", function(){
+					$scope.textAreaAdjust(this);
 				});
-			});
-	 };
-		
-	$scope.bindTextareaAuto = function(){
-		$(".editable-textarea").find("textarea").on("keydown", function(){
-			$scope.textAreaAdjust(this);
-		});
-		$scope.creativesFlag = false;
-	};
+				$scope.creativesFlag = false;
+			};
 
-	$scope.textAreaAdjust = function(o) {
-	    o.style.height = (o.scrollHeight)+"px";
-	};
+			$scope.textAreaAdjust = function(o) {
+			    o.style.height = (o.scrollHeight)+"px";
+			};
 			  
-	/*
-	 * Edit attribute Form
-	 */
-	$scope.editAttributeForm = function(self){
-		$scope.attributeEdit = true;
-  		$scope.attributeAssociate = false;
-	}	
+			  /*
+				 * Edit attribute Form
+				 */
+			  $scope.editAttributeForm = function(self){
+			  		$scope.attributeEdit = true;
+			  		$scope.attributeAssociate = false;
+			  }	
 
-	$scope.getCreativesFlag = function () {
-		return $scope.creativesFlag;
-	}
-	
-	$scope.getFilterAttribute = function () {
-		/*if($scope.filterAttribute != '' && $scope.selectedFilterAttribute.label != '') {
-			$scope.name = $scope.selectedFilterAttribute.label == 'Name' ? $scope.filterAttribute : ''  ;
-			$scope.type = $scope.selectedFilterAttribute.label == 'Type' ? $scope.filterAttribute : ''  ;
-			//$scope.getAttributes();
-		}*/	
-	}
+			  $scope.getCreativesFlag = function () {
+				  return $scope.creativesFlag;
+			  }
 });

@@ -2,7 +2,7 @@
 
 /*
  * AngularJS Toaster
- * Version: 0.4.6
+ * Version: 0.4.4
  *
  * Copyright 2013 Jiri Kavulak.  
  * All Rights Reserved.  
@@ -15,14 +15,13 @@
 
 angular.module('toaster', ['ngAnimate'])
 .service('toaster', ['$rootScope', function ($rootScope) {
-    this.pop = function (type, title, body, timeout, bodyOutputType, clickHandler) {
+    this.pop = function (type, title, body, timeout, bodyOutputType) {
         this.toast = {
             type: type,
             title: title,
             body: body,
             timeout: timeout,
-            bodyOutputType: bodyOutputType,
-            clickHandler: clickHandler
+            bodyOutputType: bodyOutputType
         };
         $rootScope.$broadcast('toaster-newToast');
     };
@@ -34,7 +33,6 @@ angular.module('toaster', ['ngAnimate'])
 .constant('toasterConfig', {
     'limit': 0,                   // limits max number of toasts 
     'tap-to-dismiss': true,
-    'close-button': false,
     'newest-on-top': true,
     //'fade-in': 1000,            // done in css
     //'on-fade-in': undefined,    // not implemented
@@ -45,7 +43,6 @@ angular.module('toaster', ['ngAnimate'])
     'icon-classes': {
         error: 'toast-error',
         info: 'toast-info',
-        wait: 'toast-wait',
         success: 'toast-success',
         warning: 'toast-warning'
     },
@@ -61,20 +58,20 @@ function ($compile, $timeout, $sce, toasterConfig, toaster) {
     return {
         replace: true,
         restrict: 'EA',
-        scope: true, // creates an internal scope for this directive
         link: function (scope, elm, attrs) {
 
-            var id = 0,
-                mergedConfig;
+            var id = 0;
 
-            mergedConfig = angular.extend({}, toasterConfig, scope.$eval(attrs.toasterOptions));
+            var mergedConfig = toasterConfig;
+            if (attrs.toasterOptions) {
+                angular.extend(mergedConfig, scope.$eval(attrs.toasterOptions));
+            }
 
             scope.config = {
                 position: mergedConfig['position-class'],
                 title: mergedConfig['title-class'],
                 message: mergedConfig['message-class'],
-                tap: mergedConfig['tap-to-dismiss'],
-                closeButton: mergedConfig['close-button']
+                tap: mergedConfig['tap-to-dismiss']
             };
 
             scope.configureTimer = function configureTimer(toast) {
@@ -92,7 +89,7 @@ function ($compile, $timeout, $sce, toasterConfig, toaster) {
                 angular.extend(toast, { id: id });
 
                 // Set the toast.bodyOutputType to the default if it isn't set
-                toast.bodyOutputType = toast.bodyOutputType || mergedConfig['body-output-type'];
+                toast.bodyOutputType = toast.bodyOutputType || mergedConfig['body-output-type']
                 switch (toast.bodyOutputType) {
                     case 'trustedHtml':
                         toast.html = $sce.trustAsHtml(toast.body);
@@ -155,24 +152,15 @@ function ($compile, $timeout, $sce, toasterConfig, toaster) {
                 $scope.toasters.splice(i, 1);
             };
 
-            $scope.click = function (toaster) {
+            $scope.remove = function (id) {
                 if ($scope.config.tap === true) {
-                    if (toaster.clickHandler && angular.isFunction($scope.$parent.$eval(toaster.clickHandler))) {
-                        var result = $scope.$parent.$eval(toaster.clickHandler)(toaster);
-                        if (result === true)
-                            $scope.removeToast(toaster.id);
-                    } else {
-                        if (angular.isString(toaster.clickHandler))
-                            console.log("TOAST-NOTE: Your click handler is not inside a parent scope of toaster-container.");
-                        $scope.removeToast(toaster.id);
-                    }
+                    $scope.removeToast(id);
                 }
             };
         }],
         template:
         '<div  id="toast-container" ng-class="config.position">' +
-            '<div ng-repeat="toaster in toasters" class="toast" ng-class="toaster.type" ng-click="click(toaster)" ng-mouseover="stopTimer(toaster)"  ng-mouseout="restartTimer(toaster)">' +
-              '<button class="toast-close-button" ng-show="config.closeButton">&times;</button>' +
+            '<div ng-repeat="toaster in toasters" class="toast" ng-class="toaster.type" ng-click="remove(toaster.id)" ng-mouseover="stopTimer(toaster)"  ng-mouseout="restartTimer(toaster)">' +
               '<div ng-class="config.title">{{toaster.title}}</div>' +
               '<div ng-class="config.message" ng-switch on="toaster.bodyOutputType">' +
                 '<div ng-switch-when="trustedHtml" ng-bind-html="toaster.html"></div>' +

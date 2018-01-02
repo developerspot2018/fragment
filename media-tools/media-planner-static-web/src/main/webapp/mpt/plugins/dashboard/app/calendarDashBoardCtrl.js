@@ -38,149 +38,136 @@ app.controller('calendarDashBoardCtrl', function ($scope, $rootScope, $location,
     $scope.calendarView = 'month';
     $scope.calendarDay = new Date();
     $scope.events = [];
+    Data.get('proposals').then(function(data) {
+   	 $scope.proposalsList = data.data;
+   	 $scope.Map = {};
+   	 $scope.proposalsList.forEach(function(value,i){
+   		 if(value.dueOn != "" && value.dueOn != undefined) {
+   			var dueDate = new Date(value.dueOn);
+   			var key =  dueDate.getDate() + '/' + (dueDate.getMonth()+1) + '/' + dueDate.getFullYear();
+   			value.showDueOn = key;
+   			if (key in 	$scope.Map) {
+   				$scope.Map[key].push(value);
+   			} else {
+   				$scope.subMap = [];
+   				$scope.Map[key] = $scope.subMap
+   				$scope.Map[key].push(value);
+   			}
+   			
+  			
+   		 }
+   		 
+   		value.linkPath = $scope.getPath(value);
+   	 });
+   	
+   	
+   	$scope.proposalMapByDay = {};
+   	
+   	for( var mapIndex in $scope.Map) {
+   		$scope.subMap = $scope.Map[mapIndex];
+   		
+   		var Pending = [];
+   		var Proposed = [];
+   		var Review = [];
+   		var Sold = [];
+   		var Signed = [];
+   		var Rejected = [];
+   		$scope.tempArr = [];
+   		$scope.proposalMapByStaurs = {};
+   		
+   		for( var subMapIndex in $scope.subMap) {
+   			
+   			var proStatus = $scope.subMap[subMapIndex].status;
+   			
+   			switch(proStatus){
+	         	case 'Pending':
+	         		if($scope.proposalMapByStaurs['Pending'] == undefined){
+	         			$scope.proposalMapByStaurs['Pending'] = $scope.tempArr;
+	         		}
+	         		Pending.push($scope.subMap[subMapIndex]);
+	         		break;
+	         	case 'Proposed':
+	         		if($scope.proposalMapByStaurs['Proposed'] == undefined){
+	         			$scope.proposalMapByStaurs['Proposed'] = $scope.tempArr;
+	         		}
+	         		Proposed.push($scope.subMap[subMapIndex]);
+	         		break;
+	         	case 'Review':
+	         		if($scope.proposalMapByStaurs['Review'] == undefined){
+	         			$scope.proposalMapByStaurs['Review'] = $scope.tempArr;
+	         		}
+	         		Review.push($scope.subMap[subMapIndex]);
+	         		break;
+	         	case 'Sold':
+	         		if($scope.proposalMapByStaurs['Sold'] == undefined){
+	         			$scope.proposalMapByStaurs['Sold'] = $scope.tempArr;
+	         		}
+	         		Sold.push($scope.subMap[subMapIndex]);
+	         		break;
+	         	case 'Signed':
+	         		if($scope.proposalMapByStaurs['Signed'] == undefined){
+	         			$scope.proposalMapByStaurs['Signed'] = $scope.tempArr;
+	         		}
+	         		Signed.push($scope.subMap[subMapIndex]);
+	         		break;
+	         	case 'Rejected':
+	         		if($scope.proposalMapByStaurs['Rejected'] == undefined){
+	         			$scope.proposalMapByStaurs['Rejected'] = $scope.tempArr;
+	         		}
+	         		Rejected.push($scope.subMap[subMapIndex]);
+	         		break;
+	         	default:
+	         		selectedRow='Pending';
+   			}
+   		}
+   		
+   		if($scope.proposalMapByStaurs['Pending'] != undefined) {
+   			$scope.proposalMapByStaurs['Pending'] = Pending;
+   		}
+   		if($scope.proposalMapByStaurs['Proposed'] != undefined){
+   			$scope.proposalMapByStaurs['Proposed'] = Proposed ;
+   		}
+   		if($scope.proposalMapByStaurs['Review'] != undefined){
+   			$scope.proposalMapByStaurs['Review'] = Review;
+   		}
+   		if($scope.proposalMapByStaurs['Sold'] != undefined){
+   			$scope.proposalMapByStaurs['Sold'] = Sold;
+   		}
+   		if($scope.proposalMapByStaurs['Signed'] != undefined){
+   			$scope.proposalMapByStaurs['Signed'] = Signed;
+   		}
+   		if($scope.proposalMapByStaurs['Rejected'] != undefined){
+   			$scope.proposalMapByStaurs['Rejected'] = Rejected;
+   		}
+   		
+   		if($scope.proposalMapByStaurs != undefined) {
+   			$scope.proposalMapByDay[mapIndex] = $scope.tempArr = [];
+   			$scope.proposalMapByDay[mapIndex].push($scope.proposalMapByStaurs);
+   		}
+   	}
+   	
+		for( var dateKey in $scope.proposalMapByDay) {
+   			$scope.tempProposalMapByStaurs = $scope.proposalMapByDay[dateKey][0];
+   			var calenderTitle = ""; 
+   			for( var statusKey in $scope.tempProposalMapByStaurs) {
+   				var xyz = $scope.tempProposalMapByStaurs[statusKey];
+   				if(xyz.length > 0 ){
+   					var calenderTitle = statusKey + " ( " + $scope.tempProposalMapByStaurs[statusKey].length + " )"; 
+   					var dueOn = xyz[0];
+   					$scope.events.push({
+   	  			        title: calenderTitle,
+   	  			        type: 'warning',
+   	  			        startsAt: new Date(dueOn.dueOn),
+   	  			        endsAt: new Date(dueOn.dueOn) 
+   	  			    });
+   	   			}
+   			}
+   			
+   		}
+		
+		$scope.dayClicked(new Date());
+   });
     
-    Data.get('auth').success( function (results) {
-    	var urlbyId;
-    	if(results.clientId) {
-             currentUserId = results.clientId;
-             currentRoleName = results.roles[0].role.split('_')['1'];
-             if(currentRoleName=='ADMIN') {
-            	 urlbyId='proposals?';
-             } else {
-            	 urlbyId='proposals?userId='+currentUserId;
-             }
-    	}
-        	
-	     Data.get(urlbyId).then(function(data) {
-	   	 $scope.proposalsList = data.data.content;
-	   	 $scope.Map = {};
-	   	 $scope.proposalsList.forEach(function(value,i){
-	   		 if(value.dueOn != "" && value.dueOn != undefined) {
-	   			var dueDate = new Date(value.dueOn);
-	   			var key =  dueDate.getDate() + '/' + (dueDate.getMonth()+1) + '/' + dueDate.getFullYear();
-	   			value.showDueOn = key;
-	   			if (key in 	$scope.Map) {
-	   				$scope.Map[key].push(value);
-	   			} else {
-	   				$scope.subMap = [];
-	   				$scope.Map[key] = $scope.subMap
-	   				$scope.Map[key].push(value);
-	   			}
-	   		 }
-	   		
-	   		var requestedDate = new Date(value.requestedOn);
-	   		value.showRequestedOn =  requestedDate.getDate() + '/' + (requestedDate.getMonth()+1) + '/' + requestedDate.getFullYear();
-	   		value.linkPath = $scope.getPath(value);
-	   	 });
-	   	
-	   	
-	   	$scope.proposalMapByDay = {};
-	   	
-	   	for( var mapIndex in $scope.Map) {
-	   		$scope.subMap = $scope.Map[mapIndex];
-	   		
-	   		var Pending = [];
-	   		var Proposed = [];
-	   		var Review = [];
-	   		var Sold = [];
-	   		var Signed = [];
-	   		var Rejected = [];
-	   		$scope.tempArr = [];
-	   		$scope.proposalMapByStaurs = {};
-	   		
-	   		for( var subMapIndex in $scope.subMap) {
-	   			
-	   			var proStatus = $scope.subMap[subMapIndex].status;
-	   			
-	   			switch(proStatus){
-		         	case 'Pending':
-		         		if($scope.proposalMapByStaurs['Pending'] == undefined){
-		         			$scope.proposalMapByStaurs['Pending'] = $scope.tempArr;
-		         		}
-		         		Pending.push($scope.subMap[subMapIndex]);
-		         		break;
-		         	case 'Proposed':
-		         		if($scope.proposalMapByStaurs['Proposed'] == undefined){
-		         			$scope.proposalMapByStaurs['Proposed'] = $scope.tempArr;
-		         		}
-		         		Proposed.push($scope.subMap[subMapIndex]);
-		         		break;
-		         	case 'Review':
-		         		if($scope.proposalMapByStaurs['Review'] == undefined){
-		         			$scope.proposalMapByStaurs['Review'] = $scope.tempArr;
-		         		}
-		         		Review.push($scope.subMap[subMapIndex]);
-		         		break;
-		         	case 'Sold':
-		         		if($scope.proposalMapByStaurs['Sold'] == undefined){
-		         			$scope.proposalMapByStaurs['Sold'] = $scope.tempArr;
-		         		}
-		         		Sold.push($scope.subMap[subMapIndex]);
-		         		break;
-		         	case 'Signed':
-		         		if($scope.proposalMapByStaurs['Signed'] == undefined){
-		         			$scope.proposalMapByStaurs['Signed'] = $scope.tempArr;
-		         		}
-		         		Signed.push($scope.subMap[subMapIndex]);
-		         		break;
-		         	case 'Rejected':
-		         		if($scope.proposalMapByStaurs['Rejected'] == undefined){
-		         			$scope.proposalMapByStaurs['Rejected'] = $scope.tempArr;
-		         		}
-		         		Rejected.push($scope.subMap[subMapIndex]);
-		         		break;
-		         	default:
-		         		selectedRow='Pending';
-	   			}
-	   		}
-	   		
-	   		if($scope.proposalMapByStaurs['Pending'] != undefined) {
-	   			$scope.proposalMapByStaurs['Pending'] = Pending;
-	   		}
-	   		if($scope.proposalMapByStaurs['Proposed'] != undefined){
-	   			$scope.proposalMapByStaurs['Proposed'] = Proposed ;
-	   		}
-	   		if($scope.proposalMapByStaurs['Review'] != undefined){
-	   			$scope.proposalMapByStaurs['Review'] = Review;
-	   		}
-	   		if($scope.proposalMapByStaurs['Sold'] != undefined){
-	   			$scope.proposalMapByStaurs['Sold'] = Sold;
-	   		}
-	   		if($scope.proposalMapByStaurs['Signed'] != undefined){
-	   			$scope.proposalMapByStaurs['Signed'] = Signed;
-	   		}
-	   		if($scope.proposalMapByStaurs['Rejected'] != undefined){
-	   			$scope.proposalMapByStaurs['Rejected'] = Rejected;
-	   		}
-	   		
-	   		if($scope.proposalMapByStaurs != undefined) {
-	   			$scope.proposalMapByDay[mapIndex] = $scope.tempArr = [];
-	   			$scope.proposalMapByDay[mapIndex].push($scope.proposalMapByStaurs);
-	   		}
-	   	}
-	   	
-			for( var dateKey in $scope.proposalMapByDay) {
-	   			$scope.tempProposalMapByStaurs = $scope.proposalMapByDay[dateKey][0];
-	   			var calenderTitle = ""; 
-	   			for( var statusKey in $scope.tempProposalMapByStaurs) {
-	   				var xyz = $scope.tempProposalMapByStaurs[statusKey];
-	   				if(xyz.length > 0 ){
-	   					var calenderTitle = statusKey + " ( " + $scope.tempProposalMapByStaurs[statusKey].length + " )"; 
-	   					var dueOn = xyz[0];
-	   					$scope.events.push({
-	   	  			        title: calenderTitle,
-	   	  			        type: 'warning',
-	   	  			        startsAt: new Date(dueOn.dueOn),
-	   	  			        endsAt: new Date(dueOn.dueOn) 
-	   	  			    });
-	   	   			}
-	   			}
-	   			
-	   		}
-			
-			$scope.dayClicked(new Date());
-	   });
-    });
 
     function showModal(action, event) {
       $modal.open({
@@ -269,9 +256,9 @@ app.controller('calendarDashBoardCtrl', function ($scope, $rootScope, $location,
 
 	}
 
-	$scope.getPath = function(proposal){
-		var linkPath = '#/proposal/proposal-detail-'+proposal.id;
-		//var linkPath = '#/proposal/proposal-line-item/'+proposal.id;
+	$scope.getPath = function(proposal)
+	{
+		var linkPath = '#/proposal/proposal-line-item/'+proposal.id;
 		return linkPath;
 				
 	}

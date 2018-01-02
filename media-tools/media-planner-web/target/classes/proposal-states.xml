@@ -26,11 +26,6 @@
 		<success>Signed</success>
 	</State>
 	<State>
-		<fail>Signed</fail>
-		<current>Signed</current>
-		<success>Signed</success>
-	</State>
-	<State>
 		<fail>Pending</fail>
 		<current>Rejected</current>
 		<success>Pending</success>

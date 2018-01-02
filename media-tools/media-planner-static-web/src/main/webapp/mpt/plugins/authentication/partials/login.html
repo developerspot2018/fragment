@@ -1,97 +1,148 @@
-<div class="container-fluid">
-     <div class="row login-section">
-	     <div class="col-md-9 col-sm-7 login-landing-image noPad">
-	            <div class="login_bg window-height" style="width:100%;height:100vh;"></div>
-	     </div>
-	     <div class="col-md-3 col-sm-5 login-pannel noPad">
-
-	     	  
-					<div style="z-index: 100;">
-						<div class="row login-right-sec">
-							<div class="col-sm-12 navbar-header"  align="left">
-								<span class="tool-label">Media Planning Tool</span>
-							</div>
-					</div>
-					<div  class="login-wrapper">
-						<fieldset class="scheduler-border">
-							<div id="login-box">
-								<form name="loginForm" class="form-horizontal form-floating"
-									role="form">
-									<div class="form-group">
-										<span class="glyphicon glyphicon-user"></span> <input type="text"
-											class="form-control form-floating input" name="username"
-											ng-model="login.username" required /> <label
-											class="control-label" for="email">Email</label>
-									</div>
-									<div class="form-group">
-										<span class="glyphicon glyphicon-lock"></span> <input type="password" class="form-control form-floating input"
-											ng-model="login.password" required /> <label
-											class="control-label" for="password">Password</label>
-									</div>
-									<a class="forgot-pwd" href="javascript:void(0);"  ng-click="forgetPassword()">Forgot Password?</a>
-									<div class="row form-group center-block pull-right">
-										<div class="login-btn"> 
-											<button type="submit" class="btn btn-primary" ng-click="doLogin(login)" data-ng-disabled="loginForm.$invalid">LOGIN</button>
-										</div>
-									</div>
-								</form>
-							</div>
-							
-						</fieldset>
-					</div>
-
-                </div>
-                    <!-- <section class="footer-section">
-							<div class="footer" style="margin-bottom: 0px;" align="center">
-									<span class="" style="color: #666666;font-family: 'Segoe UI','Segoe','SegoeUI-Regular-final',Tahoma,Helvetica,Arial,sans-serif;font-size: 0.9em;">Copyright &copy;2015 Tavant Technologies Pvt Ltd</span>
-								</div>
-						</section>-->
-            </div>
-
-
-
+<style>
+    /* code for animated blinking cursor */
+        .typed-cursor{
+            opacity: 1;
+            font-weight: 100;
+            -webkit-animation: blink 0.7s infinite;
+            -moz-animation: blink 0.7s infinite;
+            -ms-animation: blink 0.7s infinite;
+            -o-animation: blink 0.7s infinite;
+            animation: blink 0.7s infinite;
+        }
+        @-keyframes blink{
+            0% { opacity:1; }
+            50% { opacity:0; }
+            100% { opacity:1; }
+        }
+        @-webkit-keyframes blink{
+            0% { opacity:1; }
+            50% { opacity:0; }
+            100% { opacity:1; }
+        }
+        @-moz-keyframes blink{
+            0% { opacity:1; }
+            50% { opacity:0; }
+            100% { opacity:1; }
+        }
+        @-ms-keyframes blink{
+            0% { opacity:1; }
+            50% { opacity:0; }
+            100% { opacity:1; }
+        }
+        @-o-keyframes blink{
+            0% { opacity:1; }
+            50% { opacity:0; }
+            100% { opacity:1; }
+        }
+</style>
+<div class="login_bg window-height" style="width: 74%; float: left;"></div>
+<!-- <div class="login_bg_overlay"></div> -->
+<div style="width: 26%; float: right;height: 100%;">
+	<div style="position: relative; z-index: 100;height: 97%;">
+		<div class="row">
+			<div class="col-sm-12 navbar-header"
+				style="padding-top: 45px; padding-left: 8%;" align="left">
+				<span class="tool-label" style="color: #185291; font-size: 25px;">Media
+					Planning Tool</span>
+			</div>
+		</div>
+		<!-- <div class="row">
+<div class="col-sm-2"></div>
+	<div class="col-sm-3" align="right"><hr style="border: 1px solid; color: orange;width: 70%; margin-left: 46%"/></div>
+	<div class="col-sm-2" style="padding-top: 10px" align="center"><span style="color:orange;font-weight: lighter; font-size: larger;"> Powered by </span></div>
+	<div class="col-sm-3" align="left"><hr style="border: 1px solid; color: orange;width: 70%;margin-left: -18%"/></div>
+	<div class="col-sm-2"></div>
 </div>
-<script>
-$(function() {
-	$("#typedProjectName").typed({
-		strings : [ "Media Planning Tool" ],
-		typeSpeed : 30,
-		backDelay : 500,
-		loop : false,
-		contentType : 'html', // or text
-		// defaults to false for infinite loop
-		loopCount : false,
-		callback : function() {
-			foo();
-		},
-		resetCallback : function() {
-			newTyped();
+<div class="row">
+<div class="col-sm-2"></div>
+	<div class="col-sm-2" align="right"></div>
+	<div class="col-sm-4" style="padding-top: 10px" align="center"><span style="color: orange; font-weight: lighter; font-size: xx-large;"> Tavant Technologies Inc. </span></div>
+	<div class="col-sm-2" align="left"></div>
+	<div class="col-sm-2"></div>
+	<div style="border: 1px solid; color: orange;width: 10%"/> Powered By <hr style="border: 1px solid; color: orange;width: 10%"/>
+</div> -->
+		<script>
+		$(function() {
+
+			$("#typedProjectName").typed({
+				strings : [ "Media Planning Tool" ],
+				typeSpeed : 30,
+				backDelay : 500,
+				loop : false,
+				contentType : 'html', // or text
+				// defaults to false for infinite loop
+				loopCount : false,
+				callback : function() {
+					foo();
+				},
+				resetCallback : function() {
+					newTyped();
+				}
+			});
+
+			$(".reset").click(function() {
+				$("#typedProjectName").typed('reset');
+			});
+
+			
+			$(".form-floating input").focus(function(){
+		    	$(this).parent().addClass("touch-or-filled");
+		    });
+		    
+		    $(".form-floating input").blur(function(){
+		    	if($(this).val().length === 0){
+		    		$(this).parent().removeClass("touch-or-filled");
+		    	}
+		    });
+		    
+		    $(".form-floating input").change(function(){
+		    	$.each($(".form-floating input"), function(){
+		     		if($(this).val().length > 0){
+		    			$(this).parent().addClass("touch-or-filled");
+		    		}
+		    	});
+		    });
+		    
+		});
+
+		function newTyped() { /* A new typed object */
 		}
-	});
 
-	$(".reset").click(function() {
-		$("#typedProjectName").typed('reset');
-	});
-
-	
-	$(".form-floating input").focus(function(){
-    	$(this).parent().addClass("touch-or-filled");
-    });
-    
-    $(".form-floating input").blur(function(){
-    	if($(this).val().length === 0){
-    		$(this).parent().removeClass("touch-or-filled");
-    	}
-    });
-    
-    $(".form-floating input").change(function(){
-    	$.each($(".form-floating input"), function(){
-     		if($(this).val().length > 0){
-    			$(this).parent().addClass("touch-or-filled");
-    		}
-    	});
-    });   
-});
-
-function newTyped() { /* A new typed object */}
+		function foo() {
+			//console.log("Callback");
+		}
 </script>
+		<div style="margin: 30% auto; width: 90%;">
+			<fieldset class="scheduler-border">
+				<div id="login-box">
+					<form name="loginForm" class="form-horizontal form-floating"
+						role="form">
+						<div class="form-group">
+							<span class="glyphicon glyphicon-user"></span> <input type="text"
+								class="form-control form-floating input" name="username"
+								ng-model="login.username" required /> <label
+								class="control-label" for="email">Email</label>
+						</div>
+						<div class="form-group">
+							<span class="glyphicon glyphicon-lock"></span> <input
+								type="password" class="form-control form-floating input"
+								ng-model="login.password" required /> <label
+								class="control-label" for="password">Password</label>
+						</div>
+						<div class="form-group">
+							<button type="submit" class="btn btn-primary" style="width:26%;margin-left:10%;height:33px;"
+								ng-click="doLogin(login)" data-ng-disabled="loginForm.$invalid">LOGIN</button>
+						</div>
+					</form>
+				</div>
+				<!-- /login-box -->
+			</fieldset>
+		</div>
+		<!-- /position-relative -->
+		
+	</div>
+	<div class="footer" style="margin-bottom: 0px;" align="center">
+			<span class="" style="color: #666666;font-family: 'Segoe UI','Segoe','SegoeUI-Regular-final',Tahoma,Helvetica,Arial,sans-serif;font-size: 0.9em;">Copyright &copy;2015 Tavant Technologies Pvt Ltd</span>
+		</div>
+</div>
+

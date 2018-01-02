@@ -1,145 +1,72 @@
-app.filter('startaSegmentFrom', function() {
+app.filter('startaAttributeFrom', function() {
 	 return function(input, start) {
 	 if(input && Object.keys(input).length>0) {
-		 start = +start; // parse to int
-		 return input.slice(start);
+	 start = +start; //parse to int
+	 return input.slice(start);
 	 }
 	 return [];
 	 }
 });
 
-/*
- * 
- * */
 app.controller('salesTargetsCtrl', function ($scope, $rootScope, $location, $modal, Data, $http, cssInjector, ModalService, Validation) { 
-	
 	cssInjector.add("plugins/admin/css/admin-style.css");
 	
-	/*
-	 * 
-	 * */
 	$http.get('plugins/admin/js/sales-targets-properties.js').then(function (response) {
 		var property = {};
 		$scope.property = response.data;    
-    });
+      });
 	
 	$scope.salestargetFlag = true;
 	
-	/*
-	 * 
-	 * */
 	$scope.isActive = function (viewLocation) { 
         if(viewLocation.indexOf('/admin/salestargets') > -1){
         	return true;
         }
+		
     };
-
-    /*
-     * 
-     * */
     $rootScope.isActive = function (viewLocation) { 
         if(viewLocation === '/admin'){
         	return true;
         } 
     };
+	$scope.attributes = {};
     
-    $scope.recordPerPage = ['10','20','30'];
-    
-    $scope.filterSegmentsLst = [{value:'id', label: '-- select --'}, {value:'name', label: 'Name'}];
-    
-    /*
-     * 
-     * */
-    $scope.setSegmentGridParam = function (currentRecordPerPage){
-    	$scope.selectedNumber = currentRecordPerPage; 
-        $scope.maxNoPageSize = 5;
-        $scope.currentPage = 1;
-        $scope.entryLimit = $scope.selectedNumber;
-        $scope.selectedFilterSegments =  $scope.filterSegmentsLst[0];
-        $scope.name = '' ;
-		$scope.type = '';
-		$scope.order = 'desc'
-		$scope.sortBy = 'id';
-		$scope.filterSegments = "";
-    }
-    
-    $scope.setSegmentGridParam($scope.recordPerPage[0]);
-    
-	$scope.segments = {};
-    
-	/*
-     * 
-     * */
-	$scope.getSegments = function () {
-    	var url = '/salestargets?name='+ $scope.name + '&type=' + $scope.type + '&sortBy=' + $scope.sortBy + '&order=' + $scope.order + '&pageNo=' + ($scope.currentPage -1) + '&pagesize=' + $scope.selectedNumber ;
-    	Data.get(url).then ( function (data) {
-    	        $scope.segments = data.data.content;
-    	        $scope.totalNoOfItems = data.data.totalElements;
-    	    });  
+    $scope.getSalestargets = function () {
+    	  Data.get('salestargets').then(function(data){
+    	        $scope.attributes = data.data;
+    	        $scope.totalItems = $scope.attributes.length;
+    	        $scope.currentPage = 1; //current page
+    	        
+    	        $scope.entryLimit = 10; //max no of items to display in a page
+    	        $scope.filteredItems = $scope.attributes.length; 
+    	        //Initially for no filter
+    			/* $scope.predicate='id'; */
+    	        $scope.sort_by_id('id');
+    	        //$scope.reverse = true;
+    	    });
     };
     
-    $scope.getSegments();
+    $scope.getSalestargets();
     
-    /*
-     * 
-     * */
-    $scope.setPage = function(page){
-    	$scope.currentPage = page;
-		$scope.getSegments();
-	};
-    
-	 /*
-     * 
-     * */
-	$scope.setRecordPerPage = function () {
-		$scope.setSegmentGridParam($scope.selectedNumber);
-		$scope.getSegments();
-	}
-	
-	 /*
-     * 
-     * */
-	$scope.refreshSegmentGrid = function () {
-		$scope.setSegmentGridParam($scope.recordPerPage[0]);
-		$scope.getSegments();
-	}
-	
-	 /*
-     * 
-     * */
-	$scope.sort_by = function (predicate) {
+    $scope.sort_by = function(predicate) {
+    	//console.log(predicate);
 		if ($scope.salestargetFlag) {
+			$scope.predicate = predicate;
 			$scope.reverse = !$scope.reverse;
-			$scope.order = $scope.order == 'desc' ? 'asc' : 'desc' ;
-			$scope.sortBy = predicate;
-			$scope.getSegments();
 		} 
+    	
 	};
 	
-	 /*
-     * 
-     * */
-    $scope.getFilterSegments = function () {
-		if($scope.filterSegments != '' && $scope.selectedFilterSegments.label != '-- select --') {
-			$scope.name = $scope.selectedFilterSegments.label == 'Name' ? $scope.filterSegments : ''  ;
-			$scope.type = $scope.selectedFilterSegments.label == 'Type' ? $scope.filterSegments : ''  ;
-			$scope.getSegments();
-		}	
-	}
-	
-    /*
-     * 
-     * */
-	$scope.sort_by_id = function(predicate) {
+	 $scope.sort_by_id = function(predicate) {
+	    	//console.log(predicate);
 			 $scope.predicate = predicate;
 			 $scope.reverse = true;
 	};
     
-	/*
-     * 
-     * */
-    $scope.saveSegment = function(data, segment) {
-        angular.extend(data, {id: segment.id});
+    // update Attribute
+    $scope.saveAttribute = function(data, attribute) {
+        //$scope.Attribute not updated yet
+        angular.extend(data, {id: attribute.id});
         var validationResult = Validation.validationCheck("salesTargets",data);
         if(validationResult.value){
         	$scope.salesTargetsWarnigModal(validationResult.error);
@@ -147,23 +74,16 @@ app.controller('salesTargetsCtrl', function ($scope, $rootScope, $location, $mod
         }
 		else{
 			Data.post('salestargets', data).success(function(result){
-		      	var index =$scope.segments.indexOf(segment); 
-		        $scope.segments[index] = result;
+		      	var index =$scope.attributes.indexOf(attribute); 
+		        $scope.attributes[index] = result;
 		        $scope.salestargetFlag = true;
-		        $scope.getSegments(0);
-		        result.status = 'success';
-		        result.message = $scope.property.segmentSaved;
-		        Data.toast(result);
+		        $scope.sort_by_id('id');
 			}).error(function(result){
-				$scope.getSegments(0);
+				$scope.getSalestargets();
 				$scope.salestargetFlag = true;
 				if(result.errorCode=='412') {
               		$scope.salesTargetsWarnigModal("Name already in use. Please enter a different name");
-    			}else{
-		    		result.status = 'error';
-			        result.message = $scope.property.rendomError;
-			        Data.toast(result);
-		    	}
+    			}
 			});
 			
 			
@@ -176,32 +96,26 @@ app.controller('salesTargetsCtrl', function ($scope, $rootScope, $location, $mod
 		      custom2:''
 		    };
 			}
-    };
-    
-    /*
-     * 
-     * */
-	$scope.removeSegment = function(variable,index) {
+      };
+      
+	  // remove Attribute
+	  $scope.removeAttribute = function(variable,index) {
 		  $scope.salesTargetsDeleteWarnigModal(variable);
-	};
-	
-	/*
-     * 
-     * */
-	$scope.cancel=function(segment,index,productform){
-			if (segment.name==="") {
-				$scope.segments.splice($scope.segments.length-1, 1);
+	  };
+	  
+//		cancel insertion
+		$scope.cancel=function(product,index,productform){
+			if (product.name==="") {
+				$scope.attributes.splice($scope.attributes.length-1, 1);
 			}else {
 				productform.$cancel()
 			}
 			$scope.salestargetFlag = true;
-	};
+		};
 	
-	/*
-     * 
-     * */
-	$scope.addSegments = function() {
-		if($scope.salestargetFlag){
+	  // add Attribute
+	  $scope.addAttribute = function() {
+	    if($scope.salestargetFlag){
 	    	$scope.sort_by_id('id');
 	    	$scope.inserted = {
 	    		      name: '',
@@ -211,49 +125,43 @@ app.controller('salesTargetsCtrl', function ($scope, $rootScope, $location, $mod
 	    		      custom2:''
 	    		    };
 	    		    $scope.currentPage = 1;
-	    		    $scope.segments.push($scope.inserted);
-	    		    $scope.totalItems = $scope.segments.length;
-	    		    $scope.filteredItems = $scope.segments.length; 
+	    		    $scope.attributes.push($scope.inserted);
+	    		    $scope.totalItems = $scope.attributes.length;
+	    		    $scope.filteredItems = $scope.attributes.length; 
 	    		    $scope.salestargetFlag = false;
 	    }
 	   
-	};
-	
-	/*
-	 * 
-	 * 
-	 * */  
-	function removeCurrentSegments(segments){
-		var index =$scope.segments.indexOf(segments); 
-			$scope.segments.splice(index,1);
-	};
-	
-	/*
-	 * 
-	 * */
-	$scope.salesTargetsDeleteWarnigModal = function(variable) {
-		ModalService.showModal({
-			templateUrl: 'modal.html',
+	  };
+	  
+	  /*
+	   *  Removes current row from attribute table
+	   */
+	  function removeCurrentAttribute(attribute){
+		  var index =$scope.attributes.indexOf(attribute); 
+		  $scope.attributes.splice(index,1);
+	  };
+	  
+	  $scope.salesTargetsDeleteWarnigModal = function(variable) {
+			ModalService.showModal({
+		  	templateUrl: 'modal.html',
 		    controller: "ModalController"
 		  }).then(function(modal) {
 		    modal.element.modal();
 		    modal.close.then(function(result) {
-		    	if (result === 'Yes') {
-		    		Data.delete('salestargets/'+variable.segment.id).success(function(result){
-		    			removeCurrentSegments(variable.segment);
-					}).error( function (result) {
-						if(result.errorCode=='409')
-							$scope.salesTargetsWarnigModal("This element is in use and cannot be deleted.");
-					    });
-		    	}
-		    });
-		 });
-	};
 
-	/*
-	 * 
-	 * */
-	function alertBox(msg){
+		    	if (result === 'Yes') {
+		    		Data.delete('salestargets/'+variable.attribute.id).success(function(result){
+						  removeCurrentAttribute(variable.attribute);
+					  }).error( function (result) {
+					    	 if(result.errorCode=='409')
+					    		 $scope.salesTargetsWarnigModal("This element is in use and cannot be deleted.");
+					    });
+		      }
+		    });
+		   });
+		 };
+
+		 function alertBox(msg){
 			var modalBody = '<div class="admin modal fade">'+
 								'<div class="modal-dialog dialog-size-position">'+
 									' <div class="modal-content">'+
@@ -273,13 +181,9 @@ app.controller('salesTargetsCtrl', function ($scope, $rootScope, $location, $mod
 									'</div>'+
 									'</div>'	;
 			return modalBody;
-	};
-	
-	/*
-	 * 
-	 * */
-	$scope.salesTargetsWarnigModal = function(msg) {
-		var modalTemplate = alertBox(msg);
+		};
+		$scope.salesTargetsWarnigModal = function(msg) {
+			 var modalTemplate = alertBox(msg);
 			ModalService.showModal({
 		  	template : modalTemplate,
 		    controller: "ModalController"
@@ -289,31 +193,20 @@ app.controller('salesTargetsCtrl', function ($scope, $rootScope, $location, $mod
 
 		    });
 		   });
-	};
-	
-	/*
-	 * 
-	 * 
-	 * */
-	$scope.bindTextareaAuto = function(){
-		$(".editable-textarea").find("textarea").on("keydown", function(){
-			$scope.textAreaAdjust(this);
-		});
-		$scope.salestargetFlag = false;
-	}
-	
-	/*
-	 * 
-	 * */
-	$scope.textAreaAdjust = function(o) {
-		o.style.height = (o.scrollHeight)+"px";
-	}
-	
-	/*
-	 * 
-	 * */
-	$scope.getSalestargetFlag  = function() {
-		return $scope.salestargetFlag;
-	}
+		 };
+		 $scope.bindTextareaAuto = function(){
+				$(".editable-textarea").find("textarea").on("keydown", function(){
+					$scope.textAreaAdjust(this);
+				});
+				$scope.salestargetFlag = false;
+			}
+
+			$scope.textAreaAdjust = function(o) {
+			    o.style.height = (o.scrollHeight)+"px";
+			}
+			
+			$scope.getSalestargetFlag  = function() {
+			   return $scope.salestargetFlag;
+			}
 			
 });

@@ -1,4 +1,4 @@
-app.controller('orderCampaignsCtrl', function ($scope, $location, $rootScope, Data, cssInjector, $filter, $http,$q) { 
+app.controller('orderCampaignsCtrl', function ($scope, $location, $rootScope, Data, cssInjector, $filter, $http) { 
 	cssInjector.add("plugins/campaigns/css/campaigns-style.css");
 	$http.get('plugins/campaigns/js/campaigns-properties.js').then(function (response) {
 		var property = {};
@@ -6,28 +6,11 @@ app.controller('orderCampaignsCtrl', function ($scope, $location, $rootScope, Da
       });
 	  
 	$rootScope.isActive = function(viewLocation) { 
-        if(viewLocation.indexOf('orders') > -1){
+        if(viewLocation.indexOf('campaigns') > -1){
         	return true; 
         }
 		return false;
     };
-
-    // Make left menu selected
-    $rootScope.isSubMenueActive = function(path){
-    	var flag = false;
-    	if($scope.selectedTab=='Order' && $scope.subSelectedTab==path)
-    		flag = true;
-    	return flag;
-    }
-    $scope.subSelectedTab = $rootScope.lefNavActive;
-    $scope.selectedTab = '';
-    
-    $scope.isOpen = function(val){
-		var flag = false;
-		if(val=='Order')
-			flag = true;
-		return flag;
-	};
     
     $rootScope.isSubMenueActive = function(path)
     {
@@ -41,10 +24,10 @@ app.controller('orderCampaignsCtrl', function ($scope, $location, $rootScope, Da
     var Base64={_keyStr:"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",encode:function(e){var t="";var n,r,i,s,o,u,a;var f=0;e=Base64._utf8_encode(e);while(f<e.length){n=e.charCodeAt(f++);r=e.charCodeAt(f++);i=e.charCodeAt(f++);s=n>>2;o=(n&3)<<4|r>>4;u=(r&15)<<2|i>>6;a=i&63;if(isNaN(r)){u=a=64}else if(isNaN(i)){a=64}t=t+this._keyStr.charAt(s)+this._keyStr.charAt(o)+this._keyStr.charAt(u)+this._keyStr.charAt(a)}return t},decode:function(e){var t="";var n,r,i;var s,o,u,a;var f=0;e=e.replace(/[^A-Za-z0-9\+\/\=]/g,"");while(f<e.length){s=this._keyStr.indexOf(e.charAt(f++));o=this._keyStr.indexOf(e.charAt(f++));u=this._keyStr.indexOf(e.charAt(f++));a=this._keyStr.indexOf(e.charAt(f++));n=s<<2|o>>4;r=(o&15)<<4|u>>2;i=(u&3)<<6|a;t=t+String.fromCharCode(n);if(u!=64){t=t+String.fromCharCode(r)}if(a!=64){t=t+String.fromCharCode(i)}}t=Base64._utf8_decode(t);return t},_utf8_encode:function(e){e=e.replace(/\r\n/g,"\n");var t="";for(var n=0;n<e.length;n++){var r=e.charCodeAt(n);if(r<128){t+=String.fromCharCode(r)}else if(r>127&&r<2048){t+=String.fromCharCode(r>>6|192);t+=String.fromCharCode(r&63|128)}else{t+=String.fromCharCode(r>>12|224);t+=String.fromCharCode(r>>6&63|128);t+=String.fromCharCode(r&63|128)}}return t},_utf8_decode:function(e){var t="";var n=0;var r=c1=c2=0;while(n<e.length){r=e.charCodeAt(n);if(r<128){t+=String.fromCharCode(r);n++}else if(r>191&&r<224){c2=e.charCodeAt(n+1);t+=String.fromCharCode((r&31)<<6|c2&63);n+=2}else{c2=e.charCodeAt(n+1);c3=e.charCodeAt(n+2);t+=String.fromCharCode((r&15)<<12|(c2&63)<<6|c3&63);n+=3}}return t}}
     $scope.getExactPath = function(heading){
 		if(heading=='Orders'){
-			$location.path('/orders');
+			$location.path('/campaigns');
 		}
 		if(heading=='Campaigns'){
-			$location.path('/campaigns');
+			$location.path('/list-campaigns');
 		}
 		if(heading=='Assets'){
 			$location.path('/campaigns/asset-template-list');
@@ -55,9 +38,9 @@ app.controller('orderCampaignsCtrl', function ($scope, $location, $rootScope, Da
 	{
 		var path = $location.path();
 		var flag = false;
-		if(path=='/orders' && val=='Order')
+		if(path=='/campaigns' && val=='Order')
 			flag = true;
-		if(path=='/campaigns' && val=='Campaigns')
+		if(path=='/list-campaigns' && val=='Campaigns')
 			flag = true;
 		if(path=='/campaigns/asset-template-list' && val=='Assets')
 			flag = true;
@@ -86,85 +69,72 @@ app.controller('orderCampaignsCtrl', function ($scope, $location, $rootScope, Da
 		
     
 	$scope.proposalSortByOptions = [
+	                   { value: 'advertiserName', label: 'Advertiser'},
 	                   { value: 'user.firstName', label: 'Assign To'},
+	                   /*{ value: 'lineItemEndDate', label: 'End Date'},*/
 	                   { value: 'orderName', label: 'Order Name'},
-	                   { value: 'id', label: 'Campaign ID'},
-	                   { value: 'deliveryStatus', label: 'Status'},
-	                   { value: 'placeHolder', label: 'Campaign Name'},
-	                   { value: 'deliveryPriority', label: 'Priority'},
-	                   { value: 'startDate', label: 'Start Date'},
-	                   { value: 'endDate', label: 'Flight End Date'}
+	                   { value: 'propsalId', label: 'Order ID'},
+	                  /* { value: 'lineItemStartDate', label: 'Start Date'},*/
+	                   { value: 'salesCategory', label: 'Sales Category'},
+	                   { value: 'lineItemList.deliveryStatus', label: 'Status'},
+	                   { value: 'lineItemList.placeHolder', label: 'Campaign Name'},
+	                   { value: 'lineItemList.deliveryPriority', label: 'Priority'},
+	                   { value: 'lineItemStartDate', label: 'Flight Start Date'},
+	                   { value: 'lineItemEndDate', label: 'Flight End Date'}
 	                  ];
 	
-	// Sorting options by asc and desc
 	$scope.proposalOrderByOptions = [
-	         	                   { value: 'asc', label: 'Asc'},
-	         	                   { value: 'desc', label: 'Desc'}
+	         	                   { value: 'false', label: 'Asc'},
+	         	                   { value: 'true', label: 'Desc'}
 	         	                  ];
-
+	
+		
+	$scope.proposalSortBy = $scope.proposalSortByOptions[0];
+	$scope.proposalOrderBy = $scope.proposalOrderByOptions[0];
+	$scope.noOfProposalsPerPage = 10;
+	
+	/*
+	Data.get('proposals?status=Signed').then(function(data){
+        $scope.proposalsBackup = data.data;
+        $scope.sortProposal();
+    });
+    */
 	$scope.newProposals=[];
 	$scope.newProposalsBackup = [];
 	$scope.proposalsBackup = [];
 	$scope.selectedTab = '';
 	$scope.subSelectedTab = '';
-	$scope.recordPerPage = ['5','10','20'];
-	$scope.selectedProposalStatus = 'Signed';
-	$scope.setOrderGridParam = function (currentRecordPerPage){
-    	$scope.selectedNumber = currentRecordPerPage; 
-        $scope.maxNoPageSize = 5;
-        $scope.currentPage = 1;
-        $scope.entryLimit = $scope.selectedNumber;
-        $scope.name = '' ;
-		$scope.type = '';
-		$scope.order = 'desc'
-		$scope.sortBy = 'id';
-		$scope.proposalSortBy = $scope.proposalSortByOptions[2];
-		$scope.proposalOrderBy = $scope.proposalOrderByOptions[1];
-    }
-    
-    
-    
-    $scope.setOrderGridParam($scope.recordPerPage[0]);
-    
-    /**
-	 * Set page number of grid and get all the proposal based on grid parameters  
-	 * @param - page number 
-	 * @output – array of proposal 
-	 */
-    $scope.setPage = function(page){
-    	$scope.currentPage = page;
-    	$scope.applyFilter($scope.subSelectedTab)
-	};
-    
-    /**
-	 * Set number of records per page of grid and get all the proposal based on grid parameters  
-	 * @param - NA 
-	 * @output – array of proposal 
-	 */
-	$scope.setRecordPerPage= function () {
-		$scope.setOrderGridParam($scope.selectedNumber);
-		$scope.applyFilter($scope.subSelectedTab)
-	}
 	
-    /**
-	 * Reset all the grid parameters and get all the proposal based on grid parameters 
-	 * @param - NA 
-	 * @output – array of proposal 
-	 */
-	$scope.refreshOrderGrid = function () {
-		
-		$scope.proposalNameFilter="";
-		$scope.startDateFilter="";
-		$scope.endDateFilter="";
-		$scope.proposalId="";
-		$scope.advertiserName="";
-		$scope.proposalBudget="";
-		$scope.salesCategoryListOption=$scope.salesCategoryListOptions[-1];
-		$scope.assignedToOption=$scope.assignedToOptions[-1];
-		
-		$scope.setOrderGridParam($scope.recordPerPage[0]);
-		$scope.applyFilter($scope.subSelectedTab)
-	}
+	Data.get('proposals?status=Signed').then(function(data){		
+        var orderList = data.data;
+        for (var i=0; i<orderList.length; i++){
+        	   var orderId=orderList[i].id;
+        		Data.get('proposals/'+orderId).success(function(data){
+        			var orderData  = data;
+        	    	var lineItemList = orderData.lineItems;
+        	    	lineItemList.forEach(function(value,index){
+        	    		 $scope.proposalsBackup.push({
+        	    			    orderName:orderData.proposalName,
+	        					status:orderData.status,
+	        					propsalId:orderData.id,
+	        					advertiserName:orderData.advertiserName,
+	        					accountManager:orderData.accountManager,
+	        					salesCategory:orderData.salesCategory,
+	        					lineItemEndDate:value.endDate,
+	        					lineItemStartDate:value.startDate,
+	        					user:orderData.user,
+	        					lineItemList:value
+	        				});
+	        			
+	        			 });
+        	    	$scope.sortProposal();
+        		}).error(function(data){
+        			// do nothing
+        		});
+        }
+        
+	});
+	
 	
 	$scope.subSelectedTab = 'all'; 
 	
@@ -196,145 +166,168 @@ app.controller('orderCampaignsCtrl', function ($scope, $location, $rootScope, Da
 			$scope.subSelectedTab = 'all';
 		};
 		
-		$scope.applyFilter(lineItemdeliveryStatus);
-		$scope.selectedProposalStatus =lineItemdeliveryStatus;
+		if(lineItemdeliveryStatus=='Signed'){
+			Data.get('proposals?status=Signed').then(function(data){		
+		        var orderList = data.data;
+		        for (var i=0; i<orderList.length; i++){
+		        	   var orderId=orderList[i].id;
+		        		Data.get('proposals/'+orderId).success(function(data){
+		        			var orderData  = data;
+		        	    	var lineItemList = orderData.lineItems;
+		        	    	lineItemList.forEach(function(value,index){
+		        	    		 $scope.proposalsBackup.push({
+		        	    			    orderName:orderData.proposalName,
+			        					status:orderData.status,
+			        					propsalId:orderData.id,
+			        					advertiserName:orderData.advertiserName,
+			        					accountManager:orderData.accountManager,
+			        					salesCategory:orderData.salesCategory,
+			        					lineItemEndDate:value.endDate,
+			        					lineItemStartDate:value.startDate,
+			        					user:orderData.user,
+			        					lineItemList:value
+			        				});
+			        			
+			        			 });
+		        	    	$scope.sortProposal();
+		        		}).error(function(data){
+		        			// do nothing
+		        		});
+		        }
+		        
+			});
+		}else if(lineItemdeliveryStatus=='MyOrders'){
+			Data.get('proposals?status=Signed&userId='+$rootScope.userId).then(function(data){		
+		        var orderList = data.data;
+		        for (var i=0; i<orderList.length; i++){
+		        	   var orderId=orderList[i].id;
+		        		Data.get('proposals/'+orderId).success(function(data){
+		        			var orderData  = data;
+		        	    	var lineItemList = orderData.lineItems;
+		        	    	lineItemList.forEach(function(value,index){
+		        	    		 $scope.proposalsBackup.push({
+		        	    			    orderName:orderData.proposalName,
+			        					status:orderData.status,
+			        					propsalId:orderData.id,
+			        					advertiserName:orderData.advertiserName,
+			        					accountManager:orderData.accountManager,
+			        					salesCategory:orderData.salesCategory,
+			        					lineItemEndDate:value.endDate,
+			        					lineItemStartDate:value.startDate,
+			        					user:orderData.user,
+			        					lineItemList:value
+			        				});
+			        			
+			        			 });
+		        	    	$scope.sortProposal();
+		        		}).error(function(data){
+		        			// do nothing
+		        		});
+		        }
+		        
+			});
+		}
+		
+		else{
+			        Data.get('proposals?status=Signed').then(function(data){	
+			        var orderList = data.data;
+			        for (var i=0; i<orderList.length; i++){
+			        	   var orderId=orderList[i].id;
+			        		Data.get('proposals/'+orderId).success(function(data){
+			        			var orderData  = data;
+			        	    	var lineItemList = orderData.lineItems;
+			        	    	lineItemList.forEach(function(value,index){
+			        	    		if(value.deliveryStatus==lineItemdeliveryStatus){
+			        	    			$scope.proposalsBackup.push({
+			        	    				orderName:orderData.proposalName,
+				        					status:orderData.status,
+				        					propsalId:orderData.id,
+				        					advertiserName:orderData.advertiserName,
+				        					accountManager:orderData.accountManager,
+				        					salesCategory:orderData.salesCategory,
+				        					lineItemEndDate:value.endDate,
+				        					lineItemStartDate:value.startDate,
+				        					user:orderData.user,
+				        					lineItemList:value
+				        				});
+			        	    		}
+			        	    		 
+				        			
+				        			 });
+			        	    	$scope.sortProposal();
+			        		}).error(function(data){
+			        			// do nothing
+			        		});
+			        }
+			        
+				});
+		}
 	}
 	
+	$scope.sortProposal = function() {
+		var tempData = angular.copy($scope.proposalsBackup);
+		tempData.forEach(function(value,i){
+			$scope.proposalsBackup[i].lineItemList.startDate = String(new Date(value.lineItemList.startDate)).substring(0,21);
+			$scope.proposalsBackup[i].lineItemList.endDate = String(new Date(value.lineItemList.endDate)).substring(0,21);
+			$scope.proposalsBackup[i].lineItemList.placeHolder = value.lineItemList.placeHolder;
+			$scope.proposalsBackup[i].lineItemList.linkPath = $scope.getPath($rootScope.roleName,value.lineItemList.deliveryStatus,value.propsalId);
+			$scope.proposalsBackup[i].lineItemList.linkCampaignPath = $scope.getCampaignPath($rootScope.roleName,value.lineItemList.deliveryStatus,value.propsalId,value.lineItemList.id);
+		});
+		$scope.newProposalsBackup = $filter('orderBy')($scope.proposalsBackup, $scope.proposalSortBy.value, $scope.proposalOrderBy.value);
+		$scope.newProposals = $scope.newProposalsBackup.slice(0, $scope.noOfProposalsPerPage);;
+		$scope.totalProposal = $scope.newProposals.length;
+	    $scope.currentPage = 1;
+	    $scope.entryLimit = $scope.noOfProposalsPerPage;
+	    $scope.filteredItems = $scope.proposalsBackup.length;
+	    
+	};
+
 	
-	 $scope.sortByKey = function(array, key, order) {
-		    return array.sort(function(a, b) {
-		        var x = angular.lowercase(a[key]); var y = angular.lowercase(b[key]);
-		        if(order == 'Desc'){
-		        	return ((x > y) ? -1 : ((x < y) ? 1 : 0));
-		        } else {
-		        	 return ((x < y) ? -1 : ((x > y) ? 1 : 0));
-		        }
-		       
-		    });
-		};
-		$scope.sortProposal = function() {
-			$scope.sortBy = $scope.proposalSortBy.value;
-			$scope.order = $scope.proposalOrderBy.value;
-			$scope.applyFilter($scope.subSelectedTab);
-		}
+    $scope.sortByKey = function(array, key, order) {
+	    return array.sort(function(a, b) {
+	        var x = angular.lowercase(a[key]); var y = angular.lowercase(b[key]);
+	        if(order == 'Desc'){
+	        	return ((x > y) ? -1 : ((x < y) ? 1 : 0));
+	        } else {
+	        	 return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+	        }
+	       
+	    });
+	};
+
 	
-	// fech records by filter conditions
-	$scope.applyFilter = function(status){
-		$scope.status = '';
-		$scope.clientId = '';
-		if(angular.uppercase(status) == 'MYORDERS' || angular.uppercase(status) == 'MY') {
-			$scope.clientId = $rootScope.userId;
-		}else if (angular.uppercase(status) == 'SIGNED'|| angular.uppercase(status) == 'ALL') {
-			$scope.status = '';
-		}else {
-			$scope.status = status;
-		}	
-		
-		parm = 'sortBy=' + $scope.sortBy + '&order=' + $scope.order + '&pageNo=' + ($scope.currentPage -1) + '&pagesize=' + $scope.selectedNumber
-		if($scope.status != undefined && $scope.status != '' ){
-			parm = parm + '&deliveryStatus=' + $scope.status;
-		}
-		if($scope.clientId != undefined && $scope.clientId != '' ){
-			parm = parm + '&userId=' + $scope.clientId;
-		}
-		if($scope.campaignNameFilter != '' && $scope.campaignNameFilter != undefined ){
-			parm = '&placeHolder=' + $scope.campaignNameFilter
-		}
-		
-		if($scope.startDateFilter != '' && $scope.startDateFilter != undefined){
-			parm = parm + '&startDate=' +  $scope.startDateFilter;
-		}
-		if($scope.endDateFilter != '' && $scope.endDateFilter != undefined){
-			parm = parm + '&endDate=' + $scope.endDateFilter;
-		}
-		$scope.url = parm;
-		$scope.getProposals();
+	$scope.setPage = function(page){
+		var currentPage = page -1; 
+		var startVal = currentPage*$scope.noOfProposalsPerPage;
+		var endVal = startVal + $scope.noOfProposalsPerPage;
+		$scope.newProposals = $scope.newProposalsBackup.slice(startVal, endVal);;
 	};
 	
-	/**
-	 * Get all the campaigns based on grid parameters   
-	 * @param - NA 
-	 * @output – array of proposal 
-	 */
-	$scope.getProposals = function () {
-		Data.get('proposals/lineitems?'+$scope.url).then ( function (data) {
-			data.data.content.forEach(function(value,i){
-					value.startDatetime = isNaN(value.startDate)? value.startDatetime : value.startDate;
-					value.startDate = String(new Date(value.startDate)).substring(0,21);
-					value.endDatetime = isNaN(value.endDate)? value.endDatetime : value.endDate;
-					value.endDate = String(new Date(value.endDate)).substring(0,21);
-					Data.get('line-items/'+value.id+'/proposals').then (function (result) {
-						value.linkCampaignPath = $scope.getCampaignPath(value.id, result.data.id);
-					});
-			});
-			
-    	    $scope.newProposals = data.data.content;
-    	    $scope.totalNoOfItems = data.data.totalElements;
-		});
-    };
-	
-	 $scope.applyFilter('');
-
-	// reset filter fields and load proposals
-	$scope.resetFilter = function(){
-		$scope.campaignNameFilter='';
-		$scope.startDateFilter='';
-		$scope.endDateFilter='';
-		$scope.campaignId='';
-		$scope.applyFilter($scope.subSelectedTab);
-	}
-	
-	$scope.getPath = function(roleName,status,id){
-		var linkPath = '#/orders/orders-detail-'+id;
+	$scope.getPath = function(roleName,status,id)
+	{
+		var linkPath = '#/campaigns/proposal-line-item/'+id;
+		if(roleName=='PLANNER'){
+			if(status!='Pending' && status!='Review')
+				linkPath = '#/campaigns/proposal-line-item-view/'+id;
+		}
+		
 		return linkPath;
+				
 	}
 	
-	$scope.getCampaignPath = function(id,propsalId){
+	//create-line-item/propID-6-li-5
+	$scope.getCampaignPath = function(roleName,status,propsalId,id)
+	{
 		var val = "propID-"+propsalId + "-li-"+ id;
 		var encodedString = Base64.encode(val);
-		var linkPath = '#/orders/orders-detail-'+propsalId+"/"+encodedString;
-		return linkPath;
-	}
-	
-	// fech records by proposalID
-	$scope.filterByCampaignsId = function(){
-		if($scope.campaignId != '' && $scope.campaignId != undefined ){
-			$scope.campaignsId = $scope.campaignId
+		var linkPath = '#/campaigns/create-line-item/'+encodedString;
+		if(roleName=='PLANNER'){
+			if(status!='Pending' && status!='Review')
+				linkPath = '#/campaigns/create-line-item/'+encodedString;
 		}
-		$scope.getCampaignsID($scope.campaignsId);
-	};
-
-	// fech records by filter conditions
-	$scope.getCampaignsID = function(id){
-		$scope.newProposals.length = 0;
-		$scope.newProposals = [];
-		Data.get('line-items/'+id).then(function(result){
-			//if(result.data.id!="" && result.data.id!=undefined){
-			if(result.data.id!="" && result.data.id!=undefined && result.data.deliveryStatus==$scope.selectedProposalStatus){
-				Data.get('line-items/'+result.data.id+'/proposals').then (function (data) {
-					result.data.startDate = String(new Date(result.data.startDate)).substring(0,21);
-					result.data.endDate = String(new Date(result.data.endDate)).substring(0,21);
-					result.data.linkCampaignPath = $scope.getCampaignPath(result.data.id, data.data.id);
-					$scope.newProposals.push(result.data);
-				});
-			}else if(result.data.id!="" && result.data.id!=undefined && $scope.selectedProposalStatus=='Signed'){
-				Data.get('line-items/'+result.data.id+'/proposals').then (function (data) {
-					result.data.startDate = String(new Date(result.data.startDate)).substring(0,21);
-					result.data.endDate = String(new Date(result.data.endDate)).substring(0,21);
-					result.data.linkCampaignPath = $scope.getCampaignPath(result.data.id, data.data.id);
-					$scope.newProposals.push(result.data);
-				});
-			}else if(result.data.id!="" && result.data.id!=undefined && $scope.selectedProposalStatus=='MyOrders' && result.data.user.clientId==$rootScope.userId){
-				Data.get('line-items/'+result.data.id+'/proposals').then (function (data) {
-					result.data.startDate = String(new Date(result.data.startDate)).substring(0,21);
-					result.data.endDate = String(new Date(result.data.endDate)).substring(0,21);
-					result.data.linkCampaignPath = $scope.getCampaignPath(result.data.id, data.data.id);
-					$scope.newProposals.push(result.data);
-				});
-			}
-			
-		});
 		
-	};
+		return linkPath;
+				
+	}
 	
 });

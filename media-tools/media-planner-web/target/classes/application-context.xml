@@ -27,6 +27,6 @@
 	
 	<mvc:resources location="/resources/" mapping="/resources/**"/> 
 	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"
-	    p:maxUploadSize="21000000"/> 
+	    p:maxUploadSize="21000000"/>
 		
 </beans>		

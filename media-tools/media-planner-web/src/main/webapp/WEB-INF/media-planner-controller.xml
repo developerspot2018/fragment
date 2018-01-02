@@ -72,7 +72,8 @@
 		<property name="proposalService" ref="proposalService" />
 		<property name="proposalValidator" ref="proposalValidator" />
 		<property name="clientService" ref="clientService" />
-		<property name="lineItemSerivice" ref="lineItemService" />
+		<property name="lineItemService" ref="lineItemService" />
+		<property name="PROPOSAL_STATUS"  value="${proposal.status}"/>
 	</bean>
 
 	<bean id="salesTargetController" class="com.tavant.media.core.controllers.SalesTargetController">
@@ -107,6 +108,10 @@
 		<property name="assetService" ref="assetService" />
 		<property name="ROOT_LOCATION" value="${media.location}" />
 	</bean>
+	
+	<bean id="companyController" class="com.tavant.media.core.controllers.CompanyController">
+	    <property name="companyService" ref="companyService"/>
+	</bean>
 	<!-- Validation beans -->
 	<bean id="lineItemValidator" class="com.tavant.media.core.validator.LineItemValidator">
 		<property name="proposalService" ref="proposalService"></property>
@@ -114,5 +119,33 @@
 
 	<bean id="proposalValidator" class="com.tavant.media.core.validator.ProposalValidator" />
 	<!-- <bean id="readingProposal" class="com.tavant.media.core.states.ReadingProposal"></bean> -->
-
-</beans>
+	<bean id="auditAction" class="com.tavant.media.core.audit.AuditAction">
+	 <property name="proposalAuditService" ref="proposalAuditService"/>
+	 <property name="lineItemAuditService" ref="lineItemAuditService"/>
+	 <property name="productAuditService" ref="productAuditService"/>
+	 <property name="attributeAuditService" ref="attributeAuditService"/>
+	 <property name="creativeAuditService" ref="creativeAuditService"/>
+	 <property name="salesTargetAuditService" ref="salesTargetAuditService"/>
+	 <property name="assetAuditService" ref="assetAuditService"/>
+	 <property name="PROPOSAL_STATUS"  value="${proposal.status}"/>
+	 </bean> 
+	 
+	 <bean id="seasonalDiscountController" class="com.tavant.media.core.rules.controllers.SeasonalDiscountController">
+		 <property name="seasonalDiscountService" ref="seasonalDiscountService"/>
+	 </bean>
+     <bean id="targettingPremiumController" class="com.tavant.media.core.rules.controllers.TargettingPremiumController">
+	 	<property name="targettingPremiumService" ref="targettingPremiumService"/>
+	 </bean>
+	 
+	 <bean id="ruleInvoker" class="com.tavant.media.core.rules.framework.RuleInvoker">
+		 <constructor-arg index="0">
+			 <list>   
+			  <bean class="com.tavant.media.core.rules.framework.AgencyMarginRuleImpl" c:_0-ref="proposalService" c:_1-ref="productService"/>
+			  <bean class="com.tavant.media.core.rules.framework.TargettingPremiumRuleImpl" c:_0-ref="productService" c:_1-ref="targettingPremiumService"/>
+			  <bean class="com.tavant.media.core.rules.framework.SeasonalDiscountRuleImpl" c:_0-ref="productService" c:_1-ref="seasonalDiscountService"/>  
+			  <bean class="com.tavant.media.core.rules.framework.ProposalDiscountRuleImpl" c:_0-ref="proposalService" c:_1-ref="productService"/>
+			  <bean class="com.tavant.media.core.rules.framework.AdvertiserDiscountRuleImpl" c:_0-ref="proposalService" c:_1-ref="productService"/>
+			  </list>
+		 </constructor-arg>
+	 </bean>
+	</beans>

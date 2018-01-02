@@ -44,27 +44,11 @@ app.controller('createUpdateCompainsCtrl', function ($scope, $location, $rootSco
 	                           ];
 	
 	$rootScope.isActive = function(viewLocation) { 
-        if(viewLocation.indexOf('orders') > -1){
+        if(viewLocation.indexOf('campaigns') > -1){
         	return true; 
         }
 		return false;
     };
-    // Make left menu selected
-    $rootScope.isSubMenueActive = function(path){
-    	var flag = false;
-    	if($scope.selectedTab=='Order' && $scope.subSelectedTab==path)
-    		flag = true;
-    	return flag;
-    }
-    $scope.subSelectedTab = $rootScope.lefNavActive;
-    $scope.selectedTab = '';
-    
-    $scope.isOpen = function(val){
-		var flag = false;
-		if(val=='Order')
-			flag = true;
-		return flag;
-	};
 	
 	$scope.$watch("requestedOn", function(newVal, oldVal) {
 		if($scope.requestedOn !=null && $scope.requestedOn != ""){

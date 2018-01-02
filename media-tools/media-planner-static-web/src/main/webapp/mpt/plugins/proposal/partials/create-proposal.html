@@ -1,16 +1,191 @@
-<section>
-	<div class="row proposal" style="margin-left: 10px;">
-	<div class="content-area search-campaign" style="padding-top: 0px;">
-		<div class="row">
-			<div class="row campaign-filters">
-				<div class="col-lg-2 col-md-2 col-sm-3 pp-filter-panel">
-				 	<left-navigation></left-navigation>
-				 </div>
-				<div class="col-lg-10 col-md-10 col-sm-9 pp-dashboard-panel" style="padding-right: 40px;padding-left: 0px;">
-						<proposal-form></proposal-form>
-				</div>
+<div class="proposal">
+<div class="summary-section" ng-controller="createUpdateProposalCtrl">
+	<!-- <div style="width: 86%; margin: 0 auto;"> -->
+		<header>
+			<span style="float: left;" ng-if="proposalId>0"><a class="breadcrumb-text">{{property.updateProposalHeading}}</a><span class="breadcrumb-arrow">></span><a class="breadcrumb-text">{{proposalName}}</a></span>
+			<span style="float: left;" ng-if="!proposalId"><a class="breadcrumb-text">{{property.createProposalHeading}}</a></span>
+		</header>
+	<!-- </div> -->
+	<form name="createUpdateProposalorm" novalidate>
+		<div style="width: 100%;padding-top: 20px;">
+			<div style="width: 49%; float: left;">
+			<section style="width: 100%;" class="form-group "></section>
+				<section style="width: 100%;" class="form-group " show-errors>
+					<label>{{property.proposalName}}<span class="mandatory">*</span></label>
+					<input type="text" name="proposalName" data-ng-model="proposalName" id="proposalName" required maxlength="150"/>
+					<p class="help-block" ng-if="createUpdateProposalorm.proposalName.$error.required && checkErrors">
+						{{propertyMessage.proposalNameRequiredMsg}}
+					</p>
+				</section>
+
+				<section style="width: 100%;" class="form-group " show-errors='{showSuccess: true}'>
+					<label>{{property.createAdvertiserName}}<span class="mandatory">*</span></label> 
+					<input type="text" name="advertiserName" data-ng-model="advertiserName" id="advertiserName" required maxlength="150"/>
+					<p class="help-block" ng-if="createUpdateProposalorm.advertiserName.$error.required && checkErrors">
+						{{propertyMessage.advertiserNameRequiredMsg}}
+					</p>
+				</section>
+
+				<section style="width: 100%;" class="form-group " show-errors='{showSuccess: true}'>
+					<label>{{property.agencyMargin}}</label> 
+					<input type="number" name="agencyMargin" data-ng-model="agencyMargin" min="0" id="agencyMargin" max="100"/>
+					<p class="help-block" ng-if="createUpdateProposalorm.agencyMargin.$error.number && checkErrors">
+						{{propertyMessage.agencyMarginRequiredMsg}}
+					</p>
+					<p class="help-block" ng-if="createUpdateProposalorm.agencyMargin.$error.min && checkErrors">
+						{{propertyMessage.agencyMarginShouldNotZeroMsg}}
+					</p>
+					<p class="help-block" ng-if="createUpdateProposalorm.agencyMargin.$error.max && checkErrors">
+						{{propertyMessage.agencyMarginGreaterThnLmitMsg}}
+					</p>
+				</section>
+				
+				<section style="width: 100%;" class="form-group show-errors" show-errors>
+					<label>{{property.createStartDate}}<span class="mandatory">*</span></label> 
+					<input type="text" name="startDate" id="startDate" data-ng-model="startDate" readonly="readonly" required ng-change="setEndDate(this)"/>
+					<p class="help-block" ng-if="createUpdateProposalorm.startDate.$error.required && checkErrors">
+						{{propertyMessage.startDateRequiredMsg}}
+					</p>
+					<p class="help-block" ng-if="isStartDateLessThnReuestedOn" style="color: #a94442">
+						{{propertyMessage.startDateLessThnReuestedOn}}
+					</p>
+					<!--<button type="button" class="btn btn-default glyphicon glyphicon-calendar" ng-click="openCalendar($event, 'startDate')" style="margin-top: 1.0%;border: none;">
+					</button>-->
+					<!-- <p class="help-block" ng-if="startDate > endDate && checkErrors" style="color: #a94442">
+						{{propertyMessage.startDateRangeMsg}}
+					</p> -->
+				</section>
+				
+				<section style="width: 100%;"  class="form-group " show-errors>
+					<label>{{property.reuestedOn}}<span class="mandatory">*</span></label>
+					 <input type="text" name="requestedOn" id="requestedOn" data-ng-model="requestedOn"	readonly="readonly" required />
+					<!--<button type="button" class="btn btn-default glyphicon glyphicon-calendar" ng-click="openCalendar($event, 'requestedOn')" style="margin-top: 1.0%;border: none;">
+					</button>-->
+					<p class="help-block" ng-if="createUpdateProposalorm.requestedOn.$error.required && checkErrors">
+						{{propertyMessage.requestedDateRequiredMsg}}</p>
+					<p class="help-block" ng-if="isReuestedOnInFuture" style="color: #a94442">
+						{{propertyMessage.reuestedOnInFutureDate}}
+					</p>
+					<!-- <p class="help-block" ng-if="requestedOn > startDate && checkErrors" style="color: #a94442">
+						{{propertyMessage.requestedDateRangeMsg}}Requested date should not be in the future
+					</p> -->
+				</section>
+				
+				<section style="width: 100%;">
+					<label>{{property.createSalesCategory}}</label> 
+					<select ng-model="salesCategory" ng-options="salesCategoryVal.label as salesCategoryVal.label for salesCategoryVal in salesCategoryList | orderBy:'label':false">
+					</select>
+				</section>
+				
+				<section style="width: 100%;">
+					<label>{{property.grossOrNet}}</label> 
+					<select name="grossorNet" data-ng-model="grossorNet" id="grossorNet">
+						<option>Gross</option>
+						<option>Net</option>
+					</select>
+				</section>
+				<section style="width: 100%;">
+					<label>{{property.priority}}</label> 
+					<select name="priority" data-ng-model="priority" id="priority">
+						<option>Regular</option>
+						<option>Urgent</option>
+					</select>
+				</section>
+				
+			</div>
+			<div style="width: 49%; float: right;">
+			<section style="width: 100%;" class="form-group "></section>
+				<section style="width: 100%;">
+					<label>{{property.campaignName}}</label> 
+					<input type="text" name="compaignName" data-ng-model="compaignName" id="compaignName" maxlength="150"/>
+				</section>
+				
+				<section style="width: 100%;">
+					<label>{{property.accountManager}}</label> 
+					<select ng-model="accountManager" ng-options="accountManagerVal.label as accountManagerVal.label for accountManagerVal in accountManagerList | orderBy:'label':false">
+					</select>
+				</section>
+				
+				<section style="width: 100%;" class="form-group " show-errors='{showSuccess: true}'>
+					<label>{{property.agencyName}}<span class="mandatory">*</span></label> 
+					<input type="text" name="agencyName" data-ng-model="agencyName" id="agencyName" required maxlength="150"/>
+					<p class="help-block" ng-if="createUpdateProposalorm.agencyName.$error.required && checkErrors">
+						{{propertyMessage.agencyNameRequiredMsg}}
+					</p>
+				</section>
+				
+				<section style="width: 100%;" class="form-group " show-errors='{showSuccess: true}'>
+					<label>{{property.createEndDate}}<span class="mandatory">*</span></label> 
+					<input type="text" name="endDate" id="endDate" data-ng-model="endDate" readonly="readonly" required  ng-change="setStartDate(this)"/>
+					<!--<button type="button" class="btn btn-default glyphicon glyphicon-calendar" ng-click="openCalendar($event, 'endDate')" style="margin-top: 1.0%;border: none;">
+					</button>-->
+					<p class="help-block" ng-if="createUpdateProposalorm.endDate.$error.required && checkErrors">
+						{{propertyMessage.endDateRequiredMsg}}
+					</p>
+					<p class="help-block" ng-if="isEndDateLessThnStartDate" style="color: #a94442">
+						{{propertyMessage.endDateLessThnStartDate}}
+					</p>
+				</section>
+				
+				<section style="width: 100%;">
+					<label>{{property.dueOn}}</label>
+					<input type="text" name="dueOn" id="dueOn" data-ng-model="dueOn" readonly="readonly" />
+					<!--<button type="button" class="btn btn-default glyphicon glyphicon-calendar" ng-click="openCalendar($event, 'dueOn')" style="margin-top: 1.0%;border: none;">
+					</button>-->
+					<p class="help-block" ng-if="isDueOnGreaterThnEndDate" style="color: #a94442">
+						{{propertyMessage.dueOnGreaterThnEndDate}}
+					</p>
+					<p class="help-block" ng-if="isDueOnLessThnRequestedOn" style="color: #a94442">
+						{{propertyMessage.dueOnLessThnRequestedOn}}
+					</p>
+					<p class="help-block" ng-if="isDueOnGreaterThnStartDate" style="color: #a94442">
+						{{propertyMessage.dueOnGreaterThnStartDate}}
+					</p>
+				</section>
+
+				<section style="width: 100%;">
+					<label>{{property.proposalCurrency}}</label>
+					<select ng-model="proposalCurrency" ng-options="proposalCurrencyVal.label as proposalCurrencyVal.label for proposalCurrencyVal in proposalCurrencyList | orderBy:'label':false">
+					</select>
+				</section>
+				
+				<section style="width: 100%;" class="form-group " show-errors='{showSuccess: true}'>
+					<label>{{property.createBudget}}</label> 
+					<input type="number" name="budget" data-ng-model="budget" id="budget" min="0" step="any" />
+					<p class="help-block" ng-if="createUpdateProposalorm.budget.$error.number && checkErrors">
+						{{propertyMessage.budgetShouldNumericMsg}}
+					</p>
+					<p class="help-block" ng-if="createUpdateProposalorm.budget.$error.min && checkErrors">
+						{{propertyMessage.budgetCanNotZeroMsg}}
+					</p>
+				</section>
+				<section style="width: 100%;">
+					<label>{{property.addProposalNote}}</label>
+					<textarea rows="1" data-ng-model="custom1" id="custom1" name="custom1"></textarea>
+				</section>
+				<!--<section style="width: 100%;" class="form-group " show-errors='{showSuccess: true}'>
+					<label>{{property.conversionRate}}</label> 
+					<input type="number" name="conversionRate" data-ng-model="conversionRate" min="0" id="conversionRate" />
+					<p class="help-block" ng-if="createUpdateProposalorm.conversionRate.$error.number && checkErrors">
+						{{propertyMessage.conversionRateNumericMsg}}
+					</p>
+					<p class="help-block" ng-if="createUpdateProposalorm.conversionRate.$error.min && checkErrors">
+						{{propertyMessage.conversionRateCanNotZeroMsg}}
+					</p>
+				</section>-->
+				
 			</div>
 		</div>
+		<div class="button-container">
+			<button type="button" ng-click="createProposal()" style="height: 32px; margin-right: 2.5%; margin-top: 0;" class="btn pull-right add-creative-button ng-binding">
+				<span class="glyphicon glyphicon-plus-sign"></span>
+				&nbsp;{{property.saveButton}}
+			</button>
+            <button type="button" ng-click="cancelProposal()" style="height: 32px; margin-right: 0.5%; margin-top: 0;" class="btn pull-right add-creative-button cancel-button ng-binding">
+                <span class="glyphicon glyphicon-remove"></span>
+                {{property.cancelButton}}
+            </button>
 		</div>
-	</div>
-</section>
+	</form>
+</div>
+</div>

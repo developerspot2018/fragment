@@ -1,29 +1,16 @@
 <div class="col-lg-2 left-naviation-menu">
 	<ul class="nav nav-pills nav-stacked" id="nav">
 		<li
-			ng-if="roleName=='PLANNER' || roleName=='ADMIN'">
-			<a  class="hvr-underline-from-center" href="#/dashboard">
-			 <!--<img width="15" height="15" src="images/Proposal.jpg"> -->
-			 <i class="glyphicon glyphicon-briefcase"></i> &nbsp; &nbsp;{{property.proposals}}
+			ng-if="roleName=='PLANNER' || roleName=='ADMIN'"><a
+			href="#/dashboard"> <img width="15" height="15" src="images/Proposal.jpg"> &nbsp; &nbsp;{{property.proposals}}
 		</a>
 			<ul class="nav nav-pills nav-stacked">
-				<li  ng-class="{subMenuActive:isActive('/dashboard/bar')}">
-					<a class="hvr-underline-from-center" href="#/dashboard">
-						<i class="glyphicon glyphicon-stats"></i>{{property.barchart}}
-					</a>
-				</li>
-				<li ng-class="{subMenuActive:isActive('/dashboard/calendar')}">
-					<a class="hvr-underline-from-center" href="#/dashboard/calendar">
-					    <i class="glyphicon glyphicon-calendar"></i>{{property.calendar}}
-				    </a>
-				</li>
+				<li  ng-class="{subMenuActive:isActive('/dashboard/bar')}"><a href="#/dashboard">{{property.barchart}}</a></li>
+				<li ng-class="{subMenuActive:isActive('/dashboard/calendar')}"><a href="#/dashboard/calendar">{{property.calendar}}</a></li>
 			</ul></li>
 		<li ng-class="{subMenuActive:isActive('/welcome/pie')}"
-			ng-if="roleName=='TRAFFICKER' || roleName=='ADMIN'">
-			<a class="hvr-underline-from-center" href="#/welcome">
-			    <!--<img width="15" height="15" src="images/Campaign.jpg">-->
-			     <i class="glyphicon glyphicon-globe"></i>&nbsp; &nbsp;{{property.campaignsDashboard}}
-		    </a>
-		</li>
+			ng-if="roleName=='TRAFFICKER' || roleName=='ADMIN'"><a
+			href="#/welcome"> <img width="15" height="15" src="images/Campaign.jpg"> &nbsp; &nbsp;{{property.campaignsDashboard}}
+		</a></li>
 	</ul>
 </div>

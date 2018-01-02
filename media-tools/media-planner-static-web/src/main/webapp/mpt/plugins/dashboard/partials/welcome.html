@@ -2,44 +2,44 @@
 		<div ng-include="'plugins/dashboard/partials/dashboard-left-nav.html'"></div>
 		<div class="row" style="margin-left: 10px;">
 			<div>
-				<div class="row dashboard-campaign">
+				<div class="row">
 					<br>
 					<div class="campaign-filters">
-						<div class="col-lg-10 col-md-9 col-sm-12 col-xs-12 cpm-dashboard-content"  style="padding-left: 0px;">
+						<div class="col-lg-10 col-md-9 col-sm-12 col-xs-12"  style="padding-left: 0px;">
 							<!-- Future campaigns grid start here -->
-							<div class="col-lg-12 future-cpm-grid">
-								<div class="col-lg-6 cpm-grid-outer" style="padding: 12px;">
+							<div class="col-lg-12"  style="padding-left: 0px;height: 360px;">
+								<div class="col-lg-6" style="padding: 15px;">
 									<div class=" row table-responsive" style="margin: 0;">
-										<div class="cpm-gotolive-header col-lg-6 col-md-6 col-sm-6 pull-left noPad">{{property.campaignsToGoLive}}</div>
-										<div class="cpm-gotolive-header col-lg-6 col-md-6 col-sm-6  noPad">
-											<span class="pull-right cpm-delay-txt">{{property.delayedCampaigns}}</span>
-											<input class="campaign-delay pull-right" type="checkbox"
-														ng-change="getDelayedCampaigns(this)"
-														ng-model="delayedCampaigns" />&nbsp;&nbsp;
-									</div>
 										<table
-											class="table table-striped font-12 table-bordered table-hover table-condensed mpt-table campaign-table">
+											class="table table-striped font-12 table-bordered table-hover table-condensed mpt-table">
 											<thead>
+												<tr style="background-color:rgb(202, 225, 249);color:#444;">
+													<th class="width-70p" style="text-align: left;">{{property.campaignsToGoLive}}</th>
+													<th class="width-20p" colspan="3" style="text-align: right;"><input type="checkbox" style="margin-top: 0px;"
+														ng-change="getDelayedCampaigns(this)"
+														ng-model="delayedCampaigns" />
+														{{property.delayedCampaigns}}</th>
+												</tr>
 												<tr>
-													<th class="width-30p th-cpm-live" ng-click="sort_by_grid1('placeHolder');">{{property.campaignName}}&nbsp;
+													<th class="width-30p" ng-click="sort_by_grid1('lineItemList.placeHolder');">{{property.campaignName}}&nbsp;
 													<span class="sorter">
 													<i class="glyphicon glyphicon-triangle-top"></i>
 													<i class="glyphicon glyphicon-triangle-bottom"></i>	
 													</span>
 													</th>
-													<th class="width-20p th-cpm-flight" ng-click="sort_by_grid1('orderName');">{{property.orderName}}&nbsp;
+													<th class="width-20p" ng-click="sort_by_grid1('orderName');">{{property.orderName}}&nbsp;
 													<span class="sorter">
 													<i class="glyphicon glyphicon-triangle-top"></i>
 													<i class="glyphicon glyphicon-triangle-bottom"></i>	
 													</span>
 													</th>
-													<th class="width-20p th-cpm-daystolive" ng-click="sort_by_grid1('startDate');">{{property.flight}}&nbsp;
+													<th class="width-20p" ng-click="sort_by_grid1('lineItemList.startDate');">{{property.flight}}&nbsp;
 													<span class="sorter">
 													<i class="glyphicon glyphicon-triangle-top"></i>
 													<i class="glyphicon glyphicon-triangle-bottom"></i>	
 													</span>
 													</th>
-													<th class="width-20p th-cpm-daystolive" ng-click="sort_by_grid1('daysToGoLive');">{{property.daysToLive}}&nbsp;
+													<th class="width-20p" ng-click="sort_by_grid1('lineItemList.daysToGoLive');">{{property.daysToLive}}&nbsp;
 													<span class="sorter">
 													<i class="glyphicon glyphicon-triangle-top"></i>
 													<i class="glyphicon glyphicon-triangle-bottom"></i>	
@@ -50,24 +50,24 @@
 											<tbody>
 												<tr
 													ng-repeat="p in futureCampaignsList | orderBy:predicateGrid1 :reverseGrid1 | startCampaignFrom:(futureCampaignsCurrentPage-1)*futureCampaignsEntryLimit | limitTo:futureCampaignsEntryLimit" 
-													animate-on-change='p.placeHolder + p.orderName  + p.startDate + p.daysToGoLive' ng-animate=" 'animate'">
+													animate-on-change='p.lineItemList.placeHolder + p.orderName  + p.lineItemList.startDate + p.lineItemList.daysToGoLive' ng-animate=" 'animate'">
 													<td title="{{p.lineItemList.placeHolder}}"><a
-														href="{{p.linkCampaignPath}}">{{p.placeHolder}}</a>
+														href="#/campaigns/create-line-item/{{p.encodedString}}">{{p.lineItemList.placeHolder}}</a>
 													</td>
 													<td title="{{p.orderName}}">{{p.orderName}}</td>
-													<td title="{{p.startDate}}">
-														{{p.startDate}} - {{p.endDate}}</td>
-													<td title="{{p.daysToGoLive}}">
-														{{p.daysToGoLive}}</td>
+													<td title="{{p.lineItemList.startDate}}">
+														{{p.lineItemList.startDate}} - {{p.lineItemList.endDate}}</td>
+													<td title="{{p.lineItemList.daysToGoLive}}">
+														{{p.lineItemList.daysToGoLive}}</td>
 												</tr>
 											</tbody>
 											<tr ng-show="futureCampaignsList.length==0">
 												<td style="vertical-align: middle;" colspan="4"><i
-													class="fa fa-ban fa-2x"></i>&nbsp;No data found</td>
+													class="fa fa-ban fa-3x"></i>&nbsp;No data found</td>
 											</tr>
 											<tr ng-hide="futureCampaignsList.length > -1">
 												<td style="vertical-align: middle;" colspan="4"><i
-													class="fa fa-cog fa-2x fa-spin"></i>&nbsp;Loading</td>
+													class="fa fa-cog fa-3x fa-spin"></i>&nbsp;Loading</td>
 											</tr>
 										</table>
 
@@ -79,13 +79,13 @@
 											boundary-links="true"
 											total-items="futureCampaignsfilteredItems"
 											items-per-page="futureCampaignsEntryLimit"
-											class="pagination pagination-sm pull-right"
+											class="pagination pagination-sm col-lg-12"
 											style="margin-top: 1px; margin-bottom: 0px;"
 											previous-text="&laquo;" next-text="&raquo;"></div>
 
 									</div>
 								</div>
-								<div class="col-lg-5 cpm-grid-outer cpm-board-completed" style="padding: 12px;">
+								<div class="col-lg-6" style="padding: 15px;">
 									<!-- Future campaigns grid end here -->
 
 
@@ -98,19 +98,19 @@
 													<th colspan="3" class="width-70p" style="text-align: left;">{{property.campaignsCompletedInlast3days}}</th>
 												</tr>
 												<tr>
-													<th class="width-30p" ng-click="sort_by_grid2('placeHolder');">{{property.campaignName}}&nbsp;
+													<th class="width-30p" ng-click="sort_by_grid2('lineItemList.placeHolder');">{{property.campaignName}}&nbsp;
 													<span class="sorter">
 													<i class="glyphicon glyphicon-triangle-top"></i>
 													<i class="glyphicon glyphicon-triangle-bottom"></i>	
 													</span>
 													</th>
-													<th class="width-20p" ng-click="sort_by_grid2('startDate');">{{property.flight}}&nbsp;
+													<th class="width-20p" ng-click="sort_by_grid2('lineItemList.startDate');">{{property.flight}}&nbsp;
 													<span class="sorter">
 													<i class="glyphicon glyphicon-triangle-top"></i>
 													<i class="glyphicon glyphicon-triangle-bottom"></i>	
 													</span>
 													</th>
-													<th class="width-20p" ng-click="sort_by_grid2('impression');">{{property.impression}}&nbsp;
+													<th class="width-20p" ng-click="sort_by_grid2('lineItemList.impression');">{{property.impression}}&nbsp;
 													<span class="sorter">
 													<i class="glyphicon glyphicon-triangle-top"></i>
 													<i class="glyphicon glyphicon-triangle-bottom"></i>	
@@ -121,23 +121,23 @@
 											<tbody>
 												<tr
 													ng-repeat="p in pastCampaignsList | orderBy:predicateGrid2 :reverseGrid2 | startCampaignFrom:(pastCampaignsCurrentPage-1)*pastCampaignsEntryLimit | limitTo:pastCampaignsEntryLimit" 
-													animate-on-change='p.placeHolder +  p.startDate + p.impression' ng-animate=" 'animate'">
+													animate-on-change='p.lineItemList.placeHolder +  p.lineItemList.startDate + p.lineItemList.impression' ng-animate=" 'animate'">
 													<td title="{{p.lineItemList.placeHolder}}"><a
-														href="{{p.linkCampaignPath}}">{{p.placeHolder}}</a>
+														href="#/campaigns/create-line-item/{{p.encodedString}}">{{p.lineItemList.placeHolder}}</a>
 													</td>
-													<td title="{{p.startDate}}">
-														{{p.startDate}} - {{p.endDate}}</td>
-													<td title="{{p.impression}}">
-														{{p.impression}}</td>
+													<td title="{{p.lineItemList.startDate}}">
+														{{p.lineItemList.startDate}} - {{p.lineItemList.endDate}}</td>
+													<td title="{{p.lineItemList.impression}}">
+														{{p.lineItemList.impression}}</td>
 												</tr>
 											</tbody>
 											<tr ng-show="pastCampaignsList.length ==0">
 												<td style="vertical-align: middle;" colspan="3"><i
-													class="fa fa-ban fa-2x"></i>&nbsp;No data found</td>
+													class="fa fa-cog fa-3x fa-spin"></i>&nbsp;No data found</td>
 											</tr>
 											<tr ng-hide="pastCampaignsList.length > -1">
-												<td style="vertical-align: middle;" colspan="3">
-													<i class="fa fa-cog fa-2x fa-spin"></i>&nbsp;Loading</td>
+												<td style="vertical-align: middle;" colspan="3"><i
+													class="fa fa-cog fa-3x fa-spin"></i>&nbsp;Loading</td>
 											</tr>
 										</table>
 
@@ -149,7 +149,7 @@
 											boundary-links="true"
 											total-items="pastCampaignsfilteredItems"
 											items-per-page="pastCampaignsEntryLimit"
-											class="pagination pagination-sm pull-right"
+											class="pagination pagination-sm col-lg-12"
 											style="margin-top: 1px; margin-bottom: 0px;"
 											previous-text="&laquo;" next-text="&raquo;"></div>
 
@@ -159,8 +159,8 @@
 							</div>
 
 							<!-- Current campaigns grid start here -->
-							<div class="col-lg-12 cmp-grid-wrapper">
-								<div class="col-lg-6 cpm-grid-outer" style="padding: 12px;">
+							<div class="col-lg-12"  style="padding-left: 0px;height: 360px;">
+								<div class="col-lg-6" style="padding: 15px;">
 									<div class=" row table-responsive" style="margin: 0;">
 										<table
 											class="table table-striped font-12 table-bordered table-hover table-condensed mpt-table">
@@ -169,19 +169,19 @@
 													<th colspan="3" class="width-70p" style="text-align: left;">{{property.deliveringCampaigns}}</th>
 												</tr>
 												<tr>
-													<th class="width-30p" ng-click="sort_by_grid3('placeHolder');">{{property.campaignName}}&nbsp;
+													<th class="width-30p" ng-click="sort_by_grid3('lineItemList.placeHolder');">{{property.campaignName}}&nbsp;
 													<span class="sorter">
 													<i class="glyphicon glyphicon-triangle-top"></i>
 													<i class="glyphicon glyphicon-triangle-bottom"></i>	
 													</span>
 													</th>
-													<th class="width-20p" ng-click="sort_by_grid3('startDate');">{{property.flight}}&nbsp;
+													<th class="width-20p" ng-click="sort_by_grid3('lineItemList.startDate');">{{property.flight}}&nbsp;
 													<span class="sorter">
 													<i class="glyphicon glyphicon-triangle-top"></i>
 													<i class="glyphicon glyphicon-triangle-bottom"></i>	
 													</span>
 													</th>
-													<th class="width-20p" ng-click="sort_by_grid3('impression');">{{property.impression}}&nbsp;
+													<th class="width-20p" ng-click="sort_by_grid3('lineItemList.impression');">{{property.impression}}&nbsp;
 													<span class="sorter">
 													<i class="glyphicon glyphicon-triangle-top"></i>
 													<i class="glyphicon glyphicon-triangle-bottom"></i>	
@@ -192,24 +192,24 @@
 											<tbody>
 												<tr
 													ng-repeat="p in currentCampaignsList | orderBy:predicateGrid3 :reverseGrid3 | startCampaignFrom:(currentCampaignsCurrentPage-1)*currentCampaignsEntryLimit | limitTo:currentCampaignsEntryLimit"
-													animate-on-change='p.placeHolder +  pstartDate + p.impression' ng-animate=" 'animate'">
+													animate-on-change='p.lineItemList.placeHolder +  p.lineItemList.startDate + p.lineItemList.impression' ng-animate=" 'animate'">
 													<td title="{{p.lineItemList.placeHolder}}"><a
-														href="{{p.linkCampaignPath}}">{{p.placeHolder}}</a>
+														href="#/campaigns/create-line-item/{{p.encodedString}}">{{p.lineItemList.placeHolder}}</a>
 													</td>
 													<td title="{{p.lineItemList.startDate}}">
-														{{p.startDate}} - {{p.endDate}}</td>
-													<td title="{{p.impression}}">
-														{{p.impression}}</td>
+														{{p.lineItemList.startDate}} - {{p.lineItemList.endDate}}</td>
+													<td title="{{p.lineItemList.impression}}">
+														{{p.lineItemList.impression}}</td>
 
 												</tr>
 											</tbody>
-											<tr ng-show="currentCampaignsList.length == 0 ">
+											<tr ng-show="currentCampaignsList.length ==0 ">
 												<td style="vertical-align: middle;" colspan="3"><i
-													class="fa fa-ban fa-2x"></i>&nbsp;No data found</td>
+													class="fa fa-cog fa-3x fa-spin"></i>&nbsp;No data found</td>
 											</tr>
-											<tr ng-hide="currentCampaignsList.length> -1">
+											<tr ng-hide="currentCampaignsList.length > -1">
 												<td style="vertical-align: middle;" colspan="3"><i
-													class="fa fa-cog fa-2x fa-spin"></i>&nbsp;Loading</td>
+													class="fa fa-cog fa-3x fa-spin"></i>&nbsp;Loading</td>
 											</tr>
 										</table>
 
@@ -221,7 +221,7 @@
 											boundary-links="true"
 											total-items="currentCampaignsfilteredItems"
 											items-per-page="currentCampaignsfilteredItems"
-											class="pagination pagination-sm pull-right"
+											class="pagination pagination-sm col-lg-12"
 											style="margin-top: 1px; margin-bottom: 0px;"
 											previous-text="&laquo;" next-text="&raquo;"></div>
 									</div>
@@ -229,10 +229,11 @@
 								<!-- Current campaigns grid end here -->
 
 								<!-- Chart start here -->
-								<div class="col-lg-5 cpm-graph-outer noPad">
+								<div class="col-lg-6" style="padding: 15px;">
 									<section>
 										<div class="campaigns" ng-app="google-chart-example">
-											<div google-chart chart="chart"  class="cmp-chart-container" style="padding-left:0px;height:280px;" on-select="seriesSelected(selectedItem)"></div>
+											<div google-chart chart="chart" style=""
+												on-select="seriesSelected(selectedItem)"></div>
 										</div>
 									</section>
 								</div>

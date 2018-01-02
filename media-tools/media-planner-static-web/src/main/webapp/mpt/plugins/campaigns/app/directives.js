@@ -24,21 +24,3 @@ app.directive("campaignsListing", function() {
 	    templateUrl: "plugins/campaigns/partials/campaigns-listing.html"
 	  };
 });
-app.directive("detailForm", function() {
-	  return {
-	    restrict: 'E',
-	    templateUrl: "plugins/campaigns/partials/detail-form.html"
-	  };
-});
-app.directive("campaignForm", function() {
-	  return {
-	    restrict: 'E',
-	    templateUrl: "plugins/campaigns/partials/campaign-form.html"
-	  };
-});
-app.directive("orderForm", function() {
-	  return {
-	    restrict: 'E',
-	    templateUrl: "plugins/campaigns/partials/order-form.html"
-	  };
-});

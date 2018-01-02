@@ -20,6 +20,5 @@
 	"associatedName": "Name",
 	"associatedValue": "Value",
 	"associatedDescription": "Description",
-	"associatedAction": "Action",
-	"manageUsers": "Manage Users"
+	"associatedAction": "Action"
 }

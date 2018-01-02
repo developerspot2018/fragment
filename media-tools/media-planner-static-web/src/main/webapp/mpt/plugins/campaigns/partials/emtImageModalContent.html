@@ -6,26 +6,26 @@
 			</h4>
         </div>
         <form name="assetImageForm">
-        <div class="asset-body modal-body">
+        <div class="modal-body">
             <div class='row addImage'>
 				<div class='col-md-6'>
 					<h5>{{property.assetName}}<span class="star-mark">*</span></h5>    				
     				<input type="text" placeholder="{{property.enterName}}" class="form-control" ng-model='assetModel.creativeImageName' maxlength="50">
-					<p class="asset-error" ng-if="creativeImageNameValidation">{{creativeImageNameValidationMsg}}</p>
+					<p style='color:#a94442;font-size: 14px !important;' ng-if="creativeImageNameValidation">{{creativeImageNameValidationMsg}}</p>
 					
 					<h5>{{property.clickThroughURL}}<span class="star-mark">*</span></h5>    
 					<input type="text" placeholder="{{property.clickThroughURLExample}}" class="form-control" ng-model='assetModel.creativeImageDestinationURL' title='Example: http://www.google.com' maxlength="200">
-					<p class="asset-error"  ng-if="creativeURLValidation">{{creativeURLValidationMsg}}</p>
+					<p style='color:#a94442;font-size: 14px !important;' ng-if="creativeURLValidation">{{creativeURLValidationMsg}}</p>
 					
 					<h5>{{property.thirdPartyURL}}<span class="star-mark">*</span></h5>    
 					<input type="text" placeholder="{{property.thirdPartyURLExample}}" class="form-control" ng-model='assetModel.creativeThirdPartyUrl' title='Example: http://www.google.com' maxlength="200">
-					<p class="asset-error"  ng-if="creativeThirdPartyURLValidation">{{creativeThirdPartyURLValidationMsg}}</p>
+					<p style='color:#a94442;font-size: 14px !important;' ng-if="creativeThirdPartyURLValidation">{{creativeThirdPartyURLValidationMsg}}</p>
 					
 					
 					<h5 >{{property.size}}<span class="star-mark">*</span></h5>    
 					
 					<div ng-if="assetModel.mediaType">{{assetModel.selectedImageOption}}</div>
-					<p class="asset-error" ng-if="creativeSizeValidation">{{creativeSizeValidationMsg}}</p>
+					<p style='color:#a94442;font-size: 14px !important;' ng-if="creativeSizeValidation">{{creativeSizeValidationMsg}}</p>
 					<h5>{{property.altText}}</h5>    
 					<input type="text" placeholder="{{property.altTextExample}}" class="form-control" ng-model='assetModel.creativeAltTag' maxlength="200">
 					
@@ -40,7 +40,7 @@
 							</span>
 						</p>
 					</div>
-					<p class="asset-error" ng-if="upladButtonDivErrorFlag">{{upladButtonDivErrorMsg}}</p>
+					<p style='color:#a94442;font-size: 14px !important;' ng-if="upladButtonDivErrorFlag">{{upladButtonDivErrorMsg}}</p>
 					<div ng-show='imagePreview==true' style='text-align: center;border: 1px solid #999;position:relative;'>
 						<img ng-if="assetModel.mediaType" data-ng-src="data:{{assetModel.mediaType}};base64,{{imageSrc}}" class='col-md-12'>
 						<img ng-if="!assetModel.mediaType" ng-src="{{imageSrc}}" class='col-md-12'>
@@ -50,7 +50,7 @@
 			</div>
 
 	</div>
-	<div class="asset-footer modal-footer" style='text-align: right;'>
+	<div class="modal-footer" style='text-align: right;'>
 	<button class="btn btn-default addImage" ng-click="cancel()">{{property.cancel}}</button>
 	<button class="btn btn-primary addImage" ng-click="okImage()">{{property.add}}</button>
 	</div>	

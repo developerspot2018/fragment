@@ -12,26 +12,3 @@ fieldset.scheduler-border{background-color: #fff;box-shadow:0 0 9px #2672ec;padd
 .tool-label{font-size: 67px;font-weight: 100; color: white;}
 .tool-label:before{content: "";height: 0;width: 40%;display: block;box-shadow: 0 0 80px 5px #fff;position: relative;z-index: 2;-webkit-transition: top 900ms linear 0s;-moz-transition: top 900ms linear 0s;-ms-transition: top 900ms linear 0s;transition: top 900ms linear 0s;top:54px;opacity:0}
 .tool-label::before:hover{top:10px}
-.login-btn{width:150px;}
-.login-btn .btn-primary{margin-left:40px;}
-.login-pannel, .login-landing-image{min-height:100vh;}
-#login-box a.forgot-pwd{margin-left: 10%;}
-
-.login-wrapper{margin:23% auto; width:93%;margin-left:8px;}
-.login-pannel{padding-left:2px;}
-.login-pannel .navbar-header{margin-top:55px; margin-left:inherit; padding-top:18px; padding-left:8%; height:80px; z-index:1000; /*background-color:#185291; box-shadow: 5px 15px 10px #BDBDBD;*/}
-.tool-label{color:#185291; font-size:25px;}
-.login-right-sec{margin-left: 0px;}
-/*.login_bg {background: url("../images/crossmediapolicies.jpg") no-repeat center center; overflow: hidden;}*/
-
-
-/* CSS FOR THE VIEW IPAD PORT*/
-@media (min-device-width:764px) and (max-device-width:1024px){
- .login-btn{width:151px;}
- .login-btn .btn-primary{margin-left:40px;}
- .scheduler-border .form-floating .form-group input{font-size:14px !important;}
- .form-group.touch-or-filled{min-height:80px;}
- .login-box, .login-box .form-horizontal{height:100%;}
- .login-wrapper{height:290px; margin: 30% 1%;padding: 0 10px;width: 93%;}
- fieldset.scheduler-border{padding:10px 14px 20px !important;}
-}

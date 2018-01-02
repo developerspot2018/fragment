@@ -1,23 +1,19 @@
-app.factory("Data", ['$http', '$rootScope', 'toaster', '$location', 'ModalService', 
-    function ($http, $rootScope, toaster, $location, ModalService) {
+app.factory("Data", ['$http', 'toaster', '$location', 'ModalService',
+    function ($http, toaster, $location, ModalService) {
 
         //var serviceBase = 'http://192.168.64.121:9090/mp/';
 	    var serviceBase = 'http://10.193.66.132:9090/mp/';
 	    //var serviceBase = 'http://10.193.67.75:9090/mp/'; // Navneet machine
-	    
-	    $http.defaults.headers.common.Authorization = $rootScope.auth;
+        
         var obj = {};
-       
-        obj.toast = function (data) {
-            toaster.pop(data.status, "", data.message, 5000, 'trustedHtml');
+
+        obj.toast = function (data) { 
+            toaster.pop(data.status, "", data.message, 10000, 'trustedHtml');
         }
         obj.get = function (q) {
             return $http.get(serviceBase + q).success(function (results,status) {
-            	if(status=='206')
-            		inforToUser(status);
-                else
-                	return results.data;	
-            }).error(function(results,status){
+                return results.data;
+            }).error(function(result,status){
             	inforToUser(status);
             });
         }; 
@@ -25,9 +21,9 @@ app.factory("Data", ['$http', '$rootScope', 'toaster', '$location', 'ModalServic
             return $http.post(serviceBase + q, object).success(function (results,status) {
             	return results.data;
             }).error(function(results,status){
-            	if((status=='412') && ((q.indexOf("attributes") > -1)  ||(q.indexOf("salestargets") > -1)  || (q.indexOf("creatives") > -1)  || (q.indexOf("products") > -1 ))) {
+            	if((status=='409'  || status=='412') && ((q.indexOf("attributes") > -1)  ||(q.indexOf("salestargets") > -1)  || (q.indexOf("creatives") > -1)  || (q.indexOf("products") > -1 ))) {
             		//$scope.showEditModal("This attribute is already associated . Please choose a different attribute to associate");
-            		return results;//status=='409'  ||
+            		return results;
             	} else {
             		inforToUser(status);
             	}
@@ -37,8 +33,8 @@ app.factory("Data", ['$http', '$rootScope', 'toaster', '$location', 'ModalServic
             return $http.put(serviceBase + q, object).success(function (results,status) {
                 return results.data;
             }).error(function(result,status){
-            	if((status=='412') && ((q.indexOf("attributes") > -1)  || (q.indexOf("salestargets") > -1)  ||  (q.indexOf("creatives") > -1)  || (q.indexOf("products") > -1 ))) {
-            		return result;//status=='409'  ||
+            	if((status=='409'  || status=='412') && ((q.indexOf("attributes") > -1)  || (q.indexOf("salestargets") > -1)  ||  (q.indexOf("creatives") > -1)  || (q.indexOf("products") > -1 ))) {
+            		return result;
             	} else {
             		inforToUser(status);
             	}
@@ -46,22 +42,17 @@ app.factory("Data", ['$http', '$rootScope', 'toaster', '$location', 'ModalServic
         };
         
         obj.patch = function (q) {
-        	//$http({method:'PATCH',url:serviceBase + q}).success(function(results,status){ return results.data}).error(function(results,status){inforToUser(status);});
+        	$http({method:'PATCH',url:serviceBase + q}).success(function(results,status){ return results.data}).error(function(results,status){inforToUser(status);});
         	//$http({method:'PATCH',url:serviceBase+ q}).success(function(data,status){}).error(function(data,status){inforToUser(status);});
-        	 return $http.patch(serviceBase + q).success(function (results,status) {
-                 return results.data;
-             }).error(function(results,status){
-             	
-             });
         };
         
         obj.delete = function (q) {
             return $http.delete(serviceBase + q).success(function (results,status) {
                 return results.data;
             }).error(function(results,status){
-            	if((status=='412') && ((q.indexOf("attributes") > -1)  ||(q.indexOf("salestargets") > -1)  || (q.indexOf("creatives") > -1)  || (q.indexOf("products") > -1 ))) {
+            	if((status=='409'  || status=='412') && ((q.indexOf("attributes") > -1)  ||(q.indexOf("salestargets") > -1)  || (q.indexOf("creatives") > -1)  || (q.indexOf("products") > -1 ))) {
             		//$scope.showEditModal("This attribute is already associated . Please choose a different attribute to associate");
-            		return results;//status=='409'  || 
+            		return results;
             	} else {
             		inforToUser(status);
             	}
@@ -72,17 +63,13 @@ app.factory("Data", ['$http', '$rootScope', 'toaster', '$location', 'ModalServic
         	var username = object.customer.username;
         	var password = object.customer.password;
         	
-        	//return $http.post(serviceBase + q, "username=" + username + "&password=" + password, {
-        	return $http.post(serviceBase + q, "client_id=" + username + "&client_secret=" + password+ "&grant_type=client_credentials", {
+        	return $http.post(serviceBase + q, "username=" + username + "&password=" + password, {
         		headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         		}).success(function(results,status,headers,config) {
-        			$rootScope.access_token =  results.access_token;
-        			$rootScope.Authorization =  results.token_type;
         			return true;
         			
         		}).error(function(results,status,headers,config) {
-        			return results;
-        			//showApiWarningMsg("Incorrect Email or Password.");
+        			showApiWarningMsg("Incorrect Email or Password.");
         		});
        };
         
@@ -107,7 +94,7 @@ app.factory("Data", ['$http', '$rootScope', 'toaster', '$location', 'ModalServic
 					 formData.append("lineItemId", lineItemId);
 					 formData.append("clickThruUrl", data.clickThruUrl);
 					 formData.append("thirdPartyUrl", data.thirdPartyUrl);
-					 formData.append("alt", data.altText);
+					 formData.append("altText", data.altText);
 					 formData.append("file", data.file);
 	    	   }
 	    	   
@@ -128,7 +115,48 @@ app.factory("Data", ['$http', '$rootScope', 'toaster', '$location', 'ModalServic
 						}).error(function(result){
 							
 						});
-	    	  
+	    	  /*
+	    	  if(method == 'POST'){
+	    		 return $http({
+	       		   method: method,
+	       		   url: url,
+	       		   headers: {
+	       		   'Content-Type': 'multipart/form-data;boundary=----WebKitFormBoundaryzeZR8KqAYJyI2jPL;Access-Control-Allow-Origin=true;'
+	       		   },
+	       		   data: data}).success(function(data){
+	       				   showApiWarningMsg("Creative has been created");
+	       				   return data;
+	       			   }).error(function(data){
+	       				   
+	       				 if(data && data.error && data.error.length > 0){
+	         				   showApiWarningMsg(data.error[0].message);
+	         				   }else{
+	         					  showApiWarningMsg("Error on saving creative");
+	         				   }
+	       				 
+	       				  
+	       				   return data;
+	       			   });
+	    	  }else{
+	    		  return $http({
+	       		   method: method,
+	       		   url: serviceBase + 'asset',
+	       		   headers: {
+	       		   'Content-Type': 'application/json;boundary=----WebKitFormBoundaryzeZR8KqAYJyI2jPL;Access-Control-Allow-Origin=true;'
+	       		   },
+	       		   data: data}).success(function(data){
+	       				   showApiWarningMsg("Creative has been Updated");
+	       				   return data;
+	       			   }).error(function(data){
+	       				   if(data && data.error && data.error.length > 0){
+	       				   showApiWarningMsg(data.error[0].message);
+	       				   }else{
+	       					  showApiWarningMsg("Error on Updating creative");
+	       				   }
+	       				   return data;
+	       			   });
+	    	  	} 
+	    	  */
 	    	  
 	      };
 	       
@@ -180,12 +208,16 @@ app.factory("Data", ['$http', '$rootScope', 'toaster', '$location', 'ModalServic
 			 if(status=='409')
 				 showApiWarningMsg("This element is in use and cannot be deleted.");
 			 
+			 if(status=='401'){
+				 //showApiWarningMsg("Session has expired. You will be redirected to the Login page."); 
+				 $location.path('/login');
+			 }
+			 
 			 if(status=='412')
 				 showApiWarningMsg("Name already in use. Please enter a different name");
 			 
-			 if(status=='404' || status=='204'){//status=='500' || 
-				 $rootScope.pageStatus = status; 
-				 $location.path('error');
+			 if(status=='500'){
+				 //showApiWarningMsg("There may be some network issue, please refresh your page and try again");
 			 }
 		 }
        

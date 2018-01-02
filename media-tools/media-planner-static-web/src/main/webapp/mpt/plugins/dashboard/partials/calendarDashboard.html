@@ -1,6 +1,6 @@
 <div class="Dashboard">
 	<div ng-include="'plugins/dashboard/partials/dashboard-left-nav.html'"></div>
-	<div class="col-lg-10 dashboard-calendar">
+	<div class="col-lg-10">
 		<div class="content-area search-campaign">
 			<div class="col-md-12">
 				<div class="col-md-3"></div>
@@ -37,60 +37,47 @@
 			</div>
 
 
-			<div class=" row table-responsive db-calendar-tbl" style="margin: 0;">
+			<div class=" row table-responsive" style="margin: 0;">
 				<table
 					class="table table-striped font-12 table-bordered table-hover table-condensed mpt-table">
 					<thead>
 						<tr>
-							<th class="width-16p" ng-click="sort_by('proposalName');">{{property.proposalName}}&nbsp;
+							<th class="width-30p" ng-click="sort_by('proposalName');">{{property.proposalName}}&nbsp;
 							<span class="sorter">
 										<i class="glyphicon glyphicon-triangle-top"></i>
 										<i class="glyphicon glyphicon-triangle-bottom"></i>	
 										</span>
 							</th>
-							<th class="width-14p" ng-click="sort_by('advertiserName');">{{property.advertiserName}}&nbsp;
+							<th class="width-20p" ng-click="sort_by('advertiserName');">{{property.advertiserName}}&nbsp;
 							<span class="sorter">
 										<i class="glyphicon glyphicon-triangle-top"></i>
 										<i class="glyphicon glyphicon-triangle-bottom"></i>	
 										</span>
 							</th>
-							<th class="width-14p" ng-click="sort_by('salesCategory');">{{property.salesCategory}}&nbsp;
+							<th class="width-20p" ng-click="sort_by('firstName');">{{property.createdBy}}&nbsp;
 							<span class="sorter">
 										<i class="glyphicon glyphicon-triangle-top"></i>
 										<i class="glyphicon glyphicon-triangle-bottom"></i>	
 										</span>
 							</th>
-							<th class="width-14p">{{property.requestedOn}}</th>
-							<th class="width-14p">{{property.dueOn}}</th>
-							<th class="width-14p" ng-click="sort_by('budget');">{{property.budget}}&nbsp;
-							<span class="sorter">
-										<i class="glyphicon glyphicon-triangle-top"></i>
-										<i class="glyphicon glyphicon-triangle-bottom"></i>	
-										</span>
-							</th>
-							</th>
-							<th class="width-14p" ng-click="sort_by('accountManager');">{{property.accountManager}}&nbsp;
-							<span class="sorter">
-										<i class="glyphicon glyphicon-triangle-top"></i>
-										<i class="glyphicon glyphicon-triangle-bottom"></i>	
-										</span>
-							</th>
+							<th class="width-20p">{{property.dueOn}}&nbsp;<!-- <i class="glyphicon glyphicon-sort"></i> --></th>
+							<th class="width-10p">{{property.budget}}&nbsp;<!-- <i class="glyphicon glyphicon-sort"></i> --></th>
+							<th class="width-10p">{{property.salesCategory}}&nbsp;<!-- <i class="glyphicon glyphicon-sort"></i> --></th>
 						</tr>
 					</thead>
 					<tbody>
+
 						<tr
 							ng-repeat="p in filteredItems = (proposals | filter: filterProposal) | filter:{name:filterProposal} | orderBy:predicate :reverse | startProposalFrom:(currentPage-1)*entryLimit | limitTo:entryLimit"
 							animate-on-change='p.proposalName + p.advertiserName + p.user.firstName + p.dueOn + p.status'
 							ng-animate=" 'animate'">
-							<td title="{{p.proposalName}}">
-								<div class="addEllipsis"><a href="{{p.linkPath}}">{{p.proposalName}}</a></div>
+							<td title="{{p.proposalName}}"><a href="{{p.linkPath}}">{{p.proposalName}}</a>
 							</td>
 							<td title="{{p.advertiserName}}">{{p.advertiserName}}</td>
-							<td title="{{p.user.firstName}}">{{p.salesCategory}}</td>
-							<td title="{{p.showRequestedOn}}">{{p.showRequestedOn}}</td>
+							<td title="{{p.user.firstName}}">{{p.user.firstName}}</td>
 							<td title="{{p.showDueOn}}">{{p.showDueOn}}</td>
 							<td title="{{p.budget}}">{{p.budget}}</td>
-							<td title="{{p.accountManager}}">{{p.accountManager}}</td>
+							<td title="{{p.salesCategory}}">{{p.salesCategory}}</td>
 
 						</tr>
 					</tbody>
@@ -105,7 +92,7 @@
 				<div pagination="" page="currentPage" max-size="5"
 					on-select-page="setPage(page)" boundary-links="true"
 					total-items="filteredItems.length" items-per-page="entryLimit"
-					class="pagination pagination-sm pull-right"
+					class="pagination pagination-sm col-lg-12"
 					style="margin-top: 1px; margin-bottom: 0px;"
 					previous-text="&laquo;" next-text="&raquo;"></div>
 

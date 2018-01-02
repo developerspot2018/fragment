@@ -1,6 +1,6 @@
 { 
 	"mediaPlannerDashboard" : "Media planner",
-	"campaignsDashboard" : "Orders",
+	"campaignsDashboard" : "Campaigns",
 	"filter": "Filter",
 	"proposalName": "Proposal Name",
 	"campaignName": "Campaign",
@@ -21,10 +21,9 @@
 	"campaignsCompletedInlast3days": "Campaigns completed in last 3 days",
 	"impression": "Impression/Click",
 	"deliveringCampaigns": "Delivering Campaigns",
-	"salesCategory": "Sales Category",
+	"salesCategory": "Segments",
 	"budget":"Budget",
 	"deleyedCampaigns":"Delayed Campaigns",
     "proposals" : "Proposals",
-    "barchart" : "Bar Chart",
-    "requestedOn": "Requested On"
+    "barchart" : "Bar Chart"	
 }

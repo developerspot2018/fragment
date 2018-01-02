@@ -1,6 +1,5 @@
 DELETE FROM target_category_value;
 DELETE FROM target_category;
-DELETE FROM reasons;
 
 INSERT INTO target_category (NAME) VALUES ("OS");
 INSERT INTO target_category (NAME) VALUES ("Age Group");
@@ -8,6 +7,7 @@ INSERT INTO target_category (NAME) VALUES ("Browsers");
 INSERT INTO target_category (NAME) VALUES ("Device");
 INSERT INTO target_category (NAME) VALUES("Country");
 INSERT INTO target_category (NAME) VALUES ("State");
+INSERT INTO target_category (NAME) VALUES ("Zip Code");
 INSERT INTO target_category (NAME) VALUES ("Industry");
 INSERT INTO target_category (NAME) VALUES ("Income");
 INSERT INTO target_category (NAME) VALUES ("Frequency Cap");
@@ -645,10 +645,5 @@ INSERT INTO target_category_value (VALUE, target_cat_fk) VALUES ("Tripura" , (SE
 INSERT INTO target_category_value (VALUE, target_cat_fk) VALUES ("Uttar Pradesh" , (SELECT id FROM target_category WHERE NAME = 'State'));
 INSERT INTO target_category_value (VALUE, target_cat_fk) VALUES ("Uttarakhand" , (SELECT id FROM target_category WHERE NAME = 'State'));
 INSERT INTO target_category_value (VALUE, target_cat_fk) VALUES ("West Bengal" , (SELECT id FROM target_category WHERE NAME = 'State'));
-
-
-INSERT INTO reasons (description) VALUES ("Are CPMs and other rates above the rate card minimum?");
-INSERT INTO reasons (description) VALUES ("Has targeting info, i.e. keywords, frequency caps, geo-targeting, etc. been entered on the lineitem level so they can be trafficked through the automated systems?");
-INSERT INTO reasons (description) VALUES ("Others");
 COMMIT;
 

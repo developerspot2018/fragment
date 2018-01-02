@@ -1,102 +1,87 @@
 <div class="Dashboard">
 	<div ng-include="'plugins/dashboard/partials/dashboard-left-nav.html'"></div>
-	<div class="col-lg-10 main-container dashboard-proposal">
+	<div class="col-lg-10 main-container">
 		<div class="content-area search-campaign">
 			<div class="row">
-				<div class="dashboard-wrapper campaign-filters">
+				<br>
+				<div class="campaign-filters">
 					<div class="col-lg-12">
-					<div class="row">
 						<div class="col-lg-12">
-							<div class="col-lg-3 mpt-db-left-section"></div>
-							<div class="graph-label-wrapper">&nbsp;</div>
-							<div class="col-lg-6 chart-wrapper">
-								<div class="campaigns dashboard-chart" ng-app="google-chart-example">
-									<div google-chart chart="chart" style="" on-select="seriesSelected(selectedItem)"></div>
+							<div class="col-lg-1"></div>
+							<div class="col-lg-10">
+								<div class="campaigns" ng-app="google-chart-example">
+									<div google-chart chart="chart" style=""
+										on-select="seriesSelected(selectedItem)"></div>
 								</div>
 								<br><br>
 							</div>
-							<div class="col-lg-3 mpt-db-right-section"></div>
+							<div class="col-lg-1"></div>
 						</div>
-					</div>
-						<div class="row table-responsive">
+						<div class=" row table-responsive" style="margin: 0;">
 							<table
 								class="table table-striped font-12 table-bordered table-hover table-condensed mpt-table">
 								<thead>
 									<tr>
-										<th class="db-pp-name" ng-click="sort_by('proposalName');">{{property.proposalName}}&nbsp;
+										<th class="width-30p" ng-click="sort_by('proposalName');">{{property.proposalName}}&nbsp;
 											<span class="sorter"> <i
 												class="glyphicon glyphicon-triangle-top"></i> <i
 												class="glyphicon glyphicon-triangle-bottom"></i>
 										</span>
 										</th>
-										<th class="" ng-click="sort_by('advertiserName');">{{property.advertiserName}}&nbsp;
+										<th class="width-20p" ng-click="sort_by('advertiserName');">{{property.advertiserName}}&nbsp;
 											<span class="sorter"> <i
 												class="glyphicon glyphicon-triangle-top"></i> <i
 												class="glyphicon glyphicon-triangle-bottom"></i>
 										</span>
 										</th>
-										<th class="" ng-click="sort_by('salesCategory');">{{property.salesCategory}}&nbsp;
+										<th class="width-20p" ng-click="sort_by('firstName');">{{property.createdBy}}&nbsp;
 											<span class="sorter"> <i
 												class="glyphicon glyphicon-triangle-top"></i> <i
 												class="glyphicon glyphicon-triangle-bottom"></i>
 										</span>
 										</th>
-										<th class="db-pp-date">{{property.requestedOn}}&nbsp;
-											
-										</th>
-										<th class="db-pp-date">{{property.dueOn}}&nbsp;
-											
-										</th>
-										<th class="" ng-click="sort_by('budget');">{{property.budget}}&nbsp;
+										<th class="width-20p" ng-click="sort_by('dueOn');">{{property.dueOn}}&nbsp;
 											<span class="sorter"> <i
 												class="glyphicon glyphicon-triangle-top"></i> <i
 												class="glyphicon glyphicon-triangle-bottom"></i>
 										</span>
 										</th>
-										<th class="" ng-click="sort_by('accountManager');">{{property.accountManager}}&nbsp;
-											<span class="sorter"> 
-												<i class="glyphicon glyphicon-triangle-top"></i>
-												<i class="glyphicon glyphicon-triangle-bottom"></i>
-										</span>
+										<th class="width-10p">{{property.status}}&nbsp; <!-- <span
+											class="sorter"> <i
+												class="glyphicon glyphicon-triangle-top"></i> <i
+												class="glyphicon glyphicon-triangle-bottom"></i>
+										</span>-->
 										</th>
 									</tr>
 								</thead>
 								<tbody>
 									<tr
-										ng-repeat="p in proposals" ng-animate="'animate'">
-										<td title="{{p.proposalName}}">
-											<div class="addEllipsis">
-												<a  href='{{p.linkPath}}'>{{p.proposalName}}</a>
-										    </div>
+										ng-repeat="p in filteredItems = (proposals | filter: filterProposal) | filter:{name:filterProposal} | orderBy:predicate :reverse | startProposalFrom:(currentPage-1)*entryLimit | limitTo:entryLimit"
+										animate-on-change='p.proposalName + p.advertiserName + p.user.firstName + p.dueOn + p.status'
+										ng-animate=" 'animate'">
+										<td title="{{p.proposalName}}"><a href='{{p.linkPath}}'>{{p.proposalName}}</a>
 										</td>
 										<td title="{{p.advertiserName}}">{{p.advertiserName}}</td>
-										<td title="{{p.user.firstName}}">{{p.salesCategory}}</td>
-										<td title="{{p.user.firstName}}">{{p.requestedOn}}</td>
+										<td title="{{p.user.firstName}}">{{p.user.firstName}}</td>
 										<td title="{{p.dueOn}}">{{p.dueOn}}</td>
-										<td title="{{p.dueOn}}">{{p.budget}}</td>
-										<td title="{{p.status}}">{{p.accountManager}}</td>
+										<td title="{{p.status}}">{{p.status}}</td>
 									</tr>
 								</tbody>
 								<tr ng-hide="proposals.length > -1">
-									<td style="vertical-align: middle;" colspan="5">
-										<i class="fa fa-cog fa-2x fa-spin"></i>&nbsp;Loading</td>
+									<td style="vertical-align: middle;" colspan="5"><i
+										class="fa fa-cog fa-3x fa-spin"></i>&nbsp;Loading</td>
 								</tr>
 							</table>
-					    </div>
-						<div class="row dashboard-pages" style="background-color: #e6e6e6; padding: 4px;">
-							 <div class="col-sm-6 col-md-6 col-lg-6">&nbsp;</div>
-							 <div class="col-sm-6 col-md-6 col-lg-6">
-                                 <div pagination="" page="currentPage" max-size="maxNoPageSize" on-select-page="setPage(page)" boundary-links="true" total-items="totalNoOfItems" items-per-page="entryLimit"
-									class="pull-right pagination pagination-sm" style="margin-top: 1px; margin-bottom: 0px;" previous-text="&laquo;" next-text="&raquo;">
-								</div>
 
-								<!-- select Box -->
-								<div class="pagination-select pull-right">
-                                     <select ng-model='selectedNumber'  ng-options='number for number in recordPerPage' ng-change="setRecordPerPage()"></select>
-								</div>
-								<span class="pull-right pagination-refresh glyphicon glyphicon-refresh" title="Refresh"  ng-click="refreshDashProposalGrid()"></span>
-							 </div>
 						</div>
+						<div class="row"
+							style="background-color: #e6e6e6; padding: 4px; margin: 0;">
+							<div pagination="" page="currentPage" max-size="5"
+								on-select-page="setPage(page)" boundary-links="true"
+								total-items="filteredItems.length" items-per-page="entryLimit"
+								class="pagination pagination-sm col-lg-12"
+								style="margin-top: 1px; margin-bottom: 0px;"
+								previous-text="&laquo;" next-text="&raquo;"></div>
 						</div>
 					</div>
 				</div>

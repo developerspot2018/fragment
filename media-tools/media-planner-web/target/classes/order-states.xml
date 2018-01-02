@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <States>
 	<State>
-		<fail>Draft</fail>
+		<fail>InActive</fail>
 		<current>Default</current>
-		<success>Draft</success>
+		<success>InActive</success>
 	</State>
 	<State>
-		<fail>Draft</fail>
-		<current>Draft</current>
+		<fail>InActive</fail>
+		<current>InActive</current>
 		<success>Active</success>
 	</State>
 	<State>
-		<fail>Draft</fail>
+		<fail>InActive</fail>
 		<current>Active</current>
 		<success>Ready</success>
 	</State>

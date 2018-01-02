@@ -80,22 +80,6 @@ app.controller('campaignsLineItemViewCtrl', function ($routeParams, $scope,$root
     	});
 	};
 	
-	// Make left menu selected
-    $rootScope.isSubMenueActive = function(path){
-    	var flag = false;
-    	if($scope.selectedTab=='Order' && $scope.subSelectedTab==path)
-    		flag = true;
-    	return flag;
-    }
-    $scope.subSelectedTab = $rootScope.lefNavActive;
-    $scope.selectedTab = '';
-    
-    $scope.isOpen = function(val){
-		var flag = false;
-		if(val=='Order')
-			flag = true;
-		return flag;
-	}; 
 	$scope.sort_by = function(predicate) {
     	// console.log(predicate);
 		 $scope.predicate = predicate;
@@ -298,8 +282,7 @@ app.controller('campaignsLineItemViewCtrl', function ($routeParams, $scope,$root
 	    modal.element.modal();
 	    modal.close.then(function(result) {
 	    	if (result === 'Yes') {
-	    		Data.patch('proposals/'+id+'/'+action).success(function(){
-	    		//$http({method:'PATCH',url:window.serviceBaseURL+'proposals/'+id+'/'+action}).success(function(data,status){
+	    		$http({method:'PATCH',url:'http://10.193.66.132:9090/mp/proposals/'+id+'/'+action}).success(function(data,status){
 	    			$scope.showActionOptions=! $scope.showActionOptions;
 	    			$scope.proposalData.status = data.status;
 	    		}).error(function(data,status){});

@@ -37,6 +37,7 @@
 	<bean id="proposalService" class="com.tavant.media.core.service.impl.ProposalServiceImpl">
 		<constructor-arg index="0" ref="proposalDao"/>
 		<constructor-arg index="1" ref="proposalAuditDao"/>
+		<constructor-arg index="2" ref="proposalLiveDao"/>
 	    <property name="lineItemService" ref="lineItemService"/>
 	    <property name="proposalAuditService" ref="proposalAuditService"/>
 	</bean>
@@ -59,8 +60,7 @@
 	    c:_0-ref="assetDao" c:_1-ref="assetAuditDao"/> 
 	
 	<bean id="clientService" class="com.tavant.media.core.service.impl.ClientServiceImpl"
-	    c:_0-ref="clientDao" c:_1-ref="myEncoder" c:_2-ref="velocityEngine"
-	    c:_3-ref="mailSender" c:_4-ref="tokenDao"/>
+	    c:_0-ref="clientDao"/>
 	
 	<bean id="clientDetailsService" class="com.tavant.media.core.service.impl.CustomClientDetailsService"
 	    c:_0-ref="clientService"/>
@@ -79,53 +79,22 @@
 	    c:_0-ref="targetCategoryValueDao"/>
 	    
    <bean id="proposalAuditService" class="com.tavant.media.core.audit.service.impl.ProposalAuditServiceImpl"
-	    c:_0-ref="proposalAuditDao"  c:_1-ref="lineItemAuditDao"
-	    c:_2-ref="productAuditDao" c:_3-ref="salesTargetAuditDao" c:_4-ref="productDao" c:_5-ref="creativeAuditDao"> 
-	    <property name="lineItemService" ref="lineItemService"/>
-	    <property name="productService" ref="productService"/>
-	    <property name="proposalService" ref="proposalService"/>
+	    c:_0-ref="proposalAuditDao" c:_1-ref="proposalLiveDao" c:_2-ref="lineItemAuditDao"
+	    c:_3-ref="productAuditDao" c:_4-ref="salesTargetAuditDao" c:_5-ref="productDao" c:_6-ref="creativeAuditDao"> 
+	    <property name="lineItemService" ref="lineItemService"></property>
 	    </bean>
 	    
    <bean id="lineItemAuditService" class="com.tavant.media.core.audit.service.impl.LineItemAuditServiceImpl"
-	    c:_0-ref="lineItemAuditDao" >
-	    <property name="lineItemService" ref="lineItemService"/>
-	</bean>
+	    c:_0-ref="lineItemAuditDao" />
 
-	<bean id="productAuditService" class="com.tavant.media.core.audit.service.impl.ProductAuditServiceImpl" c:_0-ref="productAuditDao">
-		<property name="productService" ref="productService"/>
-	</bean>
-	<bean id="attributeAuditService" class="com.tavant.media.core.audit.service.impl.AttributeAuditServiceImpl" c:_0-ref="attributeAuditDao">
-		<property name="attributeService" ref="attributeService"/>
-	</bean>
-	<bean id="creativeAuditService" class="com.tavant.media.core.audit.service.impl.CreativeAuditServiceImpl" c:_0-ref="creativeAuditDao">
-		<property name="creativeService" ref="creativeService"/>
-	</bean>
-	<bean id="salesTargetAuditService" class="com.tavant.media.core.audit.service.impl.SalesTargetAuditServiceImpl" c:_0-ref="salesTargetAuditDao">
-		<property name="salesTargetService" ref="salesTargetService"/>
-	</bean>
-	<bean id="assetAuditService" class="com.tavant.media.core.audit.service.impl.AssetAuditServiceImpl" c:_0-ref="assetAuditDao">
-		<property name="assetService" ref="assetService"/>
-	</bean>
+	<bean id="productAuditService" class="com.tavant.media.core.audit.service.impl.ProductAuditServiceImpl" c:_0-ref="productAuditDao"/>
+	<bean id="attributeAuditService" class="com.tavant.media.core.audit.service.impl.AttributeAuditServiceImpl" c:_0-ref="attributeAuditDao"/>
+	<bean id="creativeAuditService" class="com.tavant.media.core.audit.service.impl.CreativeAuditServiceImpl" c:_0-ref="creativeAuditDao"/>
+	<bean id="salesTargetAuditService" class="com.tavant.media.core.audit.service.impl.SalesTargetAuditServiceImpl" c:_0-ref="salesTargetAuditDao"/>
+	<bean id="assetAuditService" class="com.tavant.media.core.audit.service.impl.AssetAuditServiceImpl" c:_0-ref="assetAuditDao"/>
 	
-	<bean id="seasonalDiscountService" class="com.tavant.media.core.rules.service.impl.SeasonalDiscountServiceImpl" c:_0-ref="seasonalDiscountDao" c:_1-ref="seasonalDiscountAuditDao" c:_2-ref="salesTargetDao"/>
+	<bean id="seasonalDiscountService" class="com.tavant.media.core.rules.service.impl.SeasonalDiscountServiceImpl" c:_0-ref="seasonalDiscountDao"/>
 	
-	<bean id="targettingPremiumService" class="com.tavant.media.core.rules.service.impl.TargettingPremiumServiceImpl" c:_0-ref="targettingPremiumDao" c:_1-ref="targettingPremiumAuditDao"/>
-	
-	<bean id ="seasonalDiscountAuditService" class="com.tavant.media.core.audit.service.impl.SeasonalDiscountAuditServiceImpl" c:_0-ref="seasonalDiscountAuditDao">
-		<property name="seasonalDiscountService" ref="seasonalDiscountService"/>
-	</bean>
-	 
-	<bean id="targettingPremiumAuditService" class="com.tavant.media.core.audit.service.impl.TargettingPremiumAuditServiceImpl" c:_0-ref="targettingPremiumAuditDao">
-		<property name="targettingPremiumService" ref="targettingPremiumService"/>
-	</bean>
-	<bean id = "reasonsService" class="com.tavant.media.core.service.impl.ReasonsServiceImpl"
-	    c:_0-ref="reasonsDao"/>
-	<bean id = "commentsService" class="com.tavant.media.core.service.impl.CommentsServiceImpl"
-	    c:_0-ref="commentsDao" c:_1-ref="proposalDao"/>
-	
-	<bean id="scopeService" class="com.tavant.media.core.service.impl.ScopeServiceImpl"
-	    c:_0-ref="scopeDao"/>
-	
-	<bean id="rateCardService" class="com.tavant.media.core.rules.service.impl.RateCardServiceImpl"
-	    c:_0-ref="rateCardDao"/>
+	<bean id="targettingPremiumService" class="com.tavant.media.core.rules.service.impl.TargettingPremiumServiceImpl" c:_0-ref="targettingPremiumDao"/>
+	    
 </beans>		

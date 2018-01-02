@@ -1,209 +1,99 @@
 <div ng-controller="assetsTemplateCtrl as tab">
 	<div class="modal-header">
-            <h5 class="modal-title">
+            <h4 class="modal-title">
 				<button type="button" class="close" data-dismiss="modal" ng-click='cancel();' aria-label="Close"><span aria-hidden="true">&times;</span></button>
 				<span class='addImage'>{{property.addAnAsset}}</span>				
-			</h5>
+			</h4>
         </div>
-	<ul class="asset-tabs nav nav-tabs">
-		<li ng-class="{ active:tab.isSet(1) }">
-			<a href ng-click="tab.setTab(1)">{{property.image}}</a>
-		</li>
-		<li ng-class="{ active:tab.isSet(2) }">
-			<a href ng-click="tab.setTab(2)">{{property.html}}</a>
-		</li>
-		<li ng-class="{ active:tab.isSet(3) }">
-			<a href ng-click="tab.setTab(3)">{{property.videoTab}}</a>
-		</li>
+	<ul class="nav nav-tabs">
+		<li ng-class="{ active:tab.isSet(1) }"><a href
+			ng-click="tab.setTab(1)">{{property.image}}</a></li>
+		<li ng-class="{ active:tab.isSet(2) }"><a href
+			ng-click="tab.setTab(2)">{{property.html}}</a></li>
 	</ul>
-	<!-- Image Tab -->
 <div class="setting" ng-show="tab.isSet(1)">
-	<form name="assetImageForm">
-        <div class="asset-body modal-body">
+<form name="assetImageForm">
+        <div class="modal-body">
             <div class='row addImage'>
 				<div class='col-md-6'>
-					<h6>{{property.assetName}}<span class="star-mark">*</span></h6>    				
+					<h5>{{property.assetName}}<span class="star-mark">*</span></h5>    				
     				<input type="text" placeholder="{{property.enterName}}" class="form-control" ng-model='assetModel.creativeImageName' maxlength="50">
-					<p  class="asset-error" ng-if="creativeImageNameValidation">{{creativeImageNameValidationMsg}}</p>
+					<p style='color:#a94442;font-size: 14px !important;' ng-if="creativeImageNameValidation">{{creativeImageNameValidationMsg}}</p>
 					
-					<h6>{{property.clickThroughURL}}<span class="star-mark">*</span></h6>    
+					<h5>{{property.clickThroughURL}}<span class="star-mark">*</span></h5>    
 					<input type="text" placeholder="{{property.clickThroughURLExample}}" class="form-control" ng-model='assetModel.creativeImageDestinationURL' title='Example: http://www.google.com' maxlength="200">
-					<p class="asset-error" ng-if="creativeURLValidation">{{creativeURLValidationMsg}}</p>
+					<p style='color:#a94442;font-size: 14px !important;' ng-if="creativeURLValidation">{{creativeURLValidationMsg}}</p>
 					
-					<h6>{{property.thirdPartyURL}}<span class="star-mark">*</span></h6>    
+					<h5>{{property.thirdPartyURL}}<span class="star-mark">*</span></h5>    
 					<input type="text" placeholder="{{property.thirdPartyURLExample}}" class="form-control" ng-model='assetModel.creativeThirdPartyUrl' title='Example: http://www.google.com' maxlength="200">
-					<p class="asset-error" ng-if="creativeThirdPartyURLValidation">{{creativeThirdPartyURLValidationMsg}}</p>
-					<h6 >{{property.size}}<span class="star-mark">*</span></h6>    
+					<p style='color:#a94442;font-size: 14px !important;' ng-if="creativeThirdPartyURLValidation">{{creativeThirdPartyURLValidationMsg}}</p>
+					<h5 >{{property.size}}<span class="star-mark">*</span></h5>    
 					<select ng-if="!assetModel.mediaType" class="form-control" ng-model="assetModel.selectedImageOption" ng-change="imageSizeChanged()"  
 						ng-options="size as size.label for size in assetModel.creativeSize">
 					</select>
-					<p class="asset-error" ng-if="creativeSizeValidation">{{creativeSizeValidationMsg}}</p>
-					<h6>{{property.altText}}</h6>    
+					<p style='color:#a94442;font-size: 14px !important;' ng-if="creativeSizeValidation">{{creativeSizeValidationMsg}}</p>
+					<h5>{{property.altText}}</h5>    
 					<input type="text" placeholder="{{property.altTextExample}}" class="form-control" ng-model='assetModel.creativeAltTag' maxlength="200">
 					
 				</div>
 				<div class='col-md-6'>
-					<h5>{{property.preview}}</h5>
-     				<div ng-show='imagePreview==false' id="uploadButtonDiv">
+					<h4>{{property.preview}}</h4>
+     				<div style='text-align: center;border: 1px solid #999;height:326px;padding-top: 105px;' ng-show='imagePreview==false' id="upladButtonDiv">
 						<p style='color:#ccc;'>{{property.yourPreviewWillAppearHere}}</p>
 						<p>
-							<span class="asset-upload btn btn-default btn-file">
+							<span class="btn btn-default btn-file">
     							{{property.uploadImage}} <input type="file" ng-file-select="onFileSelect($files)" accept=".jpg,.png,.gif,.jpeg" id='assetImgFile'>
 							</span>
 						</p>
 					</div>
-					<p class="asset-error" ng-if="upladButtonDivErrorFlag">{{upladButtonDivErrorMsg}}</p>
-					<div style='text-align: center;border: 1px solid #999;position:relative;'>
+					<p style='color:#a94442;font-size: 14px !important;' ng-if="upladButtonDivErrorFlag">{{upladButtonDivErrorMsg}}</p>
+					<div ng-show='imagePreview==true' style='text-align: center;border: 1px solid #999;position:relative;'>
 						<img ng-if="assetModel.mediaType" data-ng-src="data:{{assetModel.mediaType}};base64,{{imageSrc}}" class='col-md-12'>
 						<img ng-if="!assetModel.mediaType" ng-src="{{imageSrc}}" class='col-md-12'>
 					</div>
-					<p class="upload-type-txt">{{property.OnlyJpegPngGifSupportedWithSizeLessThen1Mb}}</p>  				
+					<p>{{property.OnlyJpegPngGifSupportedWithSizeLessThen1Mb}}</p>  				
 				</div>
 			</div>
 
 	</div>
-	<div class="asset-footer modal-footer" style='text-align: right;margin-top: 0px;'>
+	<div class="modal-footer" style='text-align: right;'>
 	<button class="btn btn-default addImage" ng-click="cancel()">{{property.cancel}}</button>
-	<button class="pp-create-btn btn btn-primary addImage" ng-click="okImage()">{{property.add}}</button>
+	<button class="btn btn-primary addImage" ng-click="okImage()">{{property.add}}</button>
 	</div>	
 	</form>
 </div>
-	<!-- Html tab -->
+	<!-- Secnd form -->
 <div class="setting" ng-show="tab.isSet(2)">	
 <form name="assetHtmlForm">
-        <div class="asset-body modal-body">
+        <div class="modal-body">
 			<div class='row'>
 				<div class='col-md-6'>
-					<h6>{{property.assetName}}<span class="star-mark">*</span></h6>    				
+					<h5>{{property.assetName}}<span class="star-mark">*</span></h5>    				
     				<input type="text" placeholder="{{property.enterName}}" class="form-control" ng-model='assetModel.creativeHTMLName' maxlength="50">
-					<p class="asset-error" ng-if="creativeHtmlNameValidation">{{creativeHtmlNameValidationMsg}}</p>
-					<h6>{{property.size}}<span class="star-mark">*</span></h6>    
+					<p style='color:#a94442;font-size: 14px !important;' ng-if="creativeHtmlNameValidation">{{creativeHtmlNameValidationMsg}}</p>
+					<br/>
+					<h5>{{property.size}}<span class="star-mark">*</span></h5>    
 					<select class="form-control" ng-model="assetModel.selectedHTMLOption" 
 						ng-options="size as size.label for size in assetModel.creativeSize">
 					</select>
-					<p class="asset-error" ng-if="creativeHtmlSizeValidation">{{creativeHtmlSizeValidationMsg}}</p>
-					<span style='float:left'><h6>{{property.htmlCode}}<span class="star-mark">*</span></h6></span>
-					<textarea class="form-control cpm-asset-code htmlErrorClass" rows="5" ng-model="assetModel.htmlText" ng-change='previewCode();' placeholder="Enter Code" maxlength="65535"></textarea>
+					<p style='color:#a94442;font-size: 14px !important;' ng-if="creativeHtmlSizeValidation">{{creativeHtmlSizeValidationMsg}}</p>
+					<br/>
+					<span style='float:left'><h5>{{property.htmlCode}}<span class="star-mark">*</span></h5></span>
+					<textarea class="form-control htmlErrorClass" rows="5" ng-model="assetModel.htmlText" ng-change='previewCode();' placeholder="Enter Code" maxlength="65535"></textarea>
 					<p ng-show='htmlErrorClass == true' style='color:red;'>{{property.compilationError}}</p>
-					<p class="asset-error"  ng-if="creativeHtmlCodeValidation">{{creativeHtmlCodeValidationMsg}}</p>
+					<p style='color:#a94442;font-size: 14px !important;' ng-if="creativeHtmlCodeValidation">{{creativeHtmlCodeValidationMsg}}</p>
 				</div>
 				<div class='col-md-6'>
-					<h5>{{property.preview}}</h5>
-					<iframe name="myFrame" src="{{iframeText}}" class="preview-container" style='width:100%;height: 298px;'></iframe>					
+					<h4>{{property.preview}}</h4>
+					<iframe name="myFrame" src="{{iframeText}}" style='width:100%;pointer-events: none;height: 298px;'></iframe>					
 				</div>
 			</div>
         </div>
-        <div class="asset-footer modal-footer" style='text-align: right;'>
+        <div class="modal-footer" style='text-align: right;'>
             <button class="btn btn-default" ng-click="cancel()">{{property.cancel}}</button>
-            <button class="pp-create-btn btn btn-primary" ng-click="okHtml(assetModel)">{{property.add}}</button>
+            <button class="btn btn-primary" ng-click="okHtml(assetModel)">{{property.add}}</button>
   </div>
 </form>
 </div>
-<!-- Video Tab -->
-<div class="setting" ng-show="tab.isSet(3)">
-	<form name="assetVideoForm">
-        <div class="asset-body modal-body">
-            <div class='row addImage'>
-				<div class='col-md-6'>
-					<h6>{{property.assetName}}<span class="star-mark">*</span></h6>    				
-    				<input type="text" placeholder="{{property.enterName}}" class="form-control" ng-model='assetModel.creativeVideoName' maxlength="50">
-					<p  class="asset-error" ng-if="creativeVideoNameValidation">{{creativeVideoNameValidationMsg}}</p>
-					<!-- <h6>{{property.clickThroughURL}}<span class="star-mark">*</span></h6>    
-					<input type="text" placeholder="{{property.clickThroughURLExample}}" class="form-control" ng-model='assetModel.creativeImageDestinationURL' title='Example: http://www.google.com' maxlength="200">
-					<p class="asset-error" ng-if="creativeURLValidation">{{creativeURLValidationMsg}}</p>
-					
-					<h6>{{property.thirdPartyURL}}<span class="star-mark">*</span></h6>    
-					<input type="text" placeholder="{{property.thirdPartyURLExample}}" class="form-control" ng-model='assetModel.creativeThirdPartyUrl' title='Example: http://www.google.com' maxlength="200">
-					<p class="asset-error" ng-if="creativeThirdPartyURLValidation">{{creativeThirdPartyURLValidationMsg}}</p>
-					<h6 >{{property.size}}<span class="star-mark">*</span></h6>    
-					<select ng-if="!assetModel.mediaType" class="form-control" ng-model="assetModel.selectedImageOption" ng-change="imageSizeChanged()"  
-						ng-options="size as size.label for size in assetModel.creativeSize">
-					</select>
-					<p class="asset-error" ng-if="creativeSizeValidation">{{creativeSizeValidationMsg}}</p>
-					<h6>{{property.altText}}</h6>    
-					<input type="text" placeholder="{{property.altTextExample}}" class="form-control" ng-model='assetModel.creativeAltTag' maxlength="200">
-					-->
-				</div>
-				<div class='col-md-6'>
-					<h5>{{property.preview}}</h5>
-					<!-- <div id="message"></div>
-					<input class="mpt-video" type="file" accept="video/*"/>
-					<video controls autoplay></video>-->
-     				<div id="upload-videoButtonDiv">
-						<!-- <p style='color:#ccc;'>{{property.yourPreviewWillAppearHere}}</p>-->
-						   <div style="margin-top:-10px;" class="asset-video-wrapper">
-							<span class="video-asset-upload btn btn-default btn-file">
-    							<div id="message"></div>
-    							<input type="file" class="mpt-video" ng-video-select="onFileSelect($files)" accept='video/*' id='assetVideoFile'>
-    							<video style="height:200px;width:300px;" controls ngf-src="files[0]" ngf-accept="'video/*'" autoplay></video>
-							</span>
-						</div>
-					</div>
-					<p class="asset-error" ng-if="uploadVideoButtonDivErrorFlag">{{upladVideoButtonDivErrorMsg}}</p>
-					<div  style='text-align: center;border: 1px solid #999;position:relative;'>
-						<img ng-if="assetModel.mediaType" data-ng-src="data:{{assetModel.mediaType}};base64,{{imageSrc}}" class='col-md-12'>
-						<img ng-if="!assetModel.mediaType" ng-src="{{imageSrc}}" class='col-md-12'>
-					</div>
-					<!-- <p class="upload-type-txt">{{property.OnlyJpegPngGifSupportedWithSizeLessThen1Mb}}</p>  -->				
-				</div>
-			</div>
-
-	</div>
-	<div class="asset-footer modal-footer" style='text-align: right;margin-top: 0px;'>
-	<button class="btn btn-default addImage" ng-click="cancel()">{{property.cancel}}</button>
-	<button class="pp-create-btn btn btn-primary addImage" ng-click="okVideoData()">{{property.add}}</button>
-	</div>	
-	</form>
 </div>
-
-</div>
-<script language="javascript">
-(function localFileVideoPlayerInit(win) {
-    var URL = win.URL || win.webkitURL,
-        displayMessage = (function displayMessageInit() {
-            var node = document.querySelector('#message');
-
-            return function displayMessage(message, isError) {
-                node.innerHTML = message;
-                node.className = isError ? 'error' : 'info';
-            };
-        }()),
-        playSelectedFile = function playSelectedFileInit(event) {
-            var file = this.files[0];
-
-            var type = file.type;
-
-            var videoNode = document.querySelector('video');
-
-            var canPlay = videoNode.canPlayType(type);
-
-            canPlay = (canPlay === '' ? 'no' : canPlay);
-
-            var message = 'Can play type "' + type + '": ' + canPlay;
-
-            var isError = canPlay === 'no';
-
-            displayMessage(message, isError);
-
-            if (isError) {
-                return;
-            }
-
-            var fileURL = URL.createObjectURL(file);
-
-            videoNode.src = fileURL;
-        },
-        inputNode = document.querySelector('input.mpt-video');
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
-    if (!URL) {
-        displayMessage('Your browser is not ' + 
-           '<a href="http://caniuse.com/bloburls">supported</a>!', true);
-        
-        return;
-    }                
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
-    inputNode.addEventListener('change', playSelectedFile, false);
-}(window));
-
-
-</script>
+	
